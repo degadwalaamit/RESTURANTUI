@@ -1,0 +1,52 @@
+::ng-deep .multiselectnewclass .dropdown-list li { padding:0 !important }
+::ng-deep .multiselectnewclass .dropdown-list li input[type=checkbox] + div {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  padding-left: 2.5em !important;
+  border-bottom: 1px solid #CCC;
+}
+
+::ng-deep .multiselectnewclass .dropdown-list li input[type=checkbox]:checked + div{
+  display: none !important;
+}
+
+::ng-deep .multiselectnewclass .dropdown-list li input[type=checkbox] + div:before {
+  content:"\f067" !important;
+  font-family: 'Font Awesome\ 5 Free', sans-serif !important;
+  font-weight: 900;
+  color: #33414e !important;
+  font-size: 14px;
+  border: 0 none !important;
+  top: 11px;
+  left: 10px !important;
+}
+::ng-deep .multiselectnewclass .multiselect-dropdown .dropdown-btn:before {
+  content: "User list";
+  position: relative;
+  top: 3px;
+}
+::ng-deep .multiselectnewclass .multiselect-dropdown .dropdown-btn {
+  height: 33px !important;
+}
+::ng-deep .multiselectnewclass .multiselect-dropdown .dropdown-btn .selected-item {
+  display: none
+}
+::ng-deep .multiselectnewclass .multiselect-dropdown .dropdown-btn span.selected-item + span > span:first-child:not(.dropdown-multiselect__caret) {
+  display: none;
+}
+::ng-deep .multiselectnewclass .multiselect-dropdown .dropdown-btn .selected-item a{
+  display: none!important;
+}
+::ng-deep .multiselectnewclass .multiselect-dropdown .dropdown-list .multiselect-item-checkbox:has(input[type='checkbox'])
+{
+  &:has([aria-label="multiselect-select-all"]){
+    display: none!important;
+  }
+}
+::ng-deep .multiselectnewclass .multiselect-dropdown .dropdown-list .multiselect-item-checkbox:has(input[type='checkbox']:disabled)
+{
+  display: none!important;
+}
+::ng-deep .multiselectnewclass .multiselect-dropdown .dropdown-btn .selected-item {
+  display: none
+}

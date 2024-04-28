@@ -1,0 +1,28 @@
+<p *ngIf="GridData && GridData.Data && GridData.Data.length > 0" class="subSectionTitle mb-0 medium fs13px mb-2">{{ 'CommunicationLog.AttachmentPreview' | translate}}</p>
+<div *ngIf="GridData && GridData.Data && GridData.Data.length > 0" class="customTable top-negative">
+    <table class="table table-striped border" aria-describedby="">
+        <thead class="tablefixed">
+            <tr *ngFor="let column of GridData.FirstLevelColumnNames">
+                <th scope="col"><span>{{ column.DisplayName | translate }}</span></th>
+                <th scope="col" class="text-center" style="width:10%;" *ngIf="GridData.FirstLevelActions && GridData.FirstLevelActions"><span class="justify-content-center">{{
+                        'Common.Action' | translate }}</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let gridData of GridData.Data;">
+              <ng-container *ngFor="let column of GridData.FirstLevelColumnNames">
+                <td *ngIf="column.ShowColumn">{{gridData[column.Name]}}</td>
+              </ng-container>
+              <td class="text-center" style="white-space: nowrap;" *ngIf="GridData.FirstLevelActions">
+                <ng-container>
+                  <button *ngFor="let action of GridData.FirstLevelActions.ActionIcons;let iconIndex=index" class="btn p-0 m-0 px-2" [ngClass]="{'border-left': iconIndex > 0 }" type="button"
+                    (click)="emitAction(action.Name,gridData)">
+                    <i aria-hidden="true" class="mr-0" *ngIf="action.IconClass" [ngClass]="action.IconClass"></i>
+                    <img *ngIf="action.IconImage" alt="Upload" height="16" [src]="action.IconImage">
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

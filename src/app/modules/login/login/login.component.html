@@ -1,0 +1,126 @@
+<div class="loginBgImg">
+    <div class="container login">
+        <div class="row mt-7 mx-md-5 mx-lg-0 ">
+            <!-- <div class="col-md-12 col-lg-8 mt-md-0 mt-lg-5">
+                <h1 class="tagline">{{ 'Login.VehicleSolutionEveryone' | translate }}</h1>
+            </div> -->
+            <div class="col-md-12 col-lg-4 px-sm-2 px-md-3 px-lg-4 pt-3 pt-sm-5 pb-0 rounded loginBox">
+                <!-- <div class="logo">Resturant management</div> -->
+                
+                <p class="px-1 px-sm-3 pb-3">{{ 'Login.SignInToYourAccount' | translate }}</p>
+                <form class="px-1 px-sm-3 login-form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+                    <div class="form-group pb-2">
+                        <div class="input-icon">
+                            <i class="user-icon ml-0"></i>
+                            <input style="text-transform: lowercase;" class="form-control placeholder-no-fix valid input-border-bottom removeTextboxCross"
+                                type="text" noAutoComplete [pattern]="EmailPattern"
+                                placeholder="{{ 'Login.Email' | translate }}" name="email" aria-required="true" (keyup)="checkPassword()"
+                                aria-describedby="username-error" aria-invalid="false" #email="ngModel" required
+                                [(ngModel)]="loginModel.username" maxlength="255">
+                            <div *ngIf="email?.errors && email?.touched">
+                                <span style="text-align: right;" [hidden]="!email?.errors.pattern"
+                                    class="alert-danger text-right">
+                                    {{ 'Login.PleaseEnterValidEmail' | translate }}
+                                </span>
+                                <span class="alert-danger" *ngIf="!email?.errors.pattern">
+                                    {{ 'Login.EmailRequired' | translate }} </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-icon">
+                            <i class="lock-icon ml-0"></i>
+                            <input class="form-control placeholder-no-fix valid input-border-bottom" type="password"
+                                noAutoComplete placeholder="{{ 'Login.Password' | translate }}" name="password"
+                                #password="ngModel" required aria-required="true" aria-describedby="password-error"
+                                aria-invalid="false" [(ngModel)]="loginModel.password" minlength="8" maxlength="20">
+                            <div *ngIf="password?.errors && password?.touched && password?.errors.required">
+                                <span class="alert-danger">
+                                    {{ 'Login.PasswordRequired' | translate }} </span>
+                            </div>
+                            <div
+                                *ngIf="password?.errors && password?.touched && !password?.errors.required && password?.errors.minlength">
+                                <span class="alert-danger">
+                                    {{ 'Login.PasswordMinLength' | translate }} </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-control custom-checkbox my-3">
+                        <input type="checkbox" class="custom-control-input" id="customCheck1" name="customCheck1"
+                            [checked]="loginModel.isremember" [(ngModel)]="loginModel.isremember">
+                        <label class="custom-control-label"
+                            for="customCheck1">{{ 'Login.RememberUserID' | translate }}</label>
+                    </div>
+
+                    <div class="text-center">
+                        
+                        <button type="submit" class="btn btn-main mt-sm-0 mt-3 w-100"
+                            [disabled]="loginForm.form.invalid"><span class="w-100">
+                            {{ 'Login.SIGNIN' | translate }} </span></button>
+                    </div>
+                    <div class="pt-3">
+                        <a href="#" data-target="#pwdModal" data-toggle="modal" class="forgot-pswd-link pl-0"
+                        (click)="onClose()">
+                        {{ 'Login.FORGOTPASSWORD' | translate }} </a>
+                    </div>
+                </form>
+                <p class="pl-3 pt-4 mb-2 text-muted"><small> {{ 'Login.RightReserved' | translate }}</small></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="pwdModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="text-center"> {{ 'Login.ForgotPassword' | translate }} </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                    (click)="onClose()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="text-left">
+                                <p> {{ 'Login.EnterEmail' | translate }} </p>
+                                <div class="panel-body forgotPswdMsg">
+                                    <fieldset>
+                                        <form novalidate #forgotPasswordForm="ngForm">
+                                            <div class="form-group">
+                                                <input class="form-control input-lg"
+                                                placeholder=" {{ 'Login.EmailAddress' | translate }} "
+                                                    name="forgetmail" noAutoComplete #forgetmail="ngModel" type="email" maxlength="255"
+                                                    [(ngModel)]="forgotEmail" required [pattern]="EmailPattern">
+                                                <div *ngIf="forgetmail?.errors && forgetmail?.touched">
+                                                    <span style="text-align: right;"
+                                                        [hidden]="!forgetmail?.errors.pattern"
+                                                        class="alert-danger text-right">
+                                                        {{ 'Login.PleaseEnterValidEmail' | translate }}
+                                                    </span>
+                                                    <span class="alert-danger" *ngIf="!forgetmail?.errors.pattern">
+                                                        {{ 'Login.EmailRequired' | translate }} </span>
+                                                </div>
+                                            </div>
+                                            <div class="" [ngClass]="msgModelClass" innerHTML="{{msgModelMessage}}">
+                                            </div>
+                                        </form>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div class="modal-footer">
+              <div class="col-md-12"> 
+                  <input class="btn btn-secondary float-right" value="Send my password"
+                  [disabled]="forgotPasswordForm.form.invalid"
+                  (click)="onForgotPasswordSubmit()" type="submit">
+                <button class="btn btn-outline-secondary" data-dismiss="modal" aria-hidden="true">{{ 'Login.Cancel' | translate }}</button>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+<app-loader [loading]="loading"></app-loader>

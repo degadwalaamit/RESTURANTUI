@@ -1,0 +1,20 @@
+export enum ColumnFormatEnum {
+  RegistrationNumber = 1,
+  Id,
+  Number,
+  Currency,
+  Date,
+  String,
+  Phone,
+  Mobile,
+  Email,
+  User,
+  Month,
+  Initial,
+  UserWithAvatar,
+  Status,
+  ValueMiles,
+  TrimText,
+  Checkbox,
+  CurrencyWithCheckbox
+}

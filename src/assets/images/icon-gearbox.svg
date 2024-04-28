@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_729" data-name="Rectangle 729" width="24" height="24" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="icon-gearbox" clip-path="url(#clip-path)">
+    <g id="Group_357" data-name="Group 357" transform="translate(0.8 2)">
+      <circle id="Ellipse_81" data-name="Ellipse 81" cx="1.6" cy="1.6" r="1.6" fill="none" stroke="#ba1f31" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_716" data-name="Path 716" d="M6,13v5.2a1.6,1.6,0,0,0,1.6,1.6h3.2" transform="translate(-4.4 -9.8)" fill="none" stroke="#ba1f31" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <circle id="Ellipse_82" data-name="Ellipse 82" cx="1.6" cy="1.6" r="1.6" transform="translate(6.4)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <circle id="Ellipse_83" data-name="Ellipse 83" cx="1.6" cy="1.6" r="1.6" transform="translate(12.8)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <circle id="Ellipse_84" data-name="Ellipse 84" cx="1.6" cy="1.6" r="1.6" transform="translate(19.2)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <circle id="Ellipse_85" data-name="Ellipse 85" cx="1.6" cy="1.6" r="1.6" transform="translate(6.4 16.8)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <circle id="Ellipse_86" data-name="Ellipse 86" cx="1.6" cy="1.6" r="1.6" transform="translate(12.8 16.8)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <circle id="Ellipse_87" data-name="Ellipse 87" cx="1.6" cy="1.6" r="1.6" transform="translate(19.2 16.8)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <line id="Line_172" data-name="Line 172" y2="13.6" transform="translate(8 3.2)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <line id="Line_173" data-name="Line 173" y2="13.6" transform="translate(14.4 3.2)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <line id="Line_174" data-name="Line 174" y2="13.6" transform="translate(20.8 3.2)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <line id="Line_175" data-name="Line 175" x1="12.8" transform="translate(8 10)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

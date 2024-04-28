@@ -1,0 +1,21 @@
+<div class="row page-bar-fixed">
+    <div class="col-12">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li><a href="javascript:;">{{'SideMenu.ResturantManagement' | translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+  <div class="col-12">
+      <div class="whiteBox">
+        <app-grid class="w-100 px-3 heightCalc380px" [gridData]="actualData"
+        (valueToParent)="actionData($event)" (addButton)="addResturant()"></app-grid>
+        </div>
+    </div>
+</div>
+<app-loader [loading]="loading"></app-loader>
+<app-confirmation-modal (emitConfirmationEvent)="handleEmitConfirmationEvent($event)" [title]="title"
+    [message]="message" [cancelButtonTitle]="cancelButtonTitle" [saveButtonTitle]="saveButtonTitle">
+</app-confirmation-modal>

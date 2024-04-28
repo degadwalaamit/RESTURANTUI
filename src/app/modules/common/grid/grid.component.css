@@ -1,0 +1,216 @@
+.tag-wrapper  [role=button] { line-height: 19px; }
+.tag-wrapper  [role=button] svg { height:auto !important; }
+.tag-wrapper .tag__text { line-height: 20px;}
+.tag-wrapper [role=button]:hover { transform: scale(1.2) translateY(-1px) !important;}
+.ng2-tag-input.bootstrap .ng2-tags-container .ng-trigger { color: white !important;height: auto;width: auto;background: #ba0c2f !important; }
+.ng2-tag-input { min-height: 30px !important; border: 1px solid #ced4da; padding:1px 25px !important; }
+.ng2-tag-input.ng2-tag-input--focused { border: 1px solid #33414e !important; }
+.ng2-tag-input.bootstrap input{height: 25px;font-size: 1em;padding: 3px 0; margin-left: 3px;}
+
+.clswonbtn, .clsopenbtn,.clslostbtn, .clsdonebtn, .clsdraftbtn, .clsapprovedtbtn, .clsrejectedtbtn, .clssignedtbtn, .proposalsend, .proposalrecieved {padding: 2px 8px; border-radius: 4px; font-size: 11px; line-height: 18px; text-align: center; min-width: 80px; display: inline-block;}
+.clswonbtn{background: #B2F0FF; border: 1px solid #52A1B4; color: #1B7691;}
+.clsopenbtn{background: #FFF1B4;border: 1px solid #E5CC5F; color: #FF8C00;}
+.clsdonebtn{background: #ABF5D2;border: 1px solid #5CC191; color: #238260;}
+.clslostbtn{background: #ff1e1e7d;border: 1px solid #fb1104;color: #000000}
+.applyFilterButtonLeftMargin{
+  margin-left: 510px;
+}
+.clslightgraytbtn {
+  background: #cecece;
+  border: 1px solid #888888;
+  color: #333333;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+  min-width: 80px;
+  display: inline-block;
+}
+
+.clsdraftbtn {background: #EAE6FF;border: 1px solid #7D6ECE; color: #5243AA;}
+.clsapprovedtbtn {background: #D6D6D6;border: 1px solid #B1B1B1; color: #484848;}
+.clssignedtbtn {background: #ABF5D2;border: 1px solid #5CC191; color: #238260;}
+
+.proposalsend {
+  background: #28b5ea;
+  border: 1px solid #3b70bd;
+  color: #ffffea;
+}
+.proposalrecieved {
+  background: #7aea88;
+  border: 1px solid #4baf32;
+  color: #134a15;
+}
+
+.sortcls::before,.sortcls::after{right:5px;top:4px;position:absolute;font-family:'Font Awesome\ 5 Free', sans-serif;font-weight:900;font-size:0.85rem;color:#666;opacity:0.5;}
+.sortcls::before{content:"\f0de";}
+.sortcls::after{content:"\f0dd";}
+.sortcls.sort_asc::before{opacity:1;}
+.sortcls.sort_desc::after{opacity:1;}
+.customTable .table .tablefixed th.sortcls {padding-right: 25px !important;}
+.customTable .table .tablefixed th.leadformType {width: 150px !important;}
+th.text-center.leadsaction {min-width: 170px;}
+.FirstLevelActionClass {width: 180px;}
+.contclsoppmng {min-width: 150px;}
+
+.expand-row{cursor: pointer;}
+
+.dycode th {border-right: 1px solid #ccc !important;}
+.cotmaincls {padding: 2px 0;}
+.conicon {padding-right: 5px;}
+.oppcomcls{padding: 2px 0;}
+.coloraddicon{color:#33414e; font-size: 12px;}
+
+.opp-initials{width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #FFFFFF;}
+.opp-initial-one{background: #FF9900;}
+.smembercls{width: 25px;height: 25px;margin-right: 4px;}
+.leveltwotr th{background: #eaedf1; border-bottom: solid 1px #dbdbdb; position: relative;}
+.leveltwotr tr {background: #FAF9F1;}
+.oppmngtable td:last-child {border-right: 1px solid #dbdbdb;}
+.oppmngtable td:first-child {border-left: 1px solid #dbdbdb;}
+.levelthreetr th{background: #eaedf1; border-bottom: solid 1px #dbdbdb; position: relative;}
+.levelthreetr tr {background: #F8FEFF;}
+body .levelthreetr td, body .levelthreetr th {border: 1px solid #999999!important;}
+.ticons a{cursor: pointer;}
+.lthreevehicle {width: 25%;}
+
+/*TagInput CSS start*/
+.ng2-tag-input.bootstrap .ng2-tags-container .ng-trigger{border:1px solid #768da2 !important;background:#768da2 !important;padding:0 5px !important;color:#fff !important;border-radius:2px !important;float:left !important;font-size:0.75rem !important;font-weight:400 !important;font-family:"Poppins", sans-serif !important;letter-spacing:0.03rem !important;}
+.ng2-tag-input {border: 1px solid #ced4da !important;}
+
+/* tag-input-form {display: flex !important; width: 25px !important; max-width: fit-content !important;} */
+
+
+/*TagInput CSS end*/
+
+/* Search CSS */
+.taginputsearchparent {max-width: 700px; width: 700px;}
+
+/* Bold font in grid data*/
+.boldFont { font-weight:900 !important;}
+
+/*pagination*/
+.opp-mg-pagin-parent {display: flex; justify-content: center;}
+.opp-mg-pagin-parent select {height: 28px;width: 44px; border: 1px solid #ccc;border-radius: 2px !important;}
+.opp-mg-pagin-parent input[type="button"] {height: 28px; border-radius: 2px; margin: 0 5px; background: #33414e!important; border: 1px solid #33414e!important; color: #FFF;}
+.opp-mg-pagin-parent input[type="button"]:disabled{background: #ccc !important; border: 1px solid #ccc !important;}
+.opp-mg-pagin-parent button.page-item {color: #333;height: 28px; border-radius: 2px !important; margin: 0 2px;
+  border: 1px solid #ccc;
+  min-width: 36px;
+}
+.page-item.activePage {background: #33414e!important;color: #FFF !important;}
+.showresultssection {text-decoration: underline;}
+.w-120px { width: 120px !important; max-width: 120px; }
+.w-150px { width: 150px !important; max-width: 150px; }
+.w-200px { width: 200px !important; max-width: 200px; }
+/* TEMPORARY ADDED: REMVOE ONCE MERGED WITH MASTER: STYLE ALRADY IN MASTER ************/
+.form-control { padding-bottom:0.2rem;}
+/* TEMPORARY ADDED: REMVOE ONCE MERGED WITH MASTER: STYLE ALRADY IN MASTER ************/
+
+/**************************************Media Query CSS Starts**************************/
+
+@media (max-width:1439px)
+{
+.cotmaincls{white-space: nowrap;}
+}
+
+.leadsaction2{
+  width: 120px !important;
+}
+.when{
+  width: 180px !important;
+}
+
+.tableviewiconcls{color: #33414e; font-size: 14px;}
+/*Order List CSS*/
+.orderlistgridclsclear th.leadsaction {width: auto !important; min-width: auto !important;}
+/*Order List CSS*/
+
+/*WhatsApp grid CSS*/
+.wa-columns {
+  width: 100px;
+}
+.wa-date {
+  width: 140px;
+}
+/*WhatsAppgrid CSS*/
+
+
+
+
+.AMTGridHoveringClass{
+  color: black;
+  background-color: #f0f8ff !important;
+  cursor: pointer;
+}
+.status-icon {
+  display: block;
+  height: 14px;
+  position: absolute;
+  width: 14px;
+  border-radius: 50%;
+  top: 0;
+  bottom: 0;
+  left: 0px;
+  margin: auto;
+  min-width: 14px;
+  border: 1px solid black;
+}
+.status {
+  position: relative;
+  padding-left: 20px !important;
+  text-align: left;
+}
+.heightCalc380px .customTable{height:calc(100vh - 300px) !important;overflow:auto;}
+
+/* ADDED : 28/04/2022 ********/
+.ico-btn:hover {
+  box-shadow: 0 2px  3px rgb(0 0 0 / 25%);
+}
+.ico-btn {
+  background-color: #FFF;
+  border-radius: 5px;
+  border: 1px solid #33414e;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 32px;
+}
+.sub-level-action .ico-btn {
+  border: 1px solid #575e60;
+  padding: 0;
+}
+.ico-btn img {
+  max-width: 20px;
+  max-height: 20px;
+}
+.opp-mng-filter .custom-control { min-height: 21px;}
+.action-icon-column .ico-btn:last-child { margin-right: 0 !important; }
+
+.chkbox-center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 20px;
+}
+.csk-chk-to-radio:checked {
+  background: #0075FF !important;
+  border: 2px solid #0075FF !important;
+  outline: 1px solid #000 !important;
+}
+
+.csk-chk-to-radio  {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #fff;
+  background: #fff;
+  border-radius: 50%;
+  outline: 1px solid #000!important;
+  cursor: pointer;
+}
+.image-size{height:50px; width:100px;}

@@ -1,0 +1,1236 @@
+<div *ngIf="IsValidate">
+  <div class="gridHeader justify-content-between mb-3" *ngIf="IsSearchVisible">
+    <div class="seachandbtnback d-flex p-0">
+      <div class="w-100 d-flex">
+        <div class="taginputsearchparent">
+          <div class="input-icon">
+            <i class="icon-search"></i>
+            <tag-input class="tag taginputtagcls" [placeholder]="'Enter a keyword'"
+                       [secondaryPlaceholder]="'Search something here'" [theme]="'bootstrap'" [(ngModel)]="searchItems"
+                       (onRemove)="performOperations('searchRemove')" (onAdd)="performOperations('searchAdd')" [modelAsStrings]="true" [@.disabled]="true">
+            </tag-input>
+            <span class="icon-search-clear" (click)="performOperations('eraseSearch')"></span>
+          </div>
+        </div>
+        <div class="pl-0  z-index-1 d-flex align-items-center">
+          <ul class="pageBtnsList">
+            <li>
+              <a href="javascript:;" title="Clear All" (click)="performOperations('clearEverything')" onclick="this.blur();"
+                 id="clearEverything"><i class="btn-icon-cancel"></i><span>Clear all</span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="text-right flmid"
+         *ngIf="addButtonName!=null">
+      <!-- <button class="btn btn-outline px-25 mr-2" type="button">
+        <i class="fa-solid fa-up-down mr-2"></i>Expand All
+      </button>
+      <button class="btn btn-outline px-25 mr-2" type="button">
+        <i class="fa-solid fa-minus mr-2"></i>Collapse All
+      </button> -->
+      <button class="btn btn-primary px-2"
+              (click)="performOperations('addButtonClicked')" title="{{addButtonName}}">
+        <i class="fas fa-plus mr-2"></i>
+        {{addButtonName}}
+      </button>
+    </div>
+    <!-- <div class="showresultssection col-md-2 p-0 ml-auto text-right">
+      Showing <span class="resultvaluebox">({{dataForShow?.length}})</span>
+      {{ pageName }}
+    </div> -->
+  </div>
+  <!-- Filter Code Start -->
+  <div *ngIf="IsDataAgeingFilterVisible" class="opp-mng-filter-parent mb-3">
+    <div class="opp-mng-filter-inner d-flex justify-content-between align-items-center py-15" [ngClass]="{'pb-md-50px':gridData.useStatusCountService}">
+      <div class="opp-mng-filter">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="opp-mng-label pr-2">
+            <strong>{{gridData.dataAgeingFilterLabelName}}</strong>
+          </div>
+          <ng-container *ngFor="let filter of gridData.dataFilterOptionsConfiguration;let ind=index">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input class="custom-control-input" id="filter{{ind}}_{{removeSpaceAndReplaceDash(gridData.PageName)}}" name="duration" type="radio"
+                     (click)="currentDataAgingOption=ind+1;performOperations('filter');selectedValidFrom='';selectedValidEnd=''"
+                     [checked]="ind+1==ChangeDefaultFilterOption">
+              <label class="custom-control-label" for="filter{{ind}}_{{removeSpaceAndReplaceDash(gridData.PageName)}}">{{filter.label}}</label>
+            </div>
+          </ng-container>
+          <div class="custom-control-inline align-items-center" *ngIf="showCustomDateFilter">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input class="custom-control-input" #customRadioBtn id="Customday_{{removeSpaceAndReplaceDash(gridData.PageName)}}" name="duration"
+                     (click)="currentDataAgingOption=100;performOperations('filter');selectedValidFrom='';selectedValidEnd=''"
+                     [checked]="ChangeDefaultFilterOption==100" type="radio">
+              <label class="custom-control-label" for="Customday_{{removeSpaceAndReplaceDash(gridData.PageName)}}">Custom</label>
+            </div>
+            <div class="opp-mng-durationdate text-inline">
+              <input id="customFromDate_{{removeSpaceAndReplaceDash(gridData.PageName)}}" autocomplete="off" type="text" class="form-control datepicker-input read-only"
+                     [disabled]="!customRadioBtn.checked"
+                     (bsValueChange)="selectedValidFrom = $event;performOperations('filter');" bsDatepicker
+                     [bsConfig]="fromCustomDateCalenderConfig"
+                     [value]="selectedValidFrom|date:fromCustomDateCalenderConfig.dateInputFormat"
+                     placeholder="{{fromCustomDateCalenderConfig.placeHolder}}" required>
+              <input autocomplete="off" id="customEndDate_{{removeSpaceAndReplaceDash(gridData.PageName)}}" type="text" class="form-control datepicker-input read-only"
+                     [disabled]="!customRadioBtn.checked"
+                     (bsValueChange)="selectedValidEnd = $event;performOperations('filter');" bsDatepicker
+                     [bsConfig]="endCustomDateCalenderConfig"
+                     [value]="selectedValidEnd|date:endCustomDateCalenderConfig.dateInputFormat"
+                     placeholder="{{endCustomDateCalenderConfig.placeHolder}}" required>
+            </div>
+          </div>
+          <div *ngIf="gridData.showPending" class="custom-control custom-radio custom-control-inline">
+            <input class="custom-control-input" id="pendingFilter_{{removeSpaceAndReplaceDash(gridData.PageName)}}" name="duration"
+                   (click)="currentDataAgingOption=200;performOperations('filter');selectedValidFrom='';selectedValidEnd=''"
+                   [checked]="ChangeDefaultFilterOption==200" type="radio">
+            <label class="custom-control-label" for="pendingFilter_{{removeSpaceAndReplaceDash(gridData.PageName)}}">{{gridData.showPending.label}}</label>
+          </div>
+        </div>
+      </div>
+      <ng-content></ng-content>
+      <div class="opp-mng-hightbtn d-flex">
+        <ul class="nav nav-pills"
+            style="padding:5px;border-radius:5px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+          <li>
+            <a (click)="toggleFilter('favourite')" id="favouriteFilter_{{removeSpaceAndReplaceDash(gridData.PageName)}}">
+              <i class="fa fa-star"
+                 aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a (click)="toggleFilter('hidden')" id="hiddenFilter_{{removeSpaceAndReplaceDash(gridData.PageName)}}">
+              <i style="border-radius: 0px !important;font-size: 0.9rem;" class="fa fa-wrench"
+                 aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Filter Code end -->
+  <!-- hiddenFilterBlock  start -->
+  <div id="hiddenFilterBlock_{{removeSpaceAndReplaceDash(gridData.PageName)}}" style="display: none;" class="opp-mng-filter-parent mb-3">
+    <div class="opp-mng-filter-inner d-flex justify-content-between">
+      <div class="opp-mng-filter">
+        <div>
+          <div class="opp-mng-label pr-2">
+            <strong>Search Builder </strong>Add filters to your search
+          </div>
+        </div>
+        <div>
+          <div *ngFor="let item of advanceSearchFilters;let in=index" class="d-flex align-items-center mb-2 searchbuilderparent">
+            <select [(ngModel)]="item.columnName" class="form-control w-120px mr-2" id="hiddenField_{{removeSpaceAndReplaceDash(gridData.PageName)}}_{{in}}">
+              <option>Select field</option>
+              <option *ngFor="let name of firstLevelHiddenColumn" [value]="name.Name"> {{name.DisplayName}} </option>
+            </select>
+            <select [(ngModel)]="item.operator" class="form-control w-200px mr-2" id="hiddenFieldOperator_{{removeSpaceAndReplaceDash(gridData.PageName)}}_{{in}}">
+              <option>Select operator</option>
+              <option>Contains</option>
+              <option>Does not contain</option>
+              <option>Equals</option>
+              <option>Does not equal</option>
+              <option>Start with</option>
+              <option>Ends with</option>
+            </select>
+            <input [(ngModel)]="item.searchString" id="hiddenFieldTextSearch_{{removeSpaceAndReplaceDash(gridData.PageName)}}_{{in}}" class="form-control mr-2 w-150px" type="text" maxlength="50"
+                   placeholder="Search here">
+
+            <button *ngIf="in==0" (click)="performOperations('removeAllAdvanceSearch')" onclick="this.blur();"
+                    class="btn btn-outline-secondary text-nowrap mr-2">
+              Clear all but this
+            </button>
+
+            <button *ngIf="in!=0" (click)="removedAdvanceSearchIndex=in;performOperations('removeAdvanceSearch')"
+                    class="btn btn-outline-secondary mr-2">
+              Remove
+            </button>
+            <div *ngIf="in==advanceSearchFilters.length-1" class="d-flex mr-2">
+              <ul class="pageBtnsList">
+                <li class="px-0">
+                  <a href="javascript:;" (click)="performOperations('addAdvanceSearch')" title="Add new search builder">
+                    <em class="btn-icon-addnew"></em><span>Add</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button (click)="performOperations('applyAdvanceSearch')" class="applyFilterButtonLeftMargin btn btn-primary mr-2">
+            Apply
+            filters
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <!-- hiddenFilterBlock  end -->
+  <!-- favouriteFilterBlock  start -->
+  <div id="favouriteFilterBlock_{{removeSpaceAndReplaceDash(gridData.PageName)}}" style="display: none;" class="opp-mng-filter-parent mb-3">
+    <div class="opp-mng-filter-inner d-flex justify-content-between">
+      <div class="opp-mng-filter">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="opp-mng-label pr-2">
+              <strong>Save this view</strong>
+            </div>
+            <div style="margin-top:5px">
+              Your label
+            </div>
+            <div style="margin-top:5px">
+              <input id="favouriteSearchText_{{removeSpaceAndReplaceDash(gridData.PageName)}}" type="text" #favouriteSearchText name="viewName" maxlength="50">
+            </div>
+            <div style="margin-top:5px;gap: 10px;" class="d-flex">
+              <input id="isFavouriteViewSelected" type="checkbox" #isFavouriteViewSelected name="isFavouriteViewSelected"><div>{{ 'AMTGrid.SetDefaultView' | translate }}</div>
+            </div>
+            <div style="margin-top:10px">
+              <button class="btn btn-primary"
+                      (click)="saveFavouriteSearch(favouriteSearchText.value,currentDataAgingOption,isFavouriteViewSelected.checked);isFavouriteViewSelected.checked=false">
+                Save
+              </button>
+            </div>
+          </div>
+          <div style="margin-left: 20px;">
+            <div class="opp-mng-label pr-2">
+              <strong>My views</strong>
+            </div>
+            <table aria-describedby="" *ngIf="favouriteSearch!=null&&favouriteSearch.length>0"
+                   class="table table-striped" style="border: 2px solid #dee2e6;">
+              <thead class="tablefixed">
+                <tr>
+                  <th id="">{{ 'AMTGrid.DefaultView' | translate }}</th>
+                  <th id="">View Name</th>
+                  <th hidden id="">Creation Date</th>
+                  <th id="" class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let favourite of favouriteSearch">
+                  <td><input class="csk-chk-to-radio" [(ngModel)]="favourite.isFavouriteViewSelected" (change)="updateFavouriteSearch(favourite)" type="checkbox" name="isFavouriteViewSelected"></td>
+                  <td>{{favourite.SearchName}}</td>
+                  <td hidden>{{favourite.CreatedDate+'Z' | date: dateFormat}}</td>
+                  <td>
+                    <button (click)="applyFavouriteSearch(favourite)" class="btn btn-primary">Apply</button>
+                    <button (click)="performOperations('clearFavouriteView')"
+                            class="btn btn-outline-secondary ml-2">
+                      Clear
+                    </button>
+                    <button (click)="removeFavouriteSearch(favourite.GridFavouriteId)"
+                            class="btn btn-outline-secondary ml-2">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- favouriteFilterBlock  end -->
+</div>
+<div class="col-12 p-0 mt-0" *ngIf="IsValidate">
+  <div class="dycode">
+    <div [innerHTML]="customHeader"></div>
+    <div class="overflow-hiden border-top">
+      <div class="customTable h-100 mh-100 oppmngtable hstablecomman hstablehirepur cnstr-record product-tbl ">
+
+        <table *ngIf="gridData.Data && gridData.Data" [ngClass]="checkForRoutes()?'leveltwotr':''"
+               class="table heading-hvr {{TableCssClass}}">
+          <thead class="tablefixed">
+            <tr class="border">
+              <th id="" *ngIf="secondLevelColumns!=null">&nbsp;</th>
+              <!--<th id="" *ngIf="showCheckBox">
+                <input type="checkbox">
+              </th>-->
+              <ng-container *ngFor="let firstLevelColumn of firstLevelColumns;">
+                <th *ngIf="firstLevelColumn.isHeaderChecked">
+                  <div class="custom-control custom-checkbox lblneighbour">
+                    <input class="custom-control-input checkboxRow" name="SelectAll" (click)="SelectCheckbox($event)" type="checkbox">
+                    <label class="custom-control-label pt-1"></label>
+                  </div>
+                </th>
+                <th id="" class="text-center" *ngIf="firstLevelColumn.ShowColumn && firstLevelColumn.isSortable==true && !firstLevelColumn.isHeaderChecked"
+                    (click)="sort(firstLevelColumn.Name);"
+                    [ngClass]="!memberOrderby[firstLevelColumn.Name] ? 'sortcls sort_asc' : 'sortcls sort_desc'"
+                    class="{{firstLevelColumn.ColumnClass}}">
+                  {{firstLevelColumn.DisplayName | uppercase}}
+                </th>
+                <th id="" *ngIf="firstLevelColumn.ShowColumn && firstLevelColumn.isSortable==false && !firstLevelColumn.isHeaderChecked"
+                    class="text-center {{firstLevelColumn.ColumnClass}}">
+                  {{firstLevelColumn.DisplayName | uppercase}}
+                </th>
+
+              </ng-container>
+              <th id="" *ngIf="FirstLevelActions!=null" class="text-center {{FirstLevelActions.ActionClass}}">
+                ACTIONS
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let oneLevel of dataForShow;">
+              <tr style="border:1px solid rgb(222 226 230)" hover-class="{{gridData.useHoveringRow.enable?gridData.useHoveringRow.cssClassName:''}}" (dblclick)="doubleClickFunction('First',oneLevel,null,null)">
+                <!--<td *ngIf="showCheckBox">
+                  <input type="checkbox" value="{{oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]}}"
+                         name="#firstLevelCheckbox">
+                </td>-->
+                <td *ngIf="secondLevelColumns!=null && oneLevel[Tablenames[0]]">
+                  <ng-container *ngIf="oneLevel[Tablenames[0]].length>0">
+                    <a id="FirstOpen{{oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]}}" class="expand-row"
+                       *ngIf="firstLevelToggle[oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]]"
+                       (click)="firstLevelToggle[oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]] = !firstLevelToggle[oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]]">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                  </ng-container>
+                  <ng-container *ngIf="oneLevel[Tablenames[0]].length>0">
+                    <a id="FirstClose{{oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]}}" class="expand-row"
+                       *ngIf="!firstLevelToggle[oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]]"
+                       (click)="firstLevelToggle[oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]] = !firstLevelToggle[oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]]">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </a>
+                  </ng-container>
+                </td>
+                <ng-container *ngFor="let firstLevelColumn of firstLevelColumns;let j=index">
+                  <ng-container *ngIf="firstLevelColumn.isNestedColumn">
+                    <td>
+                      <div *ngFor="let item of oneLevel[firstLevelColumn.Name] | keyvalue:unsorted;let i = index;">
+                        <ng-container *ngFor="let firstLevelNestedColumn of firstLevelColumn.NestedColumns">
+                          <div *ngIf="item.key==firstLevelNestedColumn.ColumnName && firstLevelNestedColumn.ShowColumnsName">
+                            <div [ngSwitch]="firstLevelNestedColumn.Format">
+                              <div *ngSwitchCase="5">
+                                <div *ngIf="item.value!=null"><strong> {{firstLevelNestedColumn.DisplayName}}: </strong> {{item.value | DateChanger}}</div>
+                              </div>
+                              <div *ngSwitchCase="22">
+                                <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                  <strong> {{firstLevelNestedColumn.DisplayName}}: </strong> {{item.value}} months
+                                </div>
+                              </div>
+                              <div *ngSwitchCase="23">
+                                <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                  <strong> {{firstLevelNestedColumn.DisplayName}}: </strong> {{item.value}}
+                                </div>
+                              </div>
+                              <div *ngSwitchDefault>
+                                <strong> {{firstLevelNestedColumn.DisplayName}}:</strong> {{item.value}}
+                              </div>
+                            </div>
+                          </div>
+                          <div *ngIf="item.key==firstLevelNestedColumn.ColumnName && !firstLevelNestedColumn.ShowColumnsName">
+                            <div [ngSwitch]="firstLevelNestedColumn.Format">
+                              <div *ngSwitchCase="1">
+                                <i class="fa fa-registered" aria-hidden="true"></i> {{item.value}}
+                              </div>
+                              <div *ngSwitchCase="4">
+                                {{item.value | CurrencyConverter}}
+                              </div>
+                              <div *ngSwitchCase="20">
+                                <div *ngIf="item.value==null || item.value == undefined"></div>
+                                <div *ngIf="item.value!=null || item.value != undefined">
+                                  {{item.value | CurrencyConverter}}
+                                </div>
+                              </div>
+                              <div *ngSwitchCase="5 && item.value!=null">
+                                {{item.value+'Z' | date: dateFormat}}
+                              </div>
+                              <div *ngSwitchCase="7">
+                                <div *ngIf="item.value!='' && item.value!=null" class="cotmaincls cont-mail-cls">
+                                  <span class="conicon">
+                                    <img alt=""
+                                         src="{{StaticImagePath}}opp-mng-phone.png" />
+                                  </span>{{getMobileFormat(item.value)}}
+                                </div>
+                              </div>
+                              <div *ngSwitchCase="8">
+                                <div *ngIf="item.value!='' && item.value!=null" class="cotmaincls cont-mail-cls">
+                                  <span class="conicon">
+                                    <img alt=""
+                                         src="{{StaticImagePath}}opp-mng-phone.png" />
+                                  </span>{{getMobileFormat(item.value)}}
+                                </div>
+                              </div>
+                              <div *ngSwitchCase="9">
+                                <div *ngIf="item.value!='' && item.value!=null" class="cotmaincls cont-mail-cls">
+                                  <span class="conicon">
+                                    <img alt=""
+                                         src="{{StaticImagePath}}opp-mng-email.png" />
+                                  </span>{{item.value}}
+                                </div>
+                              </div>
+                              <div *ngSwitchCase="10">
+                                <div *ngIf="item.value!='' && item.value!=null" class="cotmaincls cont-name-cls">
+                                  <span class="conicon">
+                                    <img alt=""
+                                         src="{{StaticImagePath}}opp-mng-user.png" />
+                                  </span>{{item.value}}
+                                </div>
+                              </div>
+                              <div *ngSwitchCase="11" class="text-right">
+                                {{oneLevel[firstLevelColumn.Name]}} months
+                              </div>
+                              <div *ngSwitchCase="12">
+                                {{item.value.toString().slice(0,1)}} {{item.value}}
+                              </div>
+                              <div *ngSwitchCase="22">
+                                <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                  <strong> {{firstLevelNestedColumn.DisplayName}}: </strong> {{item.value}} months
+                                </div>
+                              </div>
+                              <div *ngSwitchCase="23">
+                                <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                  <strong> {{firstLevelNestedColumn.DisplayName}}: </strong> {{item.value}}
+                                </div>
+                              </div>
+                              <div *ngSwitchDefault>
+                                {{item.value}}
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+
+                      </div>
+                    </td>
+                  </ng-container>
+                  <ng-container *ngIf="!firstLevelColumn.isNestedColumn && firstLevelColumn.ShowColumn">
+                    <td>
+                      <div [ngSwitch]="firstLevelColumn.Format">
+                        <div *ngSwitchCase="1">
+                          <i class="fa fa-registered" aria-hidden="true"></i> {{oneLevel[firstLevelColumn.Name]}}
+                        </div>
+                        <div *ngSwitchCase="3" class="text-right">
+                          {{oneLevel[firstLevelColumn.Name]}}
+                        </div>
+                        <div *ngSwitchCase="4" class="text-right">
+                          <strong *ngIf="oneLevel[firstLevelColumn.Name] != null ||
+                          oneLevel[firstLevelColumn.Name] != undefined">{{CurrencySign}} </strong>
+                          {{oneLevel[firstLevelColumn.Name] | number : '1.2-2'}}
+                        </div>
+                        <div *ngSwitchCase="5" class="text-right">
+                          <!-- {{oneLevel[firstLevelColumn.Name] | DateChanger}} -->
+                          <ng-container *ngIf="firstLevelColumn.CssRule!=null">
+                            <ng-container *ngFor="let rule of firstLevelColumn.CssRule">
+                              <ng-container *ngIf="oneLevel[firstLevelColumn.Name]!=rule.condition">
+                                {{oneLevel[firstLevelColumn.Name]}}
+                              </ng-container>
+                              <ng-container *ngIf="oneLevel[firstLevelColumn.Name]==rule.condition">
+                                <div [innerHTML]="rule.html"></div>
+                              </ng-container>
+                            </ng-container>
+                          </ng-container>
+                          <div *ngIf="firstLevelColumn.CssRule==null && oneLevel[firstLevelColumn.Name]!=null">
+                            {{oneLevel[firstLevelColumn.Name]+'Z' | date: dateFormat}}
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="7">
+                          <i class="fa fa-phone" aria-hidden="true"></i> {{oneLevel[firstLevelColumn.Name]}}
+                        </div>
+                        <div *ngSwitchCase="8">
+                          <i class="fa fa-mobile" aria-hidden="true"></i> {{oneLevel[firstLevelColumn.Name]}}
+                        </div>
+                        <div *ngSwitchCase="9">
+                          <i class="fa fa-envelope-o" aria-hidden="true"></i> {{oneLevel[firstLevelColumn.Name]}}
+                        </div>
+                        <div *ngSwitchCase="10">
+                          <i class="fa fa-user-o" aria-hidden="true"></i> {{oneLevel[firstLevelColumn.Name]}}
+                        </div>
+                        <div *ngSwitchCase="11" class="text-right">
+                          {{oneLevel[firstLevelColumn.Name]}} months
+                        </div>
+                        <div *ngSwitchCase="12">
+                          {{oneLevel[firstLevelColumn.Name].toString().slice(0,1)}} {{oneLevel[firstLevelColumn.Name]}}
+                        </div>
+                        <div *ngSwitchCase="13">
+                          <img class="rounded-circle smembercls" alt=""
+                               src="{{StaticImagePath}}{{oneLevel[firstLevelColumns[j-1].Name]}}">
+                          {{oneLevel[firstLevelColumn.Name]}}
+                        </div>
+                        <div *ngSwitchCase="14" class="text-center">
+                          <ng-container *ngIf="firstLevelColumn.CssRule!=null">
+                            <ng-container *ngFor="let rule of firstLevelColumn.CssRule">
+                              <ng-container *ngIf="rule.isRecursive!=undefined && rule.isRecursive">
+                                <ul [ngClass]='rule.cssListClassName'>
+                                  <ng-container *ngFor="let item of getStringArrayFromCommaSeperatedString(oneLevel[firstLevelColumn.Name])">
+                                    <div [innerHTML]="replaceHtmlRuleWithOriginalValue(rule.html,item)"></div>
+                                  </ng-container>
+                                </ul>
+                              </ng-container>
+                              <ng-container *ngIf="oneLevel[firstLevelColumn.Name]==rule.condition && (rule.isRecursive==undefined || !rule.isRecursive)">
+                                <div [innerHTML]="rule.html"></div>
+                              </ng-container>
+                            </ng-container>
+                          </ng-container>
+                          <div *ngIf="firstLevelColumn.CssRule==null">
+                            {{oneLevel[firstLevelColumn.Name]}}
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="15">
+                          {{oneLevel[firstLevelColumn.Name]}} Miles
+                        </div>
+                        <div *ngSwitchCase="17">
+                          <div class="custom-control custom-checkbox lblneighbour">
+                            <input class="custom-control-input checkboxRow" [checked]="oneLevel[firstLevelColumn.Name]" (click)="SelectCheckbox(oneLevel)" type="checkbox">
+                            <label class="custom-control-label pt-1"></label>
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="19">
+                          <div [innerHTML]="oneLevel[firstLevelColumn.Name]==''?'-':oneLevel[firstLevelColumn.Name]"></div>
+                        </div>
+                        <div *ngSwitchCase="24" class="text-right">
+                          <ng-container *ngIf="oneLevel[firstLevelColumn.Name]!=null && oneLevel[firstLevelColumn.Name]!=''">
+                            {{ oneLevel[firstLevelColumn.Name] | date: sharedService.calendarDateFormat}}
+                          </ng-container>
+                        </div>
+                        <div *ngSwitchCase="27" class="text-right">
+                          <ng-container *ngIf="oneLevel[firstLevelColumn.Name]!=null && oneLevel[firstLevelColumn.Name]!=''">
+                            {{oneLevel[firstLevelColumn.Name]+'Z' | date: dateWithoutTime:"UTC"}}
+                          </ng-container>
+                        </div>
+                        <div *ngSwitchCase="25">
+                          {{getLicencePlateFormat(oneLevel[firstLevelColumn.Name])}}
+                        </div>
+                        <div *ngSwitchCase="16">
+                          <ng-container *ngIf="oneLevel[firstLevelColumn.Name]!=null && oneLevel[firstLevelColumn.Name].length>=TrimTextSize">
+                            {{oneLevel[firstLevelColumn.Name].slice(0,TrimTextSize)}}
+                            <a href="#" data-target="#trimModal" data-toggle="modal"
+                               (click)="trimColumnName=firstLevelColumn.DisplayName;trimColumnValue=oneLevel[firstLevelColumn.Name]">...more</a>
+                          </ng-container>
+                          <ng-container *ngIf="oneLevel[firstLevelColumn.Name]!=null && oneLevel[firstLevelColumn.Name].length<TrimTextSize">
+                            {{oneLevel[firstLevelColumn.Name]}}
+                          </ng-container>
+                        </div>
+                        <div *ngSwitchCase="26">
+                          <ng-container *ngIf="getSalesPerson(oneLevel[firstLevelColumn.Name])!=undefined
+                                                  && getSalesPerson(oneLevel[firstLevelColumn.Name])!=null
+                                                  && getSalesPerson(oneLevel[firstLevelColumn.Name]) != ''">
+                            <div class="status">
+                              <span class="status-icon"
+                                    [style.background-color]="getColor(oneLevel[firstLevelColumn.Name])"></span>{{getSalesPerson(oneLevel[firstLevelColumn.Name])}}
+                            </div>
+                          </ng-container>
+                        </div>
+                        <div *ngSwitchCase="32">
+                          <div class="lp-container">{{oneLevel[firstLevelColumn.Name]}}</div>
+                        </div>
+                        <div *ngSwitchCase="33">
+                          <div [innerHTML]="sharedService.contentReplace(firstLevelColumn.replacableContent,oneLevel[firstLevelColumn.Name])"></div>
+                        </div>
+                        <!--<div *ngSwitchCase="17">
+                          <div class="custom-control custom-checkbox lblneighbour chkbox-center">
+                            <input class="custom-control-input checkboxRow" [checked]="oneLevel[firstLevelColumn.Name]" type="checkbox">
+                            <label class="custom-control-label pt-1">
+
+                            </label>
+                          </div>
+                        </div>-->
+                        <div *ngSwitchCase="28" class="text-right">
+                          {{oneLevel[firstLevelColumn.Name] | number}}
+                        </div>
+                        <div *ngSwitchCase="29">
+                          <ng-container *ngIf="oneLevel[firstLevelColumn.Name]">{{ oneLevel[firstLevelColumn.Name] | date:'dd/LL/yyyy' }} | {{ oneLevel[firstLevelColumn.Name] | date:'HH:mm' }}</ng-container>
+                        </div>
+                        <div *ngSwitchCase="30">
+                          <div *ngIf="oneLevel[firstLevelColumn.Name]!=null && oneLevel[firstLevelColumn.Name]!=''">
+                            <img class="image-size" alt="" [src]="oneLevel[firstLevelColumn.Name]" />
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="31">
+                          <div *ngIf="oneLevel[firstLevelColumn.Name]!=null && oneLevel[firstLevelColumn.Name]!=''">
+                            {{oneLevel[firstLevelColumn.Name]| number : '1.0'}}
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="34">
+                          <span *ngIf="oneLevel[firstLevelColumn.Name]">
+                            {{oneLevel[firstLevelColumn.Name] | slice: 0: 30 }}
+                            <span *ngIf="oneLevel[firstLevelColumn.Name].length > 30" class="clrtheme fs-14px readmore cursor-pointer"
+                                          (click)="showDescriptionPopup(oneLevel[firstLevelColumn.Name])">[...]</span>
+                          </span>
+                        </div>
+                        <div *ngSwitchDefault>
+                          {{oneLevel[firstLevelColumn.Name]}}
+                        </div>
+                      </div>
+                    </td>
+                  </ng-container>
+                </ng-container>
+                <td class="text-center action-icon-column" *ngIf="FirstLevelActions!=null && !removeActionIcon">
+                  <div class="d-flex align-items-center justify-content-center">
+                  <ng-container *ngFor="let icon of FirstLevelActions.ActionIcons">
+                    <a *ngIf="FirstLevelActions.AttachedColumnName && icon.EnableConditions && !icon.showConditions && icon.EnableConditions.includes(oneLevel[FirstLevelActions.AttachedColumnName])"
+                      (click)="FirstLevelActionClick(icon.Name,oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name],oneLevel,oneLevel)"
+                      style="margin-right: 7px;" title="{{icon.Name}}"
+                      class="ico-btn"
+                      href="javascript:void(0);"><img alt=""
+                        src="{{StaticImagePath}}{{icon.IconImage}}"></a>
+                    <a *ngIf="FirstLevelActions.AttachedColumnName && icon.EnableConditions && !icon.showConditions && !icon.EnableConditions.includes(oneLevel[FirstLevelActions.AttachedColumnName])"
+                      style="margin-right: 7px;opacity: 30%;pointer-events: none;cursor: not-allowed; "
+                      title="{{icon.Name}}"
+                      class="ico-btn"
+                      href="javascript:void(0);"><img alt=""
+                        src="{{StaticImagePath}}{{icon.IconImage}}"></a>
+                    <a *ngIf="(!icon.EnableConditions || !FirstLevelActions.AttachedColumnName) && !icon.showConditions"
+                      (click)="FirstLevelActionClick(icon.Name,oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name],oneLevel,oneLevel)"
+                      style="margin-right: 7px;" title="{{icon.Name}}"
+                      class="ico-btn"
+                      href="javascript:void(0);"><img alt=""
+                        src="{{StaticImagePath}}{{icon.IconImage}}"></a>
+
+                    <a *ngIf="FirstLevelActions.AttachedColumnName && icon.showConditions && icon.showConditions.includes(oneLevel[FirstLevelActions.AttachedColumnName])
+                      && oneLevel[FirstLevelActions.enableConditionColumnName] === true" (click)="FirstLevelActionClick(icon.Name,oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name],oneLevel,oneLevel)"
+                      class="btn mr-1 tobeused width86px justify-content-center"
+                      [ngClass]="{'btn-primary clrwhite': actionEnum[icon.Name]== actionEnumAdd, 'btn-outline': actionEnum[icon.Name]== actionEnumCancel,
+                      'btn-secondary clrwhite': actionEnum[icon.Name]== actionEnumDetails, 'btn-outline-secondary': actionEnum[icon.Name]== actionEnumRemove}">{{actionEnum[icon.Name]}}</a>
+                    <a *ngIf="FirstLevelActions.AttachedColumnName && icon.showConditions && icon.showConditions.includes(oneLevel[FirstLevelActions.AttachedColumnName])
+                      && oneLevel[FirstLevelActions.enableConditionColumnName] === false" style="margin-right: 7px;opacity: 30%;pointer-events: none;cursor: not-allowed;"
+                      class="btn mr-1 tobeused width86px justify-content-center"
+                      [ngClass]="{'btn-primary clrwhite': actionEnum[icon.Name]== actionEnumAdd, 'btn-outline': actionEnum[icon.Name]== actionEnumCancel,
+                      'btn-secondary clrwhite': actionEnum[icon.Name]== actionEnumDetails, 'btn-outline-secondary': actionEnum[icon.Name]== actionEnumRemove}">{{actionEnum[icon.Name]}}</a>
+
+                  </ng-container>
+                </div>
+                </td>
+              </tr>
+              <tr style="margin:20px"
+                  *ngIf="!firstLevelToggle[oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]] && secondLevelColumns!=null && oneLevel[Tablenames[0]].length!=0"
+                  class="sub-table no-bg">
+                <td>&nbsp;</td>
+                <td colspan="15" class="p-0">
+                  <table [ngClass]="checkForRoutes()?'levelthreetr':'leveltwotr'" class="table mb-0">
+                    <thead>
+                      <tr class="border">
+                        <th id="" *ngIf="thirdLevelColumns!=null">&nbsp;</th>
+                        <ng-container *ngFor="let secondLevelColumn of secondLevelColumns;let j=index">
+                          <th id="" class="text-center"
+                              *ngIf="secondLevelColumn.ShowColumn && secondLevelColumn.Name != 'Status' "
+                              (click)="sort(secondLevelColumn.Name,oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]);"
+                              [ngClass]="!memberOrderby[oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]+secondLevelColumn.Name] ? 'sortcls sort_asc' : 'sortcls sort_desc'"
+                              class="{{secondLevelColumn.ColumnClass}}">
+                            {{secondLevelColumn.DisplayName|uppercase}}
+                          </th>
+                          <th id="" class="text-center"
+                              *ngIf="secondLevelColumn.ShowColumn && secondLevelColumn.Name == 'Status' "
+                              (click)="sort(secondLevelColumn.Name,oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name])"
+                              [ngClass]="!memberOrderby[oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name]+secondLevelColumn.Name] ? 'sortcls sort_asc' : 'sortcls sort_desc'"
+                              class="{{secondLevelColumn.ColumnClass}}">
+                            {{secondLevelColumn.DisplayName|uppercase}}
+                          </th>
+                        </ng-container>
+                        <th id="" *ngIf="SecondLevelActions!=null && secondLevelColumns!=null"
+                            class="text-center {{SecondLevelActions.ActionClass}}">
+                          ACTIONS
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let twoLevel of oneLevel[[this.Tablenames[0]]]">
+                        <tr class="border" hover-class="{{gridData.useHoveringRow.enable?gridData.useHoveringRow.cssClassName:''}}" (dblclick)="doubleClickFunction('Second',oneLevel,twoLevel,null)">
+                          <td *ngIf="thirdLevelColumns!=null">
+                            <ng-container *ngIf="twoLevel[Tablenames[1]].length>0">
+                              <a id="SecondOpen{{twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]}}"
+                                 class="expand-row"
+                                 *ngIf="secondLevelToggle[twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]]"
+                                 (click)="secondLevelToggle[twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]] = !secondLevelToggle[twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]]">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                              </a>
+                            </ng-container>
+                            <ng-container *ngIf="twoLevel[Tablenames[1]].length>0">
+                              <a id="SecondClose{{twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]}}"
+                                 class="expand-row"
+                                 *ngIf="!secondLevelToggle[twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]]"
+                                 (click)="secondLevelToggle[twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]] = !secondLevelToggle[twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]]">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                              </a>
+                            </ng-container>
+                          </td>
+                          <ng-container *ngFor="let secondLevelColumn of secondLevelColumns;let j=index;">
+                            <ng-container *ngIf="secondLevelColumn.isNestedColumn">
+                              <td>
+                                <div *ngFor="let item of twoLevel[secondLevelColumn.Name] | keyvalue:unsorted;let i = index;">
+                                  <ng-container *ngFor="let secondLevelNestedColumn of secondLevelColumn.NestedColumns">
+                                    <div *ngIf="item.key==secondLevelNestedColumn.ColumnName && secondLevelNestedColumn.ShowColumnsName">
+                                      <div [ngSwitch]="secondLevelNestedColumn.Format">
+                                        <div *ngSwitchCase="5">
+                                          <strong> {{secondLevelNestedColumn.DisplayName}}:</strong> {{
+item.value |
+                                          DateChanger
+                                          }}
+                                        </div>
+                                        <div *ngSwitchCase="22">
+                                          <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                            <strong> {{secondLevelNestedColumn.DisplayName}}: </strong> {{item.value}} months
+                                          </div>
+                                        </div>
+                                        <div *ngSwitchCase="23">
+                                          <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                            <strong> {{secondLevelNestedColumn.DisplayName}}: </strong> {{item.value}}
+                                          </div>
+                                        </div>
+                                        <div *ngSwitchDefault>
+                                          <strong> {{secondLevelNestedColumn.DisplayName}}:</strong> {{item.value}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div *ngIf="item.key==secondLevelNestedColumn.ColumnName && !secondLevelNestedColumn.ShowColumnsName">
+                                      <div [ngSwitch]="secondLevelNestedColumn.Format">
+                                        <div *ngSwitchCase="1">
+                                          <i class="fa fa-registered" aria-hidden="true"></i> {{item.value}}
+                                        </div>
+                                        <div *ngSwitchCase="4">
+                                          {{item.value | CurrencyConverter}}
+                                        </div>
+                                        <div *ngSwitchCase="20">
+                                          <div *ngIf="item.value==null || item.value == undefined || item.value==''"></div>
+                                          <div *ngIf="item.value!=null || item.value != undefined">
+                                            {{item.value | CurrencyConverter}}
+                                          </div>
+                                        </div>
+                                        <div *ngSwitchCase="5 && item.value!=null">
+                                          {{item.value+'Z' | date: dateFormat}}
+                                        </div>
+                                        <div *ngSwitchCase="7">
+                                          <div *ngIf="item.value!='' && item.value!=null"
+                                               class="cotmaincls cont-mail-cls">
+                                            <span class="conicon">
+                                              <img alt=""
+                                                   src="{{StaticImagePath}}opp-mng-phone.png" />
+                                            </span>{{getMobileFormat(item.value)}}
+                                          </div>
+                                        </div>
+                                        <div *ngSwitchCase="8">
+                                          <div *ngIf="item.value!='' && item.value!=null"
+                                               class="cotmaincls cont-mail-cls">
+                                            <span class="conicon">
+                                              <img alt=""
+                                                   src="{{StaticImagePath}}opp-mng-phone.png" />
+                                            </span>{{getMobileFormat(item.value)}}
+                                          </div>
+                                        </div>
+                                        <div *ngSwitchCase="9">
+                                          <div *ngIf="item.value!='' && item.value!=null"
+                                               class="cotmaincls cont-mail-cls">
+                                            <span class="conicon">
+                                              <img alt=""
+                                                   src="{{StaticImagePath}}opp-mng-email.png" />
+                                            </span>{{item.value}}
+                                          </div>
+                                        </div>
+                                        <div *ngSwitchCase="10">
+                                          <div *ngIf="item.value!='' && item.value!=null"
+                                               class="cotmaincls cont-name-cls">
+                                            <span class="conicon">
+                                              <img alt=""
+                                                   src="{{StaticImagePath}}opp-mng-user.png" />
+                                            </span>{{item.value}}
+                                          </div>
+                                        </div>
+                                        <div *ngSwitchCase="11" class="text-right">
+                                          {{oneLevel[secondLevelColumn.Name]}} months
+                                        </div>
+                                        <div *ngSwitchCase="12">
+                                          {{item.value.toString().slice(0,1)}} {{item.value}}
+                                        </div>
+                                        <div *ngSwitchCase="22">
+                                          <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                            <strong> {{secondLevelNestedColumn.DisplayName}}: </strong> {{item.value}} months
+                                          </div>
+                                        </div>
+                                        <div *ngSwitchCase="23">
+                                          <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                            <strong> {{secondLevelNestedColumn.DisplayName}}: </strong> {{item.value}}
+                                          </div>
+                                        </div>
+                                        <div *ngSwitchDefault>
+                                          {{item.value}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </ng-container>
+
+                                </div>
+                              </td>
+                            </ng-container>
+                            <ng-container *ngIf="!secondLevelColumn.isNestedColumn && secondLevelColumn.ShowColumn">
+                              <td>
+                                <div [ngSwitch]="secondLevelColumn.Format">
+                                  <div *ngSwitchCase="1">
+                                    <i class="fa fa-registered" aria-hidden="true"></i>
+                                    {{twoLevel[secondLevelColumn.Name]}}
+                                  </div>
+                                  <div *ngSwitchCase="3" class="text-right">
+                                    {{twoLevel[secondLevelColumn.Name]}}
+                                  </div>
+                                  <div *ngSwitchCase="4" class="text-right">
+                                    <strong *ngIf="twoLevel[secondLevelColumn.Name] == null">
+                                      {{
+'UserRole.NALabel' |
+                                      translate
+                                      }}
+                                    </strong>
+                                    <strong *ngIf="twoLevel[secondLevelColumn.Name] != null &&
+                                    twoLevel[secondLevelColumn.Name] != undefined">{{CurrencySign}}</strong>
+                                    {{twoLevel[secondLevelColumn.Name] | number : '1.2-2'}}
+                                  </div>
+                                  <div *ngSwitchCase="5" class="text-right">
+                                    {{twoLevel[secondLevelColumn.Name]+'Z' | date: dateFormat}}
+                                  </div>
+                                  <div *ngSwitchCase="7">
+                                    <i class="fa fa-phone" aria-hidden="true"></i> {{twoLevel[secondLevelColumn.Name]}}
+                                  </div>
+                                  <div *ngSwitchCase="8">
+                                    <i class="fa fa-mobile" aria-hidden="true"></i> {{twoLevel[secondLevelColumn.Name]}}
+                                  </div>
+                                  <div *ngSwitchCase="9">
+                                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                    {{twoLevel[secondLevelColumn.Name]}}
+                                  </div>
+                                  <div *ngSwitchCase="10">
+                                    <i class="fa fa-user-o" aria-hidden="true"></i> {{twoLevel[secondLevelColumn.Name]}}
+                                  </div>
+                                  <div *ngSwitchCase="11" class="text-right">
+                                    {{twoLevel[secondLevelColumn.Name]}} months
+                                  </div>
+                                  <div *ngSwitchCase="12">
+                                    {{twoLevel[secondLevelColumn.Name].toString().slice(0,1)}}
+                                    {{twoLevel[secondLevelColumn.Name]}}
+                                  </div>
+                                  <div *ngSwitchCase="19">
+                                    <div [innerHTML]="twoLevel[secondLevelColumn.Name]==''?'-':twoLevel[secondLevelColumn.Name]"></div>
+                                  </div>
+                                  <div *ngSwitchCase="21" class="text-right">
+                                    <strong>{{CurrencySign}}</strong> {{
+twoLevel[secondLevelColumn.Name] |
+                                    number : '1.2-2'
+                                    }} <span class="vat_lbl45">{{sharedService.getIncVat(twoLevel[secondLevelColumn.calculateVatFromField])}}</span>
+                                  </div>
+                                  <div *ngSwitchCase="13">
+                                    <img alt="" class="rounded-circle" style="width: 40px;"
+                                         src="{{StaticImagePath}}{{twoLevel[secondLevelColumn[j-1].Name]}}">
+                                    {{twoLevel[secondLevelColumn.Name]}}
+                                  </div>
+                                  <div *ngSwitchCase="14" class="text-center">
+                                    <ng-container *ngIf="secondLevelColumn.CssRule!=null">
+                                      <ng-container *ngFor="let rule of secondLevelColumn.CssRule">
+                                        <ng-container *ngIf="rule.isRecursive!=undefined && rule.isRecursive">
+                                          <ul [ngClass]='rule.cssListClassName'>
+                                            <ng-container *ngFor="let item of getStringArrayFromCommaSeperatedString(twoLevel[secondLevelColumn.Name])">
+                                              <div [innerHTML]="replaceHtmlRuleWithOriginalValue(rule.html,item)"></div>
+                                            </ng-container>
+                                          </ul>
+                                        </ng-container>
+                                        <ng-container *ngIf="twoLevel[secondLevelColumn.Name]==rule.condition && (rule.isRecursive==undefined || !rule.isRecursive)">
+                                          <div [innerHTML]="rule.html"></div>
+                                        </ng-container>
+                                      </ng-container>
+                                    </ng-container>
+                                    <div *ngIf="secondLevelColumn.CssRule==null">
+                                      {{twoLevel[secondLevelColumn.Name] | DateChanger}}
+                                    </div>
+                                  </div>
+                                  <div *ngSwitchCase="16">
+                                    <ng-container *ngIf="twoLevel[secondLevelColumn.Name]!=null && twoLevel[secondLevelColumn.Name].length>=TrimTextSize">
+                                      {{twoLevel[secondLevelColumn.Name].slice(0,TrimTextSize)}}
+                                      <a href="#" data-target="#trimModal" data-toggle="modal"
+                                         (click)="trimColumnName=secondLevelColumn.DisplayName;trimColumnValue=twoLevel[secondLevelColumn.Name]">...more</a>
+                                    </ng-container>
+                                    <ng-container *ngIf="twoLevel[secondLevelColumn.Name]!=null && twoLevel[secondLevelColumn.Name].length<TrimTextSize">
+                                      {{twoLevel[secondLevelColumn.Name]}}
+                                    </ng-container>
+                                  </div>
+                                  <div *ngSwitchCase="33">
+                                    <div [innerHTML]="sharedService.contentReplace(secondLevelColumn.replacableContent,twoLevel[secondLevelColumn.Name])"></div>
+                                  </div>
+                                  <div *ngSwitchDefault>
+                                    {{twoLevel[secondLevelColumn.Name]}}
+                                  </div>
+                                </div>
+                              </td>
+                            </ng-container>
+                          </ng-container>
+                          <td class="text-center" *ngIf="SecondLevelActions!=null && !removeActionIcon">
+                            <div class="d-flex justify-content-center align-items-center sub-level-action">
+                              <ng-container *ngFor="let icon of SecondLevelActions.ActionIcons">
+                                <a *ngIf="SecondLevelActions.AttachedColumnName && !icon.showConditions && icon.EnableConditions && icon.EnableConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName])"
+                                   (click)="SecondLevelActionClick(icon.Name,twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name],twoLevel,oneLevel)"
+                                   style="margin-right: 5px;" title="{{icon.Name}}" href="javascript:void(0);" class="ico-btn">
+                                  <img alt=""
+                                       src="{{StaticImagePath}}{{icon.IconImage}}">
+                                </a>
+                                <a *ngIf="SecondLevelActions.AttachedColumnName && !icon.showConditions && icon.EnableConditions && !icon.EnableConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName])"
+                                   (click)="icon.EnableClickConditions && icon.EnableClickConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName]) ? SecondLevelActionClick(icon.Name,twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name],twoLevel,oneLevel) : $event.stopPropagation"
+                                   style="margin-right: 5px;opacity: 30%;" [ngStyle]="{'pointer-events': icon.EnableClickConditions && icon.EnableClickConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName]) ? '':'none','cursor':icon.EnableClickConditions && icon.EnableClickConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName]) ? '':'not-allowed'}"
+                                   title="{{icon.Name}}" href="javascript:void(0);" class="ico-btn">
+                                  <img alt=""
+                                       src="{{StaticImagePath}}{{icon.IconImage}}">
+                                </a>
+                                <a *ngIf="SecondLevelActions.AttachedColumnName && icon.showConditions && icon.showConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName]) && icon.EnableConditions && icon.EnableConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName])"
+                                   (click)="SecondLevelActionClick(icon.Name,twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name],twoLevel,oneLevel)"
+                                   style="margin-right: 5px;" title="{{icon.Name}}" href="javascript:void(0);" class="ico-btn">
+                                  <img alt=""
+                                       src="{{StaticImagePath}}{{icon.IconImage}}">
+                                </a>
+                                <a *ngIf="SecondLevelActions.AttachedColumnName && icon.showConditions && icon.showConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName]) && icon.EnableConditions && !icon.EnableConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName])"
+                                   (click)="icon.EnableClickConditions && icon.EnableClickConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName]) ? SecondLevelActionClick(icon.Name,twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name],twoLevel,oneLevel) : $event.stopPropagation"
+                                   style="margin-right: 5px;opacity: 30%;" [ngStyle]="{'pointer-events': icon.EnableClickConditions && icon.EnableClickConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName]) ? '':'none','cursor':icon.EnableClickConditions && icon.EnableClickConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName]) ? '':'not-allowed'}"
+                                   title="{{icon.Name}}" href="javascript:void(0);" class="ico-btn">
+                                  <img alt=""
+                                       src="{{StaticImagePath}}{{icon.IconImage}}">
+                                </a>
+                                <a *ngIf="SecondLevelActions.AttachedColumnName && icon.showConditions && icon.showConditions.includes(twoLevel[SecondLevelActions.AttachedColumnName]) && !icon.EnableConditions"
+                                   (click)="SecondLevelActionClick(icon.Name,twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name],twoLevel,oneLevel)"
+                                   style="margin-right: 5px;" title="{{icon.Name}}" href="javascript:void(0);" class="ico-btn">
+                                  <img alt=""
+                                       src="{{StaticImagePath}}{{icon.IconImage}}">
+                                </a>
+                                <a *ngIf="(!icon.EnableConditions || !SecondLevelActions.AttachedColumnName) && !icon.showConditions"
+                                   (click)="SecondLevelActionClick(icon.Name,twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name],twoLevel,oneLevel)"
+                                   style="margin-right: 5px;" title="{{icon.Name}}" href="javascript:void(0);" class="ico-btn">
+                                  <img alt=""
+                                       src="{{StaticImagePath}}{{icon.IconImage}}">
+                                </a>
+                              </ng-container>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr *ngIf="!secondLevelToggle[twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]] && thirdLevelColumns!=null && twoLevel[Tablenames[1]].length!=0"
+                            class="sub-table no-bg">
+                          <td>&nbsp;</td>
+                          <td colspan="15" class="p-0">
+                            <table class="table mb-0 levelthreetr">
+                              <thead>
+                                <tr class="border">
+                                  <ng-container *ngFor="let thirdLevelColumn of thirdLevelColumns;">
+                                    <th id="" class="text-center"
+                                        *ngIf="thirdLevelColumn.ShowColumn && thirdLevelColumn.Format!=18 && !thirdLevelColumn.isSortable"
+                                        (click)="sort(thirdLevelColumn.Name,oneLevel[firstLevelColumns[primaryKeyColumns[0]].Name],twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]);"
+                                        [ngClass]="!memberOrderby[twoLevel[secondLevelColumns[primaryKeyColumns[1]].Name]+thirdLevelColumn.Name] ? 'sortcls sort_asc' : 'sortcls sort_desc'"
+                                        class="{{thirdLevelColumn.ColumnClass}}">
+                                      {{thirdLevelColumn.DisplayName|uppercase}}
+                                    </th>
+                                    <th id="" class="text-center"
+                                        *ngIf="thirdLevelColumn.ShowColumn && thirdLevelColumn.Format==18 && thirdLevelColumn.isSortable==false"
+                                        class="{{thirdLevelColumn.ColumnClass}}">
+                                      <div class="custom-control custom-checkbox lblneighbour">
+                                        <input class="custom-control-input checkboxHeader" checked type="checkbox">
+                                        <label class="custom-control-label pt-1">
+                                          {{thirdLevelColumn.DisplayName|uppercase}}
+                                        </label>
+                                      </div>
+                                    </th>
+
+                                  </ng-container>
+                                  <th id="" *ngIf="ThirdLevelActions!=null"
+                                      class="text-center {{ThirdLevelActions.ActionClass}}">
+                                    ACTIONS
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let thirdLevel of twoLevel[[this.Tablenames[1]]]"
+                                    style="border:1px solid rgb(222 226 230)" hover-class="{{gridData.useHoveringRow.enable?gridData.useHoveringRow.cssClassName:''}}" (dblclick)="doubleClickFunction('Third',oneLevel,twoLevel,thirdLevel)">
+                                  <ng-container *ngFor="let thirdLevelColumn of thirdLevelColumns;let j=index">
+                                    <ng-container *ngIf="thirdLevelColumn.isNestedColumn">
+                                      <td>
+                                        <div *ngFor="let item of thirdLevel[thirdLevelColumn.Name] | keyvalue:unsorted;let i = index;">
+                                          <div *ngIf="thirdLevelColumn.NestedColumns[i].ShowColumnsName">
+                                            {{thirdLevelColumn.NestedColumns[i].DisplayName}}: {{item.value}}
+                                          </div>
+
+                                          <div *ngIf="!thirdLevelColumn.NestedColumns[i].ShowColumnsName">
+                                            <div [ngSwitch]="thirdLevelColumn.NestedColumns[i].Format">
+                                              <div *ngSwitchCase="1">
+                                                <i class="fa fa-registered" aria-hidden="true"></i> {{item.value}}
+                                              </div>
+                                              <div *ngSwitchCase="4">
+                                                {{item.value | CurrencyConverter}}
+                                              </div>
+                                              <div *ngSwitchCase="5 && item.value!=null">
+                                                {{item.value+'Z' | date: dateFormat}}
+                                              </div>
+                                              <div *ngSwitchCase="7">
+                                                <i class="fa fa-phone" aria-hidden="true"></i> {{item.value}}
+                                              </div>
+                                              <div *ngSwitchCase="8">
+                                                <i class="fa fa-mobile" aria-hidden="true"></i> {{item.value}}
+                                              </div>
+                                              <div *ngSwitchCase="9">
+                                                <i class="fa fa-envelope-o" aria-hidden="true"></i> {{item.value}}
+                                              </div>
+                                              <div *ngSwitchCase="10">
+                                                <i class="fa fa-user-o" aria-hidden="true"></i> {{item.value}}
+                                              </div>
+                                              <div *ngSwitchCase="11">
+                                                {{item.value}} months
+                                              </div>
+                                              <div *ngSwitchCase="12">
+                                                {{item.value.toString().slice(0,1)}} {{item.value}}
+                                              </div>
+                                              <div *ngSwitchCase="22">
+                                                <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                                  <strong> {{thirdLevelColumn.DisplayName}}: </strong> {{item.value}} months
+                                                </div>
+                                              </div>
+                                              <div *ngSwitchCase="23">
+                                                <div *ngIf="item.value!=null && item.value!='' && item.value!=undefined">
+                                                  <strong> {{thirdLevelColumn.DisplayName}}: </strong> {{item.value}}
+                                                </div>
+                                              </div>
+                                              <div *ngSwitchDefault>
+                                                {{item.value}}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </ng-container>
+                                    <ng-container *ngIf="!thirdLevelColumn.isNestedColumn && thirdLevelColumn.ShowColumn">
+                                      <td>
+                                        <div [ngSwitch]="thirdLevelColumn.Format">
+                                          <div *ngSwitchCase="1">
+                                            <i class="fa fa-registered" aria-hidden="true"></i>
+                                            {{thirdLevel[thirdLevelColumn.Name]}}
+                                          </div>
+                                          <div *ngSwitchCase="4" class="text-right">
+                                            <strong>{{CurrencySign}}</strong> {{thirdLevel[thirdLevelColumn.Name] | number : '1.2-2'}}
+                                          </div>
+                                          <div *ngSwitchCase="5" class="text-right">
+                                            <span *ngIf="thirdLevel[thirdLevelColumn.Name] !== null">{{ thirdLevel[thirdLevelColumn.Name]+'Z' | date: dateFormat}}</span>
+                                          </div>
+                                          <div *ngSwitchCase="7">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                            {{thirdLevel[thirdLevelColumn.Name]}}
+                                          </div>
+                                          <div *ngSwitchCase="8">
+                                            <i class="fa fa-mobile" aria-hidden="true"></i>
+                                            {{thirdLevel[thirdLevelColumn.Name]}}
+                                          </div>
+                                          <div *ngSwitchCase="9">
+                                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                            {{thirdLevel[thirdLevelColumn.Name]}}
+                                          </div>
+                                          <div *ngSwitchCase="10">
+                                            <i class="fa fa-user-o" aria-hidden="true"></i>
+                                            {{thirdLevel[thirdLevelColumn.Name]}}
+                                          </div>
+                                          <div *ngSwitchCase="11">
+                                            {{thirdLevel[thirdLevelColumn.Name]}} months
+                                          </div>
+                                          <div *ngSwitchCase="12">
+                                            {{thirdLevel[thirdLevelColumn.Name].toString().slice(0,1)}}
+                                            {{thirdLevel[thirdLevelColumn.Name]}}
+                                          </div>
+                                          <div *ngSwitchCase="13">
+                                            <img alt="" class="rounded-circle" style="width: 40px;"
+                                                 src="{{StaticImagePath}}{{thirdLevel[thirdLevelColumns[j-1].Name]}}">
+                                            {{thirdLevel[thirdLevelColumn.Name]}}
+                                          </div>
+                                          <div *ngSwitchCase="14" class="text-center">
+                                            <ng-container *ngIf="thirdLevelColumn.CssRule!=null">
+                                              <ng-container *ngFor="let rule of thirdLevelColumn.CssRule">
+                                                <ng-container *ngIf="thirdLevel[thirdLevelColumn.Name]==rule.condition">
+                                                  <div [innerHTML]="rule.html"></div>
+                                                </ng-container>
+                                              </ng-container>
+                                            </ng-container>
+                                          </div>
+                                          <div *ngSwitchCase="16">
+                                            <ng-container *ngIf="thirdLevel[thirdLevelColumn.Name]!=null && thirdLevel[thirdLevelColumn.Name].length>=TrimTextSize">
+                                              {{thirdLevel[thirdLevelColumn.Name].slice(0,TrimTextSize)}}
+                                              <a href="#" data-target="#trimModal" data-toggle="modal"
+                                                 (click)="trimColumnName=thirdLevelColumn.DisplayName;trimColumnValue=thirdLevel[thirdLevelColumn.Name]">...more</a>
+                                            </ng-container>
+                                            <ng-container *ngIf="thirdLevel[thirdLevelColumn.Name]!=null && thirdLevel[thirdLevelColumn.Name].length<TrimTextSize">
+                                              {{thirdLevel[thirdLevelColumn.Name]}}
+                                            </ng-container>
+                                          </div>
+                                          <div *ngSwitchCase="17">
+                                            <div class="custom-control custom-checkbox lblneighbour">
+                                              <input class="custom-control-input checkboxRow" checked type="checkbox">
+                                              <label class="custom-control-label pt-1">
+                                                {{thirdLevel[thirdLevelColumn.Name]}}
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <div *ngSwitchCase="18" class="text-right">
+                                            <strong>{{CurrencySign}}</strong> {{thirdLevel[thirdLevelColumn.Name] | number : '1.2-2'}}
+                                          </div>
+                                          <div *ngSwitchCase="21" class="text-right">
+                                            <strong>{{CurrencySign}}</strong> {{thirdLevel[thirdLevelColumn.Name] | number : '1.2-2'}}
+                                            <span class="vat_lbl45">
+                                              {{sharedService.getIncVat(thirdLevel[thirdLevelColumn.calculateVatFromField])}}
+                                            </span>
+                                          </div>
+                                          <div *ngSwitchCase="33">
+                                            <div [innerHTML]="sharedService.contentReplace(thirdLevelColumn.replacableContent,thirdLevel[thirdLevelColumn.Name])"></div>
+                                          </div>
+                                          <div *ngSwitchDefault>
+                                            {{thirdLevel[thirdLevelColumn.Name]}}
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </ng-container>
+                                  </ng-container>
+
+                                  <td class="text-center" *ngIf="ThirdLevelActions!=null">
+                                    <div class="d-flex justify-content-center align-items-center sub-level-action">
+                                      <ng-container *ngFor="let icon of ThirdLevelActions.ActionIcons">
+                                        <a *ngIf="ThirdLevelActions.AttachedColumnName && !icon.showConditions && icon.EnableConditions && icon.EnableConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName])"
+                                           (click)="ThirdLevelActionClick(icon.Name,thirdLevel[thirdLevelColumns[primaryKeyColumns[2]].Name],thirdLevel,oneLevel,twoLevel)"
+                                           style="margin-right: 5px;" title="{{icon.Name}}" class="ico-btn" href="javascript:void(0);">
+                                          <img alt="" src="{{StaticImagePath}}{{icon.IconImage}}">
+                                        </a>
+                                        <a *ngIf="ThirdLevelActions.AttachedColumnName && !icon.showConditions && icon.EnableConditions && !icon.EnableConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName])"
+                                           (click)="icon.EnableClickConditions && icon.EnableClickConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) ? ThirdLevelActionClick(icon.Name,thirdLevel[thirdLevelColumns[primaryKeyColumns[2]].Name],thirdLevel,oneLevel,twoLevel) : $event.stopPropagation"
+                                           style="margin-right: 5px;opacity: 30%;" [ngStyle]="{'pointer-events': icon.EnableClickConditions && icon.EnableClickConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) ? '':'none','cursor':icon.EnableClickConditions && icon.EnableClickConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) ? '':'not-allowed'}"
+                                           title="{{icon.Name}}" class="ico-btn" href="javascript:void(0);">
+                                          <img alt="" src="{{StaticImagePath}}{{icon.IconImage}}">
+                                        </a>
+                                        <a *ngIf="ThirdLevelActions.AttachedColumnName &&
+                                                  icon.showConditions &&
+                                                  icon.showConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) &&
+                                                  icon.EnableConditions &&
+                                                  icon.EnableConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) &&
+                                                  (!icon.ExactVisibleCondition || (icon.ExactVisibleCondition && icon.ExactVisibleCondition.Conditions.includes(thirdLevel[icon.ExactVisibleCondition.ColumnName])))"
+                                           (click)="ThirdLevelActionClick(icon.Name,thirdLevel[thirdLevelColumns[primaryKeyColumns[2]].Name],thirdLevel,oneLevel,twoLevel)"
+                                           style="margin-right: 5px;" title="{{icon.Name}}" class="ico-btn" href="javascript:void(0);">
+                                          <img alt="" src="{{StaticImagePath}}{{icon.IconImage}}">
+                                        </a>
+                                        <a *ngIf="ThirdLevelActions.AttachedColumnName && icon.showConditions && icon.showConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) && !icon.EnableConditions"
+                                           (click)="ThirdLevelActionClick(icon.Name,thirdLevel[thirdLevelColumns[primaryKeyColumns[2]].Name],thirdLevel,oneLevel,twoLevel)"
+                                           style="margin-right: 5px;" title="{{icon.Name}}" class="ico-btn" href="javascript:void(0);">
+                                          <img alt="" src="{{StaticImagePath}}{{icon.IconImage}}">
+                                        </a>
+                                        <a *ngIf="ThirdLevelActions.AttachedColumnName && icon.showConditions && icon.showConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) && icon.EnableConditions && !icon.EnableConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName])"
+                                           (click)="icon.EnableClickConditions && icon.EnableClickConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) ? ThirdLevelActionClick(icon.Name,thirdLevel[thirdLevelColumns[primaryKeyColumns[2]].Name],thirdLevel,oneLevel,twoLevel) : $event.stopPropagation"
+                                           style="margin-right: 5px;opacity: 30%;" [ngStyle]="{'pointer-events': icon.EnableClickConditions && icon.EnableClickConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) ? '':'none','cursor':icon.EnableClickConditions && icon.EnableClickConditions.includes(thirdLevel[ThirdLevelActions.AttachedColumnName]) ? '':'not-allowed'}"
+                                           title="{{icon.Name}}" class="ico-btn" href="javascript:void(0);">
+                                          <img alt="" src="{{StaticImagePath}}{{icon.IconImage}}">
+                                        </a>
+                                        <a *ngIf="(!icon.EnableConditions || !ThirdLevelActions.AttachedColumnName) && !icon.showConditions"
+                                           (click)="ThirdLevelActionClick(icon.Name,thirdLevel[thirdLevelColumns[primaryKeyColumns[2]].Name],thirdLevel,oneLevel,twoLevel)"
+                                           style="margin-right: 5px;" title="{{icon.Name}}" class="ico-btn" href="javascript:void(0);">
+                                          <img alt="" src="{{StaticImagePath}}{{icon.IconImage}}">
+                                        </a>
+                                      </ng-container>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
+
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="IsPaginationVisible" class="pagination opp-mg-pagin-parent mt-3">
+        <select #pageSizeDrp (change)="changePageSize(pageSizeDrp.value)">
+          <ng-container *ngFor="let size of pageSizeOptions">
+            <option [selected]="size==pageSize">{{size}}</option>
+          </ng-container>
+        </select>
+        <input type="button" [disabled]="currentPage<=1" value="Prev" (click)="prevPage()" />
+        <div class="pagination">
+          <button class="page-item" [disabled]="currentPage==1" (click)="changePage(1)">
+            <<<
+          </button>
+          <button class="page-item" *ngFor="let i of pages" [disabled]="i=='...'"
+                  [ngClass]="i==currentPage?'activePage':''" (click)="changePage(i)">
+            {{i}}
+          </button>
+          <button class="page-item" [disabled]="currentPage==totalPages" (click)="changePage(totalPages)">
+            >>>
+          </button>
+        </div>
+        <input type="button" [disabled]="currentPage>=totalPages" value="Next" (click)="nextPage()" />
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Trim Text Modal -->
+<div class="modal fade" id="trimModal" role="dialog">
+  <div class="modal-dialog modal-sm" style="top:100px">
+    <div class="modal-content">
+      <div class="modal-header px-3">
+        <h4 class="modal-title">{{trimColumnName}}</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>{{trimColumnValue}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- remove favourite search -->
+<div class="modal fade" data-backdrop="true" id="removeFavouriteFilter_{{removeSpaceAndReplaceDash(gridData.PageName)}}" role="dialog" tabindex="-1" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="text-center">{{'OpportunityLead.ConfirmDelete'|translate}}</h4>
+        <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="text-left">
+                <div class="panel-body">
+                  <p class="popup-text">{{'AMTGrid.DeleteFavouriteView'|translate}} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-12">
+          <button aria-hidden="true" class="btn btn-outline-secondary"
+                  data-dismiss="modal">
+            {{'Common.No'|translate}}
+          </button>
+          <button aria-hidden="true" (click)="removeFavouriteSearchConfirmed()" class="btn btn-secondary float-right" data-dismiss="modal">
+            {{'Common.Yes'|translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" data-backdrop="true" *ngIf="descriptionContent" [id]="descriptionPopupId" role="dialog" tabindex="-1" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h4 class="text-center">{{'Service.Description' | translate }}</h4>
+           <button aria-hidden="true" class="close" (click)="descriptionContent = null" data-dismiss="modal" type="button">×</button>
+        </div>
+        <div class="modal-body">
+           <div class="col-md-12">
+              <div class="panel panel-default">
+                 <div class="panel-body">
+                    <div class="text-left">
+                       <div class="panel-body">
+                          <p class="popup-text">
+                             {{ descriptionContent }}
+                          </p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="modal-footer">
+           <div class="col-md-12">
+              <button aria-hidden="true" (click)="descriptionContent = null" class="btn btn-outline-secondary" data-dismiss="modal">
+                 {{'Service.Close' | translate }}</button>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>

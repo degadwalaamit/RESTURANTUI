@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_731" data-name="Rectangle 731" width="24" height="24" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="icon-co2" clip-path="url(#clip-path)">
+    <g id="Group_360" data-name="Group 360" transform="translate(0.672 0.6)">
+      <path id="Path_728" data-name="Path 728" d="M9.472,30.786a3.737,3.737,0,0,0,.608-5.316c-2.252-2.8-8.4-4-8.4-4s.428,5.628,2.66,8.4A3.616,3.616,0,0,0,9.472,30.786Z" transform="translate(-1.68 -13.482)" fill="none" stroke="#ba1f31" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_729" data-name="Path 729" d="M25.63,29.7a21.5,21.5,0,0,1,4-6.4,23.265,23.265,0,0,0,5.2-12.8" transform="translate(-16.05 -6.9)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_730" data-name="Path 730" d="M31.339,17.7c3.02,2,6.556.252,8.064-2.6C43,8.3,36.6,1.5,36.2,1.5,35,4.3,30.8,7.1,29.4,9.9,27.8,13.1,28.6,15.9,31.339,17.7Z" transform="translate(-17.823 -1.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_731" data-name="Path 731" d="M7.63,27.5c6.8,7.2,7.6,8.8,7.6,8.8" transform="translate(-5.25 -17.1)" fill="none" stroke="#ba1f31" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_732" data-name="Path 732" d="M9.472,30.786a3.737,3.737,0,0,0,.608-5.316c-2.252-2.8-8.4-4-8.4-4s.428,5.628,2.66,8.4A3.616,3.616,0,0,0,9.472,30.786Z" transform="translate(-1.68 -13.482)" fill="none" stroke="#ba1f31" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_733" data-name="Path 733" d="M25.63,29.7a21.5,21.5,0,0,1,4-6.4,23.265,23.265,0,0,0,5.2-12.8" transform="translate(-16.05 -6.9)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_734" data-name="Path 734" d="M31.339,17.7c3.02,2,6.556.252,8.064-2.6C43,8.3,36.6,1.5,36.2,1.5,35,4.3,30.8,7.1,29.4,9.9,27.8,13.1,28.6,15.9,31.339,17.7Z" transform="translate(-17.823 -1.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

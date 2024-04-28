@@ -1,0 +1,17 @@
+<ng-container *ngIf="(dashboard$ | async)"></ng-container>
+<div class="row page-bar-fixed">
+    <div class="col-12">
+        <div class="page-bar" *ngIf="isUserLogin">
+            <ul class="page-breadcrumb">
+                <li><a href="javascript:;">{{'SideMenu.Tables' | translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="isUserLogin">
+  <div class="col-12">
+      <div class="whiteBox">
+            <div id="embedContainer" style="height: calc(93vh - 100px)!important;"></div>
+        </div>
+    </div>
+</div>

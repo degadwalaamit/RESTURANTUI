@@ -1,0 +1,122 @@
+body .font-10 { font-size:0.625rem; }
+body .font-10px { font-size:10px; }
+body .font-11 { font-size:0.687rem; }
+body .font-12 { font-size:0.750rem; }
+body .font-12px { font-size: 12px; }
+body .font-14px { font-size: 14px; }
+body .font-13 { font-size:0.813rem; }
+body .font-14 { font-size:0.875rem; }
+body .font-15 { font-size:0.938rem; }
+body .font-16 { font-size:1rem; }
+body .font-16px { font-size: 16px; }
+body .font-17 { font-size:1.063rem; }
+body .font-18 { font-size:1.125rem; }
+body .font-20 { font-size: 1.250rem; }
+body .font-21 { font-size: 1.3rem; }
+body .font-22 { font-size: 1.375rem; }
+body .font-22px { font-size: 22px !important; }
+body .font-23 { font-size: 1.45rem; }
+body .font-24 { font-size: 1.5rem; }
+body .font-26 { font-size: 1.625rem; }
+body .font-28 { font-size: 1.750rem; }
+body .font-30 { font-size: 1.875rem; }
+body .font-32 { font-size: 2rem; }
+body .font-34 { font-size: 2.125rem; }
+body .font-36 { font-size: 2.250rem; }
+body .font-38 { font-size: 2.375rem; }
+body .font-40 { font-size: 2.500rem }
+body .font-50 { font-size: 3.250rem; }
+
+body .lh-20 { line-height: 20px; }
+body .lh-22 { line-height: 22px; }
+body .lh-24 { line-height: 24px; }
+body .lh-26 { line-height: 26px; }
+body .lh-28 { line-height: 28px; }
+body .lh-30 { line-height: 30px; }
+
+.extrabold { font-weight: 700; }
+
+
+/** ALL COLOLS HERE *********/
+.clrblack { color:#000; }
+
+/* ALL MARGINS ******/
+.mx-25, .mr-25 { margin-right: .75rem !important; } 
+.mx-25, .ml-25 { margin-left: .75rem !important; }
+
+/* Prioritize Over custom and style css ******/
+.acc-style-new { background-image:url('../../assets/images/all-svg/acc-plus-icon.svg'), url('../../assets/images/all-svg/acc-minus-icon.svg');
+background-size: 0 0; }
+body .acc-style-new .collapsed .btn-icon-plus, 
+body .acc-style-new .accTitle .btn-icon-plus {
+  background-image:url('../../assets/images/all-svg/acc-plus-icon.svg');
+  background-size: 10px auto;
+}
+
+body .acc-style-new .accTitle:not(.collapsed) .btn-icon-plus {
+  background-image:url('../../assets/images/all-svg/acc-minus-icon.svg');
+  background-size: 10px auto;
+}
+
+.text-normalcase { text-transform: none !important;}
+
+
+.cstfileinput {
+  overflow: hidden; 
+  position: relative; 
+}
+.cstfileinput input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  height: 100%;
+  width: 1000px;
+  right: 0;
+  cursor: pointer;
+}
+.accthemebdr.acc-style-new .accTitle:not(.collapsed),
+.accthemebdr.acc-style-new .accTitle.collapsed { border-bottom: 2px solid #ba0c2f !important; }
+.fa-solid.fa-check { background-image: none;} 
+body .btn-green:hover, body .btn-green:active, body .btn-green:focus { 
+  background-color: #007600 !important; border-color: #007600 !important;
+}
+body .btn-green { background-color: #00a400 !important; border-color: #00a400 !important; }
+.normal {font-weight: normal !important;}
+
+
+
+.input_full_w .form-group > label + div { flex-grow: 1; }
+.input_full_w .form-group .form-control { flex-grow: 1; }
+.input_full_w .form-group > label + div .form-control { width: 100% !important; }
+
+.label_w_180 .form-group label { min-width: 180px !important; }
+.label_w_200 .form-group label { min-width: 200px !important; }
+.label_w_220 .form-group label { min-width: 220px !important; }
+.label_w_240 .form-group label { min-width: 240px !important; }
+
+.input-h-30 .form-group .form-control { min-height: 30px; }
+.input-h-30 .ng-select .ng-select-container { min-height: 30px; }
+.input-h-30 .ng-select .ng-value-label { line-height: 30px; }
+
+body .cmnformapproach .form-group .datepicker-input {
+  background-position: calc(100% - 8px) 1px;
+}
+
+/* WILL AFFECT WHOLE PROJECT  */
+body .cmnformapproach .alert-danger { width: auto; margin-left: 0.25rem; }
+
+.check-mot {
+  background-image:url('../../assets/images/all-svg/check-mot.svg');
+  background-size: 10px auto;
+  height: 10px;
+  width: 10px;
+}
+.opac-1 { opacity: 0.1;}
+.opac-2 { opacity: 0.2;}
+.opac-3 { opacity: 0.3;}
+.opac-4 { opacity: 0.4;}
+.opac-5 { opacity: 0.5;}
+.opac-6 { opacity: 0.6;}
+.opac-7 { opacity: 0.7;}
+.opac-8 { opacity: 0.8;}
+.opac-9 { opacity: 0.9;}
+.opac-full { opacity: 1;}

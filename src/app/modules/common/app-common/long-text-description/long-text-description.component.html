@@ -1,0 +1,31 @@
+<div data-common-long-text="data-common-long-text" class="modal fade" data-backdrop="true" *ngIf="sharedService.longTextPopupContent" [id]="sharedService.longTextPopupId" role="dialog" tabindex="-1" aria-modal="true">
+    <div data-common-long-text="data-common-long-text" class="modal-dialog modal-dialog-centered">
+       <div data-common-long-text="data-common-long-text" class="modal-content">
+          <div data-common-long-text="data-common-long-text" class="modal-header">
+             <h4 data-common-long-text="data-common-long-text" class="text-center">{{'Service.Description' | translate }}</h4>
+             <button data-common-long-text="data-common-long-text" aria-hidden="true" class="close" (click)="sharedService.longTextPopupContent = null" data-dismiss="modal" type="button">×</button>
+          </div>
+          <div data-common-long-text="data-common-long-text" class="modal-body">
+             <div data-common-long-text="data-common-long-text" class="col-md-12">
+                <div data-common-long-text="data-common-long-text" class="panel panel-default">
+                   <div data-common-long-text="data-common-long-text" class="panel-body">
+                      <div data-common-long-text="data-common-long-text" class="text-left">
+                         <div data-common-long-text="data-common-long-text" class="panel-body">
+                            <p data-common-long-text="data-common-long-text" class="popup-text">
+                               {{ sharedService.longTextPopupContent }}
+                            </p>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div data-common-long-text="data-common-long-text" class="modal-footer">
+             <div data-common-long-text="data-common-long-text" class="col-md-12">
+                <button data-common-long-text="data-common-long-text"  aria-hidden="true" (click)="sharedService.longTextPopupContent = null" class="btn btn-outline-secondary" data-dismiss="modal">
+                   {{'Service.Close' | translate }}</button>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>

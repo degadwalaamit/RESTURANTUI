@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="icon-doors" transform="translate(3.824 1.832)">
+    <path id="Path_717" data-name="Path 717" d="M13.19,20.363v9.371s.337.782.937.937H28.62s1.036-.309,1.036-.857V10.6s.089-.693-.469-.773-10.06,0-10.06,0S13.19,19.046,13.19,20.363Z" transform="translate(-13.19 -9.794)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <path id="Path_718" data-name="Path 718" d="M22.84,13.35h7.122s.609.469.609.853v8.378H18l4.287-8.692S22.372,13.35,22.84,13.35Z" transform="translate(-15.746 -11.684)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <path id="Path_719" data-name="Path 719" d="M35.037,38.33H39v1.72H35Z" transform="translate(-24.781 -24.959)" fill="#ba1f31" stroke="#ba1f31" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <path id="Path_727" data-name="Path 727" d="M0,0H24V24H0Z" transform="translate(-3.824 -1.832)" fill="none"/>
+  </g>
+</svg>

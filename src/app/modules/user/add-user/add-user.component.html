@@ -1,0 +1,99 @@
+<div data-aoe="add-user" class="row page-bar-fixed">
+    <div data-aoe="add-user" class="col-sm-12 col-md-7">
+        <div data-aoe="add-user" class="page-bar">
+            <ul data-aoe="add-user" class="page-breadcrumb">
+                <li data-aoe="add-user"><a data-aoe="add-user" ref="javascript:;"
+                        routerLink="/item-configuration-mgt/category">{{'SideMenu.UserManagement' |
+                        translate}}</a></li>
+                <li data-aoe="add-user" *ngIf="userId == undefined"><a data-aoe="add-user"
+                        href="javascript:;">{{'User.AddUser' |
+                        translate}} </a></li>
+                <li data-aoe="add-user" *ngIf="userId !== undefined"><a data-aoe="add-user"
+                        href="javascript:;">{{'User.EditUser' |
+                        translate}}
+                    </a></li>
+            </ul>
+        </div>
+    </div>
+    <div data-aoe="add-user" class="col-sm-12 col-md-5">
+        <div data-aoe="add-user" class="form-btn">
+            <button data-aoe="add-user" type="reset" class="btn btn-outline px-2" (click)="onCancel()"><i
+                    class="btn-icon-cancel"></i>
+                {{ 'User.CANCEL' | translate }} </button>
+            <button data-aoe="add-user" id="btnSubmit" type="submit" class="btn btn-primary px-2 ml-2"
+                (click)="onSubmit(false)" [disabled]="!isValidForm()"><i class="btn-icon-save"></i>
+                {{ 'User.SAVE' | translate }} </button>
+            <button (click)="onSubmit(true)" class="btn btn-primary px-2 ml-2" id="" type="button"
+                [disabled]="!isValidForm()">
+                <em class="btn-icon-save"></em> {{'OpportunityLead.SaveAndExit' | translate}} </button>
+
+        </div>
+    </div>
+</div>
+<div data-aoe="add-user" class="col-12">
+    <div data-aoe="add-user" class="accordion accordion-new" id="personAddress1">
+        <div data-aoe="add-user" class="whiteBox acq-mt">
+            <div data-aoe="add-user" class="card-body px-4 pt-3 pb-3">
+                <div data-aoe="add-user">
+                    <div data-aoe="add-user" class="row">
+                        <!-- <div data-aoe="add-user" class="form-group required col-md-12 col-lg-3 medium-xl-col-4">
+                            <label data-aoe="add-user" for="categoryName">{{
+                                'ItemConfigurationManagement.CategoryName' | translate
+                                }}</label>
+                            <input data-aoe="add-user" class="form-control" type="text" noAutoComplete
+                                [(ngModel)]="addL2ogCategoryModel.categoryName"
+                                [title]="addL2ogCategoryModel.categoryName" #categoryName="ngModel" name="categoryName"
+                                (focusout)="sharedService.validateCopyAddress($event,$event.target.value)"
+                                maxlength="50" [pattern]="NamePattern"
+                                (keypress)="sharedService.avoidSpace($event);sharedService.validateAddress($event)"
+                                (paste)="sharedService.pasteData($event)">
+                            <div data-aoe="add-user"
+                                *ngIf="(categoryName?.touched && addL2ogCategoryModel.categoryName == '')"
+                                class="alert-danger text-left">
+                                {{"ItemConfigurationManagement.CategoryNameNotValid" | translate}}
+                            </div>
+                            <div data-aoe="add-user" *ngIf="categoryName.errors &&  categoryName.touched">
+                                <span [hidden]="!categoryName.errors.pattern"
+                                    class="alert-danger">{{"ItemConfigurationManagement.CategoryNameNotValid"
+                                    |translate}}</span>
+                            </div>
+                        </div>
+                        <div data-aoe="add-user"
+                            class="ballonswitch form-group col-sm-12 col-md-6 col-lg-3 align-items-center d-flex justify-content-start"
+                            style="display: flex !important; align-items: center;">
+                            <label data-aoe="add-user" class="switch mr-1">
+                                <input data-aoe="add-user" type="checkbox" name="isConditionItem"
+                                    [(ngModel)]="addL2ogCategoryModel.isConditionItem" />
+                                <span data-aoe="add-user" class="slider round"></span>
+                            </label>
+                            <label data-aoe="add-user">{{'ItemConfigurationManagement.ConditionItem' |
+                                translate}}</label>
+                        </div>
+                        <div data-aoe="add-user"
+                            class="ballonswitch form-group col-sm-12 col-md-6 col-lg-3 align-items-center d-flex justify-content-start"
+                            style="display: flex !important; align-items: center;">
+                            <label data-aoe="add-user" class="switch mr-1">
+                                <input data-aoe="add-user" type="checkbox" name="isInvoiceItem"
+                                    [(ngModel)]="addL2ogCategoryModel.isInvoiceItem" />
+                                <span class="slider round"></span>
+                            </label>
+                            <label data-aoe="add-user">{{'ItemConfigurationManagement.InvoiceItem' |
+                                translate}}</label>
+                        </div>
+                        <div data-aoe="add-user"
+                            class="ballonswitch form-group col-sm-12 col-md-6 col-lg-3 align-items-center d-flex justify-content-start"
+                            style="display: flex !important; align-items: center;">
+                            <label data-aoe="add-user" class="switch mr-1">
+                                <input data-aoe="add-user" type="checkbox" name="isActive"
+                                    [(ngModel)]="addL2ogCategoryModel.isActive" />
+                                <span data-aoe="add-user" class="slider round"></span>
+                            </label>
+                            <label data-aoe="add-user">{{'ItemConfigurationManagement.Status' | translate}}</label>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loader [loading]="loading"></app-loader>

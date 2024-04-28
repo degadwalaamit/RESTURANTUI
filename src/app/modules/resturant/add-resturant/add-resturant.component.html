@@ -1,0 +1,208 @@
+<div data-aoe="add-resturant" class="row page-bar-fixed">
+    <div data-aoe="add-resturant" class="col-sm-12 col-md-7">
+        <div data-aoe="add-resturant" class="page-bar">
+            <ul data-aoe="add-resturant" class="page-breadcrumb">
+                <li data-aoe="add-resturant"><a data-aoe="add-resturant" ref="javascript:;"
+                        routerLink="/item-configuration-mgt/category">{{'SideMenu.ResturantManagement' |
+                        translate}}</a></li>
+                <li data-aoe="add-resturant" *ngIf="resturantId == undefined"><a data-aoe="add-resturant"
+                        href="javascript:;">{{'ResturantManagement.AddResturant' |
+                        translate}} </a></li>
+                <li data-aoe="add-resturant" *ngIf="resturantId !== undefined"><a data-aoe="add-resturant"
+                        href="javascript:;">{{'ResturantManagement.EditResturant' |
+                        translate}}
+                    </a></li>
+            </ul>
+        </div>
+    </div>
+    <div data-aoe="add-resturant" class="col-sm-12 col-md-5">
+        <div data-aoe="add-resturant" class="form-btn">
+            <button data-aoe="add-resturant" type="reset" class="btn btn-outline px-2" (click)="onCancel()"><i
+                    class="btn-icon-cancel"></i>
+                {{ 'User.CANCEL' | translate }} </button>
+            <button data-aoe="add-resturant" id="btnSubmit" type="submit" class="btn btn-primary px-2 ml-2"
+                (click)="onSubmit(false)" [disabled]="!isValidForm()"><i class="btn-icon-save"></i>
+                {{ 'User.SAVE' | translate }} </button>
+            <button (click)="onSubmit(true)" class="btn btn-primary px-2 ml-2" id="" type="button"
+                [disabled]="!isValidForm()">
+                <em class="btn-icon-save"></em> {{'OpportunityLead.SaveAndExit' | translate}} </button>
+
+        </div>
+    </div>
+</div>
+<div data-aoe="add-resturant" class="col-12">
+    <div data-aoe="add-resturant" class="accordion accordion-new" id="personAddress1">
+        <div data-aoe="add-resturant" class="whiteBox acq-mt">
+            <div data-aoe="add-resturant" class="card-body px-4 pt-3 pb-3">
+                <div data-aoe="add-resturant">
+                    <div data-aoe="add-resturant" class="row">
+                        <div class="col-md-6">
+                            <label data-aoe="add-resturant" for="categoryName">{{
+                                'Company.Name' | translate
+                                }}<span class="color-red">*</span></label>
+                            <input data-aoe="add-resturant" class="form-control" type="text" noAutoComplete
+                                [(ngModel)]="resturantMasterModel.name" [title]="resturantMasterModel.name"
+                                #name="ngModel" name="name" placeholder="{{ 'Company.Name' | translate}}"
+                                (focusout)="sharedService.validateCopyAddress($event,$event.target.value)"
+                                maxlength="50" [pattern]="NamePattern"
+                                (keypress)="sharedService.avoidSpace($event);sharedService.validateAddress($event)"
+                                (paste)="sharedService.pasteData($event)">
+                            <div data-aoe="add-resturant" *ngIf="(name?.touched && resturantMasterModel.name == '')"
+                                class="alert-danger text-left">
+                                {{"User.Name" | translate}}
+                            </div>
+                            <div data-aoe="add-resturant" *ngIf="name.errors &&  name.touched">
+                                <span [hidden]="!name.errors.pattern" class="alert-danger">{{"User.NameInvalid"
+                                    |translate}}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-30">
+                                <label for="mobileNo" class="form-label">{{ 'User.MobileNo' | translate}}<span
+                                        class="color-red">*</span></label>
+                                <div class="position-relative">
+                                    <input class="form-control" type="text" [(ngModel)]="resturantMasterModel.mobileNo"
+                                        pattern="[0-9]+" placeholder="{{ 'User.MobileNo' | translate}}"
+                                        [title]="resturantMasterModel.mobileNo" #mobileNo="ngModel" name="mobileNo"
+                                        id="mobileNo" maxlength="50" required>
+                                    <div *ngIf="mobileNo?.errors && mobileNo.touched">
+                                        <span class="alert-danger" *ngIf="mobileNo?.errors.pattern">
+                                            {{ 'User.MobileNoProperRequired' | translate}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- <div class="col-md-6">
+                            <div class="form-group mb-30">
+                                <label for="email" class="form-label">{{ 'Field.Email' | translate }}<span
+                                        class="color-red">*</span></label>
+                                <div class="position-relative">
+                                    <input class="form-control" type="text" [(ngModel)]="resturantMasterModel.email"
+                                        [pattern]="EmailPattern"
+                                        placeholder="{{ 'ContactUs.Enteryouremailaddress' | translate}}"
+                                        [title]="resturantMasterModel.email" #email="ngModel" name="email" id="email"
+                                        maxlength="50" required disabled>
+
+                                    <div class="w-200px" *ngIf="email?.errors && email?.touched">
+                                        <span style="text-align: right;" [hidden]="!email?.errors.pattern"
+                                            class="alert-danger text-right">
+                                            {{ 'ContactUs.Pleaseentervalidemail' | translate}}
+                                        </span>
+                                        <span class="alert-danger" *ngIf="email?.errors.required">
+                                            {{ 'ContactUs.Emailrequired' | translate}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+ -->
+                        <div class="col-md-6">
+                            <div class="form-group mb-15">
+                                <label for="houseNo" class="form-label">{{ 'Field.Houseno' | translate}}</label>
+                                <div class="position-relative">
+                                    <input class="form-control" type="text"
+                                        [(ngModel)]="resturantMasterModel.addressMaster.houseNo"
+                                        placeholder="{{ 'Field.Enteryourhousenumber' | translate}}" #houseNo="ngModel"
+                                        name="houseNo" id="houseNo" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-15">
+                                <label for="address1" class="form-label">{{ 'Field.Address1' | translate}}</label>
+                                <div class="position-relative">
+                                    <input class="form-control" type="text"
+                                        [(ngModel)]="resturantMasterModel.addressMaster.address1"
+                                        placeholder="{{ 'Field.Enteryouraddress' | translate}}" #address1="ngModel"
+                                        name="address1" id="address1" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-15">
+                                <label for="address2" class="form-label">{{ 'Field.Address2' | translate}}</label>
+                                <div class="position-relative">
+                                    <input class="form-control" type="text"
+                                        [(ngModel)]="resturantMasterModel.addressMaster.address2"
+                                        placeholder="{{ 'Field.Enteryouradditionaladdress' | translate}}"
+                                        #address2="ngModel" name="address2" id="address2" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-15">
+                                <label for="state" class="form-label">{{ 'Field.State' | translate}}</label>
+                                <div class="position-relative">
+                                    <input class="form-control" type="text"
+                                        [(ngModel)]="resturantMasterModel.addressMaster.state"
+                                        placeholder="{{ 'Field.Enteryourstate' | translate}}" #state="ngModel"
+                                        name="state" id="state" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-15">
+                                <label for="city" class="form-label">{{ 'Field.City' | translate}}</label>
+                                <div class="position-relative">
+                                    <input class="form-control" type="text"
+                                        [(ngModel)]="resturantMasterModel.addressMaster.city"
+                                        placeholder="{{ 'Field.Enteryourcity' | translate}}" #city="ngModel" name="city"
+                                        id="city" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-15">
+                                <label for="postalCode" class="form-label">{{ 'Field.Postalcode' | translate}}</label>
+                                <div class="position-relative">
+                                    <input class="form-control" type="text"
+                                        [(ngModel)]="resturantMasterModel.addressMaster.postalCode"
+                                        placeholder="{{ 'Field.Enteryourpostalcode' | translate}}" #postalCode="ngModel"
+                                        name="postalCode" id="postalCode" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div data-aoe="add-resturant"
+                            class="ballonswitch form-group col-sm-12 col-md-6 col-lg-3 align-items-center d-flex justify-content-start"
+                            style="display: flex !important; align-items: center;">
+                            <label data-aoe="add-resturant" class="switch mr-1">
+                                <input data-aoe="add-resturant" type="checkbox" name="isConditionItem"
+                                    [(ngModel)]="resturantMasterModel.isConditionItem" />
+                                <span data-aoe="add-resturant" class="slider round"></span>
+                            </label>
+                            <label data-aoe="add-resturant">{{'ItemConfigurationManagement.ConditionItem' |
+                                translate}}</label>
+                        </div>
+                        <div data-aoe="add-resturant"
+                            class="ballonswitch form-group col-sm-12 col-md-6 col-lg-3 align-items-center d-flex justify-content-start"
+                            style="display: flex !important; align-items: center;">
+                            <label data-aoe="add-resturant" class="switch mr-1">
+                                <input data-aoe="add-resturant" type="checkbox" name="isInvoiceItem"
+                                    [(ngModel)]="resturantMasterModel.isInvoiceItem" />
+                                <span class="slider round"></span>
+                            </label>
+                            <label data-aoe="add-resturant">{{'ItemConfigurationManagement.InvoiceItem' |
+                                translate}}</label>
+                        </div>
+                        <div data-aoe="add-resturant"
+                            class="ballonswitch form-group col-sm-12 col-md-6 col-lg-3 align-items-center d-flex justify-content-start"
+                            style="display: flex !important; align-items: center;">
+                            <label data-aoe="add-resturant" class="switch mr-1">
+                                <input data-aoe="add-resturant" type="checkbox" name="isActive"
+                                    [(ngModel)]="resturantMasterModel.isActive" />
+                                <span data-aoe="add-resturant" class="slider round"></span>
+                            </label>
+                            <label data-aoe="add-resturant">{{'ItemConfigurationManagement.Status' | translate}}</label>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loader [loading]="loading"></app-loader>

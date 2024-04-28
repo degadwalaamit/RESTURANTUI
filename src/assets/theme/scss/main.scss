@@ -1,0 +1,86 @@
+::placeholder{color:#f1f1f1;font-style:normal !important; font-weight: 300 !important;}
+:-ms-input-placeholder{color:#f1f1f1;font-style:normal !important; font-weight: 300 !important;}
+::-ms-input-placeholder{color:#f1f1f1;font-style:normal !important; font-weight: 300 !important;}
+:focus::-webkit-input-placeholder{color:transparent;}
+:focus:-moz-placeholder{color:transparent;}
+:focus::-moz-placeholder{color:transparent;}
+:focus:-ms-input-placeholder{color:transparent;}
+/*css for opportunity module*/
+th.opp-action {width: 10%; text-align: center;}
+th.opp-qbtotal { width: 15%;}
+th.opp-name {width: 10%;}
+.tableallaction button { margin: 0 2px !important;}
+span.conyes {color: #155724; background-color: #d4edda; border-color: #c3e6cb; padding: 5px; display: inline-block; width: 40px;}
+span.conno{color:#721c24;background-color:#f8d7da;border-color:#f5c6cb;padding:5px;display:inline-block;width:40px;}
+.vhcenter{vertical-align:middle !important;text-align:center;}
+.opp-leadstable-parent .funtable td{vertical-align:middle !important;}
+.qtybdgetparent p{margin-bottom:5px !important;}
+ .leadFilter{margin-left:auto;padding-left:15px;padding-right:15px;}
+.leadFilter select{padding-right:30px;border:1px solid #ced4da;margin-right:5px;}
+/*end css for opporuity module*/
+.opptablenewdsn table{border-left:1px solid #ddd;border-right:1px solid #ddd;}
+.opptablenewdsn table th, .opptablenewdsn table td{border:none !important;border-bottom:1px solid #ddd !important;}
+.opptablenewdsn table td .submodelname{display:block;}
+.opptablenewdsn table.table.funtable th{background-color:#7b8d9e;color:$base-white;}
+.opptablenewdsn .tableallaction button + button:before{content:"";border-right:1px solid #999;display:block;height:60%;margin-right:7px;}
+.opptablenewdsn .table-striped tbody tr:nth-child(even){background-color:#f1f8ff;}
+.assgnimgcls{width:18px;}
+.texarea40{height: 40px !important;}
+.top2::before, .top2::after {top: 2px !important;}
+.ptop5{padding-top: 5px !important;}
+.btn-icon-back-red {background-image: url(/assets/images/prev-arrow.png); background-repeat: no-repeat; background-position: center; display: inline-block; margin-right: 3px;}
+.btn-icon-refresh-red {background-image: url(/assets/images/icon-reset-red.png); background-repeat: no-repeat; background-position: center; display: inline-block; margin-right: 3px;}
+
+
+.icon20height{height: 10px; width: 10px;}
+.icon20height14 {height: 14px; width: 14px;}
+/*css for opportunities start*/
+/*css for opportunity module d2 end*/
+/*Add new vehicle css start*/
+.newapproach2col .smallinputnxt input {width: 100% !important; min-width: inherit !important;}
+.maxmin100 {width: 100px !important; min-width: 100px !important;}
+/*Add new vehicle css end*/
+
+/*Vehicle summary*/
+.vehiclesummaryheader{display:flex;justify-content:space-between;width:100%;background:#33414e;padding:8px 15px;border-top-left-radius:5px;border-top-right-radius:5px;cursor:pointer;box-shadow:0 0.1rem 0.5rem rgb(0 0 0 / 20%);color:#FFF;}
+.vehiclesummarymainpart{border:1px solid #dee2e6;padding:10px;background-color:#f8f9fa;box-shadow:0 0.1rem 0.5rem rgb(0 0 0 / 20%);}
+
+.opdetailscover .oplabel{margin-right:10px;width:50%;}
+.opdetailscover{display:flex;padding-bottom:12px;}
+
+.opp-date-input input{height:20px;width:120px !important;min-width:100px !important;padding:5px 5px;background-position:96% 1px;}
+.inputmidsmall {max-width: 135px !important; min-width: 135px !important; width: 135px !important;}
+.textarea20 {height: 20px !important; border: 1px solid #ced4da; padding: 0 5px;}
+.textarea20:focus, .textarea20:focus-visible{border: 1px solid #ced4da; outline:none;}
+.cmnformapproach .norequired .form-group {margin-bottom: 0 !important;}
+
+/*Opportunity Management css start*/
+.opp-mng-durationdate {display: flex;}
+/*.opp-mng-durationdate input {max-width: 120px; margin-right: 10px;height: 20px; padding-bottom: 2px; background-position: 98% 1px;}*/
+.opp-mng-durationdate input {max-width: 120px; margin-right: 10px;height: 20px; padding-bottom: 2px; padding-right: 0; background-position: 98% 1px;}
+.opp-mng-filter-inner{box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 15%); padding: 8px 10px; border-radius: 4px;}
+.inputvalidation{background: #f3ffb9; border: 1px solid #ba0c2f;}
+
+/*Lead List*/
+th.vehicleInterest {width: 10%;}
+th.qtyBudgetTotal {width: 10%;}
+th.leadassignedTo {width: 5%;}
+th.leadformType {width: 5%;}
+th.leadconverted {width: 5%;}
+th.leadextras {width: 10%;}
+th.leadreason {width: 10%;}
+th.leadstatus {width: 5%;}
+
+/*************Media css start****************/
+
+@media (max-width:1440px){
+ th.opp-action {width: 21%;}
+.cmnformapproach.oneforbreak.newapproach2col .form-group.col-lg-6, .cmnformapproach.oneforbreak.newapproach2col .required.col-lg-6, .cmnformapproach.oneforbreak.newapproach2col .norequired.col-lg-6{flex: 0 0 50% !important; max-width: 50% !important;}
+
+.cmnformapproach.oneforbreak.newapproach2col .form-group.col-lg-2{flex: 0 0 16.666667% !important; max-width: 16.666667% !important;}
+.cmnformapproach.oneforbreak.vinfonewapproach .form-group.col-lg-8{flex: 0 0 66.666667% !important; max-width: 66.666667% !important;}
+
+.cmnformapproach.oneforbreak .sixbreak .form-group.col-lg-6, .cmnformapproach.oneforbreak .sixbreak .required.col-lg-6, .cmnformapproach.oneforbreak .sixbreak .norequired.col-lg-6{flex: 0 0 50% !important; max-width: 50% !important;}
+.cmnformapproach.oneforbreak .boxbgcns .form-group.col-lg-12{flex: 0 0 100% !important; max-width: 100% !important;}
+
+}

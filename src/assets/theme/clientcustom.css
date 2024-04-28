@@ -1,0 +1,131 @@
+.page-sidebar {
+  background-color: #33414e;
+}
+/* INPUT FOCUS */
+.form-control:focus {border-color: #33414e;}
+/* RADIO checked */
+.custom-radio .custom-control-input:checked~.custom-control-label::before {background-color: #ba0c2f;}
+/* CHECKBOX */
+.custom-control-input:checked~.custom-control-label::before, .custom-control-label::before {border-color: #ba0c2f;}
+.custom-checkbox .custom-control-input:checked~.custom-control-label::after {background-image: url(/assets/theme/amt/images/cb-tick-white.png);}
+/* SWITCH */
+.sliderRed {
+  background-color: #33414e;
+}
+input:checked + .slider {    background-color: #33414e;  }
+input:focus + .slider {    box-shadow: 0 0 1px #33414e;  }
+/* GRID */
+.ag-theme-balham .ag-row-hover {background-color:#f0f8ff; /* #ECF0F5*/}
+.ag-theme-balham .ag-row-selected{background-color:#f0f8ff; /*#ECF0F5*/}
+/* LOGO */
+.logoImage{background-image: url(/assets/theme/amt/images/logo.svg); background-repeat: no-repeat; background-position: center; height: 40px; width: 93px;}
+/* BUTTONS*/
+.btn-primary{ background: #ba0c2f !important;
+  border: 0px;
+ border-radius: 0px; box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);-webkit-box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);-moz-box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);transition:all 0.4s ease 0s;-moz-transition:all 0.4s ease 0s;-webkit-transition:all 0.4s ease 0s;}
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus{    background: #950a26 !important;
+  -webkit-box-shadow: 0 12px 26px -12px rgba(186, 12, 47, 0.42) !important ;
+-moz-box-shadow: 0 12px 26px -12px rgba(186, 12, 47, 0.42) !important;
+box-shadow: 0 12px 26px -12px rgba(186, 12, 47, 0.42) !important; }
+.btn-primary.disabled, .btn-primary:disabled {background-color: #ba0c2f; border-color: #ba0c2f; }
+.btn-primary:not(:disabled):not(.disabled):active{background-color: #ba0c2f; border-color: #ba0c2f; }
+
+.btn-outline {color: #ba0c2f; border-color: #ba0c2f; box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);-webkit-box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);-moz-box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);}
+.btn-outline:hover, .btn-outline:focus, .btn-outline:active {
+  background: #fff !important;
+  -webkit-box-shadow: 0 12px 26px -12px rgba(186, 12, 47, 0.42) !important;
+  -moz-box-shadow: 0 12px 26px -12px rgba(186, 12, 47, 0.42) !important;
+  box-shadow: 0 12px 26px -12px rgba(186, 12, 47, 0.42) !important;
+}
+.btn-outline.disabled, .btn-outline:disabled{color: #ba0c2f; border-color: #ba0c2f;}
+
+/* TAB ACTIVE */
+.tabStyle .nav-tabs .nav-link.active {color: #ba0c2f;}
+/* ERROR MESSAGE BORDER COLOR */
+.errorMsgBox{ border-color:#ba0c2f; }
+/* Accordion Title border bottom color */
+.accTitle{border-bottom: 1px solid #ba0c2f;}
+
+.dropdown-item:hover { background-color:  #f5f5f5 !important; }
+.dropdown-item.active, .dropdown-item:active { background-color:  #ECF0F5 !important; }
+
+.disabled-inputs input{
+  pointer-events: none !important;
+  opacity: 0.5 !important;
+}
+
+.disabled-inputs  select {
+  pointer-events: none !important;
+  opacity: 0.5 !important;
+}
+
+.disabled-inputs  textarea {
+  pointer-events: none !important;
+  opacity: 0.5 !important;
+}
+
+.disabled-inputs  input[type="radio"] {
+  pointer-events: none !important;
+  opacity: 0.5 !important;
+}
+
+.disabled-inputs  input[type="checkbox"] {
+  pointer-events: none !important;
+  opacity: 0.5 !important;
+}
+
+.date-picker-relative{
+  position: relative !important;
+}
+
+.clear-floating-button {
+  position: absolute !important;
+  right: 50px !important;
+  top: 9px;
+  color: #950a26;
+}
+
+.full-visibility{
+  opacity: 1 !important;
+}
+
+.disabled-inputs-visible{
+  pointer-events: none !important;
+}
+
+input.invalid-input {
+  background-color: #f3ffb9;
+  border: 1px solid #ba0c2f;
+}
+
+textarea.invalid-input {
+  background-color: #f3ffb9;
+  border: 1px solid #ba0c2f;
+}
+
+select.invalid-input {
+  background-color: #f3ffb9;
+  border: 1px solid #ba0c2f;
+}
+
+.file-required {
+  border: solid 1px #950a26 !important;
+  background-color:#f3ffb9;
+  color: #950a26 !important;
+}
+
+.custom-control-label-disabled::before, .custom-control-label-disabled::after {
+  height: 13px;
+  width: 13px;
+  box-shadow: inherit !important;
+  cursor: pointer;
+  opacity: .6;
+}
+
+.width-80{
+  width: 80% !important;
+}
+
+.width100{
+  width: 100% !important;
+}
