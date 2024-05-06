@@ -20,15 +20,6 @@ input:focus + .slider {    box-shadow: 0 0 1px #33414e;  }
 /* LOGO */
 .logoImage{background-image: url(/assets/theme/amt/images/logo.svg); background-repeat: no-repeat; background-position: center; height: 40px; width: 93px;}
 /* BUTTONS*/
-.btn-primary{ background: #ba0c2f !important;
-  border: 0px;
- border-radius: 0px; box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);-webkit-box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);-moz-box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);transition:all 0.4s ease 0s;-moz-transition:all 0.4s ease 0s;-webkit-transition:all 0.4s ease 0s;}
-.btn-primary:hover, .btn-primary:active, .btn-primary:focus{    background: #950a26 !important;
-  -webkit-box-shadow: 0 12px 26px -12px rgba(186, 12, 47, 0.42) !important ;
--moz-box-shadow: 0 12px 26px -12px rgba(186, 12, 47, 0.42) !important;
-box-shadow: 0 12px 26px -12px rgba(186, 12, 47, 0.42) !important; }
-.btn-primary.disabled, .btn-primary:disabled {background-color: #ba0c2f; border-color: #ba0c2f; }
-.btn-primary:not(:disabled):not(.disabled):active{background-color: #ba0c2f; border-color: #ba0c2f; }
 
 .btn-outline {color: #ba0c2f; border-color: #ba0c2f; box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);-webkit-box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);-moz-box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14);}
 .btn-outline:hover, .btn-outline:focus, .btn-outline:active {

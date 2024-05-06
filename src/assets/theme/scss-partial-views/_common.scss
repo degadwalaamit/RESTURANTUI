@@ -1,0 +1,19 @@
+.form-check-input:checked {
+  background-color: $primary-color;
+  border-color: $primary-color;
+}
+.btn {
+  &.btn-lg {
+    height: 50px;
+    font-size: inherit;
+    line-height: 50px;
+    padding-block: 0;
+  }
+  &.btn-primary {
+    background-color: $primary-color;
+    border: 0;
+    &:is(:hover, :focus, :active) {
+      background-color: darken($color: $primary-color, $amount: 5%);
+    }
+  }
+}

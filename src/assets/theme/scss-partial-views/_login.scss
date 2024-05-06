@@ -1,0 +1,112 @@
+.loginBgImg {
+  background: url("/assets/images/login-bg-img.jpg") no-repeat center center
+    fixed;
+  position: fixed;
+  min-width: 100%;
+  background-size: cover;
+  bottom: 0;
+  top: 0;
+  z-index: 1052;
+  overflow: auto;
+}
+
+.tagline {
+  font-family: $base-font-family;
+  font-weight: 300;
+  color: $base-white;
+  font-size: 2.25rem;
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+.input-error {
+  display: inline-block;
+  width: 100%;
+}
+
+.login-form .form-control:focus {
+  color: $base-black;
+  background-color: rgba(255, 255, 255, 0);
+  border-color: $base-red;
+  outline: 0;
+  @include box-shadow(0 0 0 0.1rem rgba(186, 12, 47, 0));
+}
+
+.user-icon {
+  background-image: url(/assets/images/user-icon.svg);
+  background-repeat: no-repeat;
+}
+
+.lock-icon {
+  background-image: url(/assets/images/lock-icon.svg);
+  background-repeat: no-repeat;
+}
+
+.input-border-bottom {
+  border: #a0a9b4;
+  border-bottom: 1px solid;
+  color: #868e97;
+  font-size: 14px;
+  border-radius: 0 !important;
+}
+
+.login-form .custom-control-label {
+  padding-top: 3px;
+}
+
+.rememberme {
+  margin-top: 8px;
+}
+
+.forgot-pswd-link {
+  color: $base-mid-black;
+  text-decoration: underline;
+  font-family: $base-font-family;
+  font-weight: 300;
+  font-size: $base-font-size;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 0.5px;
+}
+
+.forgot-pswd-link:hover {
+  color: $base-red;
+  text-decoration: none;
+}
+
+.login-box {
+  @include absolute(50%, auto, auto, 50%);
+  transform: translate(-50%, -50%);
+  width: max(300px, 32%);
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+/* new style */
+
+.flex-column {
+  & > label {
+    color: #151717;
+    font-weight: 600;
+  }
+}
+.inputForm {
+  border: 1.5px solid $border-color;
+  border-radius: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  transition: 0.2s ease-in-out;
+  &:focus-within {
+    border: 1.5px solid #2d79f3;
+  }
+}
+.input {
+  margin-left: 10px;
+  border-radius: 10px;
+  border: none;
+  width: 85%;
+  height: 100%;
+  &:focus {
+    outline: none;
+  }
+}

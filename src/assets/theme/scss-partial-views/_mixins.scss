@@ -1,17 +1,29 @@
 @mixin box-shadow($property) {
-    -moz-box-shadow: $property;  
-    -webkit-box-shadow: $property;
-    -ms-box-shadow: $property;
-    box-shadow: $property;     
+  -moz-box-shadow: $property;
+  -webkit-box-shadow: $property;
+  -ms-box-shadow: $property;
+  box-shadow: $property;
+}
+
+@mixin absolute($top, $right, $bottom, $left) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin placeholder {
+  ::-webkit-input-placeholder {
+    @content;
   }
-
-    /*@include box-shadow(0 2px 2px 0 rgba(0, 0, 0, 0.14));*/
-
-
-    @mixin placeholder {
-        ::-webkit-input-placeholder {@content}
-        :-moz-placeholder           {@content}
-        ::-moz-placeholder          {@content}
-        :-ms-input-placeholder      {@content}  
-      }
-      
+  :-moz-placeholder {
+    @content;
+  }
+  ::-moz-placeholder {
+    @content;
+  }
+  :-ms-input-placeholder {
+    @content;
+  }
+}

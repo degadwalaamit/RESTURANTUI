@@ -42,7 +42,7 @@
     "LoginUser": "Hi! {{username}}",
     "PasswordSentSuccessfully": "Password sent successfully",
     "PleaseEnterValidEmail": "Please enter a valid registered email address",
-    "RightReserved": "© 2021. All rights reserved.",
+    "RightReserved": "© 2024. All rights reserved.",
     "EmailRequired": "Email address is required",
     "LocatiolRequired": "Location name is required",
     "DepartmentRequired": "Department is required",
