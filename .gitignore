@@ -1,3 +1,6 @@
 node_modules
 /.vs
 /dist
+src/assets/js/bootstrap.min copy.js
+src/assets/theme/bootstrap.min copy.css
+package-lock.json
