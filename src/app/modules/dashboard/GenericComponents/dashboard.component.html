@@ -1,17 +1,78 @@
-<ng-container *ngIf="(dashboard$ | async)"></ng-container>
-<div class="row page-bar-fixed">
-    <div class="col-12">
-        <div class="page-bar" *ngIf="isUserLogin">
-            <ul class="page-breadcrumb">
-                <li><a href="javascript:;">{{'SideMenu.Tables' | translate}}</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+<ng-container *ngIf="dashboard$ | async"></ng-container>
 <div class="row" *ngIf="isUserLogin">
-  <div class="col-12">
-      <div class="whiteBox">
-            <div id="embedContainer" style="height: calc(93vh - 100px)!important;"></div>
-        </div>
+  <nav class="navbar navbar-vertical">
+    <div class="d-flex flex-column flex-fill h-100 p-3">
+      <ul class="navbar-nav flex-column mb-4">
+        <li class="nav-item">
+          <p class="navbar-vertical-label mb-0 text-uppercase opacity-50">
+            area
+          </p>
+          <a class="nav-link rounded-3" href="#"> Restaurent </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav flex-column">
+        <li class="nav-item">
+          <p class="navbar-vertical-label mb-0 text-uppercase opacity-50">
+            mode
+          </p>
+          <a class="nav-link rounded-3" href="#"> Open Table </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link rounded-3" href="#"> Move to Table</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link rounded-3" href="#"> Replacement Production</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav flex-column mt-auto">
+        <li class="nav-item">
+          <a class="nav-link rounded-3" href="#"> POS </a>
+        </li>
+        <li class="nav-item">
+          <a class="rounded-3 btn btn-danger w-100 text-center" href="#">
+            Sign out admin
+          </a>
+        </li>
+      </ul>
     </div>
+  </nav>
+  <div class="col">
+    <div class="whiteBox">
+      <div id="embedContainer" style="height: calc(93vh - 100px) !important">
+        <div class="row row-cols-6 row-cols-md-5 row-cols-xl-6">
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">01</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">02</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">03</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">04</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card booked">
+              <span class="table-number">05</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">06</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,5 +1,5 @@
-<app-header [isLoginUser]="isLoginUser" class="page-header navbar navbar-fixed-top"></app-header>
-<div class="page-wrapper"  (keydown)="onKeyPress($event)">
+<app-header [isLoginUser]="isLoginUser"></app-header>
+<div class="page-wrapper" (keydown)="onKeyPress($event)">
   <div class="clearfix"></div>
   <div class="page-container">
     <div class="page-content-wrapper" id="cWraper">
@@ -7,17 +7,30 @@
         <router-outlet #routerOutlet="outlet"></router-outlet>
       </div>
     </div>
-    <footer class="page-footer-wrapper">
-    </footer>
+    <footer class="page-footer-wrapper"></footer>
   </div>
 </div>
 <!-- Logout popup confirmation starts -->
-<div id="logoutModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="true">
+<div
+  id="logoutModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+  data-backdrop="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="text-center"> {{ 'Header.Logout' | translate }} </h4>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="text-center">{{ "Header.Logout" | translate }}</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
       </div>
       <div class="modal-body">
         <div class="col-md-12">
@@ -26,7 +39,8 @@
               <div class="text-left">
                 <div class="panel-body">
                   <p class="popup-text">
-                    {{ 'Header.SureLogout' | translate }} </p>
+                    {{ "Header.SureLogout" | translate }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -35,9 +49,19 @@
       </div>
       <div class="modal-footer">
         <div class="col-md-12">
-          <input class="btn btn-secondary float-right" value="{{'Header.LOGOUT' | translate}}" type="submit"
-            (click)="logout()">
-          <button class="btn btn-outline-secondary" data-dismiss="modal" aria-hidden="true">{{ 'Login.Cancel' | translate }}</button>
+          <input
+            class="btn btn-secondary float-right"
+            value="{{ 'Header.LOGOUT' | translate }}"
+            type="submit"
+            (click)="logout()"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            data-dismiss="modal"
+            aria-hidden="true"
+          >
+            {{ "Login.Cancel" | translate }}
+          </button>
         </div>
       </div>
     </div>

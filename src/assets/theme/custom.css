@@ -137,6 +137,48 @@
   outline: none;
 }
 
+.navbar-vertical {
+  width: 15.875rem;
+  border-right: 1px solid #cbd0dd;
+  margin: 0;
+  align-items: flex-start;
+  transition: all 300ms ease-in-out;
+  min-height: 95vh;
+}
+.navbar-vertical .nav-item .nav-link {
+  transition: all 200ms ease-in-out;
+  padding-inline: 1rem;
+}
+.navbar-vertical .nav-item .nav-link:is(:hover, :focus, .active) {
+  background-color: #f5872a;
+  color: #fff;
+}
+
+.tables-card {
+  min-height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #22c55e;
+  text-decoration: none !important;
+  transition: all 300ms ease-in-out;
+}
+.tables-card.booked {
+  background-color: #f43f5e;
+}
+.tables-card:is(:hover, :focus) .table-number {
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.25);
+}
+.tables-card .table-number {
+  background-color: #fff;
+  border-radius: 5rem;
+  min-width: 84px;
+  text-align: center;
+  display: inline-block;
+  padding: 1rem;
+  font-weight: 700;
+}
+
 ::placeholder {
   color: #f1f1f1;
   font-style: normal !important;
@@ -772,7 +814,6 @@ input:checked + .slider:before {
   box-shadow: 0 0px 10px -3px rgba(62, 57, 107, 0.25);
   padding: 15px 22px;
   margin-bottom: 20px;
-  margin-top: 3rem;
 }
 
 .gridHeader {
@@ -1124,9 +1165,7 @@ input:checked + .slider:before {
 
 .page-container {
   margin: 0;
-  padding: 64px 0 0;
   position: relative;
-  padding-top: 64px;
   display: flex;
   width: 100%;
   height: 100%;
@@ -9081,10 +9120,6 @@ textarea.form-control {
     height: auto !important;
     padding-bottom: 0;
     overflow: inherit;
-  }
-
-  .page-container {
-    padding-top: 50px;
   }
 
   .page-sidebar ul {

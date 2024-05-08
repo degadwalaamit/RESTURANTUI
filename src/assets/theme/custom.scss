@@ -2,6 +2,8 @@
 @import "scss-partial-views/mixins";
 @import "scss-partial-views/common";
 @import "scss-partial-views/login";
+@import "scss-partial-views/navbar-verticle";
+@import "scss-partial-views/dashboard";
 
 @import "scss/main.scss";
 
@@ -296,7 +298,7 @@ input:checked + .slider:before {
   @include box-shadow(0 0px 10px -3px rgba(62, 57, 107, 0.25));
   padding: 15px 22px;
   margin-bottom: 20px;
-  margin-top: 3rem;
+  // margin-top: 3rem;
 }
 
 .gridHeader {
@@ -637,9 +639,7 @@ input:checked + .slider:before {
 
 .page-container {
   margin: 0;
-  padding: 64px 0 0;
   position: relative;
-  padding-top: 64px;
   display: flex;
   width: 100%;
   height: 100%;
@@ -8721,10 +8721,6 @@ textarea.form-control {
     height: auto !important;
     padding-bottom: 0;
     overflow: inherit;
-  }
-
-  .page-container {
-    padding-top: 50px;
   }
 
   .page-sidebar ul {
