@@ -1,36 +1,45 @@
 <ng-container *ngIf="dashboard$ | async"></ng-container>
-<div class="row" *ngIf="isUserLogin">
+<div class="row gx-0" *ngIf="isUserLogin">
   <nav class="navbar navbar-vertical">
     <div class="d-flex flex-column flex-fill h-100 p-3">
       <ul class="navbar-nav flex-column mb-4">
         <li class="nav-item">
-          <p class="navbar-vertical-label mb-0 text-uppercase opacity-50">
+          <p
+            class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center"
+          >
             area
           </p>
-          <a class="nav-link rounded-3" href="#"> Restaurent </a>
+          <a class="nav-link active" href="#"> Restaurent </a>
         </li>
       </ul>
       <ul class="navbar-nav flex-column">
         <li class="nav-item">
-          <p class="navbar-vertical-label mb-0 text-uppercase opacity-50">
+          <p
+            class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center"
+          >
             mode
           </p>
-          <a class="nav-link rounded-3" href="#"> Open Table </a>
+          <a class="nav-link active" href="#"> Open Table </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link rounded-3" href="#"> Move to Table</a>
+          <a class="nav-link" href="#"> Move to Table</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link rounded-3" href="#"> Replacement Production</a>
+          <a class="nav-link" href="#"> Replacement Production</a>
         </li>
       </ul>
 
       <ul class="navbar-nav flex-column mt-auto">
-        <li class="nav-item">
-          <a class="nav-link rounded-3" href="#"> POS </a>
+        <li class="nav-item mb-3">
+          <a class="rounded-pill py-4 btn btn-info w-100 text-center" href="#">
+            POS
+          </a>
         </li>
         <li class="nav-item">
-          <a class="rounded-3 btn btn-danger w-100 text-center" href="#">
+          <a
+            class="rounded-pill py-4 btn btn-danger w-100 text-center"
+            href="#"
+          >
             Sign out admin
           </a>
         </li>
@@ -38,37 +47,69 @@
     </div>
   </nav>
   <div class="col">
-    <div class="whiteBox">
-      <div id="embedContainer" style="height: calc(93vh - 100px) !important">
-        <div class="row row-cols-6 row-cols-md-5 row-cols-xl-6">
+    <div class="card">
+      <div class="card-body min-vh-100">
+        <div
+          class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 gy-4"
+        >
           <div class="col">
             <a href="#" class="card tables-card">
-              <span class="table-number">01</span>
+              <span class="table-number">T1</span>
             </a>
           </div>
           <div class="col">
             <a href="#" class="card tables-card">
-              <span class="table-number">02</span>
+              <span class="table-number">T2</span>
             </a>
           </div>
           <div class="col">
             <a href="#" class="card tables-card">
-              <span class="table-number">03</span>
+              <span class="table-number">T3</span>
             </a>
           </div>
           <div class="col">
             <a href="#" class="card tables-card">
-              <span class="table-number">04</span>
+              <span class="table-number">T4</span>
             </a>
           </div>
           <div class="col">
             <a href="#" class="card tables-card booked">
-              <span class="table-number">05</span>
+              <span class="table-number">T5</span>
             </a>
           </div>
           <div class="col">
             <a href="#" class="card tables-card">
-              <span class="table-number">06</span>
+              <span class="table-number">T6</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">T7</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">T8</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card booked">
+              <span class="table-number">T9</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">T10</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">T11</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" class="card tables-card">
+              <span class="table-number">T12</span>
             </a>
           </div>
         </div>

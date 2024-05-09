@@ -16,7 +16,6 @@ body {
   background-color: #f6f7f9;
   overflow-x: hidden;
   font-family: $base-font-family;
-  letter-spacing: 0.03rem;
   min-height: 100vh;
   display: -ms-flexbox;
   display: flex;
@@ -1572,24 +1571,6 @@ input:checked + .slider:before {
   flex: 1;
   /*overflow: auto;*/
   overflow-x: hidden;
-}
-
-.page-content {
-  // margin-left: 55px;
-  margin-top: 0;
-  min-height: 600px;
-  padding: 0rem 0.75rem 10px;
-  -webkit-transition: margin-left 0.3s;
-  transition: margin-left 0.3s ease;
-  position: relative;
-}
-
-.page-content.active {
-  // margin-left: 55px;
-  -moz-transition: margin-left 0.3s ease;
-  -webkit-transition: margin-left 0.3s ease;
-  -o-transition: margin-left 0.3s ease;
-  transition: margin-left 0.3s ease;
 }
 
 .page-bar {
@@ -7608,10 +7589,6 @@ app-aquisition-button-renderer {
   .page-bar-fixed {
     height: 92px;
   }
-
-  .whiteBox {
-    margin-top: 5.75rem;
-  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -12202,10 +12179,6 @@ body .upload-doc.btnupload {
 }
 
 @media only screen and (max-width: 767px) {
-  .page-content {
-    margin-left: 42px;
-  }
-
   .rentalTypeStyle {
     white-space: unset;
   }
