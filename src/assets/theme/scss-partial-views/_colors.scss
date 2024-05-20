@@ -9,12 +9,30 @@ $base-dd-gray: #dddddd;
 $base-cdc-gray: #cdcdcd;
 $base-maroon: #7d2626;
 
-/* Bandhan theme */
+/* Bandhan Theme */
 $base-text: #222222;
 $border-color: #dddddd;
 $primary-color: #f58120;
+$dark-blue-color: #34495e;
+$orange-color: #e67e22;
 //Size Variables
 $base-font-size: 0.85rem;
+
+$colors: ();
+$colors: map-merge(
+  (
+    "primary": $primary-color,
+    "blue": $dark-blue-color,
+    "orange": $orange-color,
+  ),
+  $colors
+);
+/* Background Colors */
+@each $color, $value in $colors {
+  .bg-#{$color} {
+    background-color: rgba(($value), 1) !important;
+  }
+}
 
 //FontFamily
 $base-font-family: "Poppins", sans-serif;

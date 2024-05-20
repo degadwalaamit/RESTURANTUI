@@ -18,6 +18,11 @@ const routes: Routes = [
     canActivate: [LoginAuthGuard]
   },
   {
+    path: 'table-details',
+    loadChildren: () => import('./modules/tableDetails/tableDetails.module').then(m => m.tableDetails),
+    canActivate: [LoginAuthGuard]
+  },
+  {
     path: 'user',
     loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule),
     canActivate: [LoginAuthGuard]

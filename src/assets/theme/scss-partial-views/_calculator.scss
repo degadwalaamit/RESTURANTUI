@@ -1,0 +1,39 @@
+.calculator-wrap {
+  input[type="text"] {
+    height: 68px;
+    font-size: 1.65rem;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  .bi {
+    font-size: unset;
+  }
+  .btn {
+    height: 68px;
+    padding: 0;
+    min-width: 100px;
+    width: 100%;
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    @media screen and (max-width: 1280px) {
+      min-width: auto;
+      aspect-ratio: 1/1;
+    }
+    &.initial {
+      font-size: 1.75rem;
+    }
+    &.btn-blue {
+      background-color: #0d6efd;
+      color: #fff;
+      &:is(:hover, :focus) {
+        background-color: #0b61e3;
+      }
+    }
+  }
+}
+.calulator-table {
+  max-height: 33vh;
+  @media screen and (min-height: 1023px) {
+    max-height: 45vh;
+  }
+}
