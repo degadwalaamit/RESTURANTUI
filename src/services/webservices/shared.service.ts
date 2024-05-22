@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Injectable, Injector } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { isNotNullOrUndefined } from '@microsoft/applicationinsights-core-js';
 import { TranslateService } from '@ngx-translate/core';
 import { GridOptions } from 'ag-grid-community';
@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { NgBroadcasterService } from 'ngx-broadcaster';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { CommonAppConstants } from 'src/app/constants/app.constant';
 import { L2ogConstants } from 'src/app/constants/l2og-constants';
 import { Validation } from 'src/app/constants/Validationvalue.constant';
@@ -23,6 +23,8 @@ import { ApiService } from './api.service';
 import { LocalStorageService } from './local-storage.service';
 import { LoginService } from './login.service';
 import { TableMaster } from 'src/app/models/user.model';
+import { MenuCategoryMasterModel } from 'src/app/models/menu.model';
+import { UserService } from './user.service';
 declare var $: any;
 
 @Injectable(
@@ -72,7 +74,8 @@ export class SharedService {
   public baseDegree = 167; // Retail matrix
   public baseDays = 60; // Retail matrix
   public showNextService = true;
-
+  public menuCategoryMasterModel: MenuCategoryMasterModel[] = [];
+  public menuCategoryMasterWithOutPModel: MenuCategoryMasterModel[] = [];
   currentFeaturelist = this.sendFeatureListSource.asObservable();
   public sendQuoteOverview = new Subject();
   currentQuoteOverview = this.sendQuoteOverview.asObservable();
@@ -273,6 +276,7 @@ export class SharedService {
   private translate: TranslateService;
   private toastr: ToastrService;
   public datepipe: DatePipe;
+  public userService: UserService;
 
   constructor(injector: Injector) {
     this.apiService = injector.get<ApiService>(ApiService);
@@ -283,6 +287,7 @@ export class SharedService {
     this.translate = injector.get<TranslateService>(TranslateService);
     this.toastr = injector.get<ToastrService>(ToastrService);
     this.datepipe = injector.get<DatePipe>(DatePipe);
+    this.userService = injector.get<UserService>(UserService);
     this.today = new Date();
   }
 
@@ -3215,4 +3220,55 @@ export class SharedService {
   openLogoutModal() {
     $('#logoutModal').modal('show');
   }
+
+  async getMenuMaster(itemSeoName: string = '') {
+    this.loading = true;
+    // this.menuCustomItemMasterModel = [];
+    // this.menuGravyItemMasterModel = [];
+    // this.menuNaanItemMasterModel = [];
+    // this.menuSizlerItemMasterModel = [];
+    // this.menuSodaItemMasterModel = [];
+    await firstValueFrom(this.userService.getMenuList(itemSeoName))
+      .then((res: any) => {
+        this.loading = false;
+        if (res.stateModel.statusCode === 200) {
+          // res.result.forEach(element => {
+          //   element.menuItemMaster.forEach(elementItem => {
+          //     if (elementItem.isItemCustom) {
+          //       this.menuCustomItemMasterModel.push(elementItem);
+          //     }
+          //     if (element.code == 'B.11' && elementItem.isAvailableForTakeaway) { //Naan Bread
+          //       this.menuNaanItemMasterModel.push(elementItem);
+          //     }
+          //     if (element.code == 'C.1' && elementItem.isAvailableForTakeaway) { //Sizlers
+          //       this.menuSizlerItemMasterModel.push(elementItem);
+          //     }
+          //     if (element.code == 'C.2' && elementItem.isAvailableForTakeaway) { //Sizlers
+          //       this.menuSodaItemMasterModel.push(elementItem);
+          //     }
+          //     if (element.categoryName.includes('Main Course') && elementItem.isAvailableForTakeaway) { //Naan Bread
+          //       this.menuGravyItemMasterModel.push(elementItem);
+          //     }
+          //     elementItem.quantity = 0;
+          //     // var obCart = this.orderDetailMaster.filter(x => x.menuItemId == elementItem.menuItemId);
+          //     // if (obCart.length > 0) {
+          //     //   elementItem.quantity = obCart[0].quantity;
+          //     // } else {
+          //     //   elementItem.quantity = 0;
+          //     // }
+          //   });
+          // });
+          this.menuCategoryMasterWithOutPModel = res.result
+            .filter(x => (x.code != CommonAppConstants.PackingCode
+              && x.code != CommonAppConstants.DeliveryCode
+              && x.code != 'C.1'
+              && x.code != 'C.2') && !x.isAvailableForChristmas);
+          this.menuCategoryMasterModel = res.result;
+        }
+        else {
+          this.showMessage(MessageType.Error, res.stateModel.successMessage);
+        }
+      });
+  }
+
 }

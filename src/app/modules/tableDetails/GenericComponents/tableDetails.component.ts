@@ -1,19 +1,16 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { EMPTY, Observable, Subscription } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 import { OnDestroy, OnInit } from 'src/app/common-imports/angular-core';
 import { NgBroadcasterService, Router, TranslateService } from 'src/app/common-imports/other-imports';
 import { LocalStorageService, LoginService, SharedService } from 'src/app/common-imports/webservices';
-import * as pbi from 'powerbi-client';
-import { CommonAppConstants } from 'src/app/constants/app.constant';
 declare const powerbi: any;
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-tableDetails',
   templateUrl: './tableDetails.component.html'
 })
 export class TableDetails implements OnInit, OnDestroy {
-
+  selectedIndex = 0;
   isUserLogin = false;
   optionRules: Subscription;
   dashboard$!: Observable<void>;
@@ -45,6 +42,7 @@ export class TableDetails implements OnInit, OnDestroy {
       this.broadcaster.emitEvent('hideSideMenu', '');
       this.router.navigate(['/login']);
     } else {
+      await this.sharedService.getMenuMaster();
       let userObject = this.sharedService.getUserDetails();
       let dashboardTitle = this.translate.instant('PageTitles.Dashboard');
       if (dashboardTitle === 'PageTitles.Dashboard') {

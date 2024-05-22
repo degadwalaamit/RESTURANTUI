@@ -366,6 +366,8 @@ export class CommonAppConstants {
   public static New = "New";
   public static Used = "Used";
   public static AutotraderCappedStatus = "CAPPED";
+  public static PackingCode = 'P.0';
+  public static DeliveryCode = 'D.0';
 }
 export class UserType {
   public static readonly WebUser = 'WebUser';
