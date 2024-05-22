@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Injectable, Injector } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { isNotNullOrUndefined } from '@microsoft/applicationinsights-core-js';
 import { TranslateService } from '@ngx-translate/core';
 import { GridOptions } from 'ag-grid-community';
@@ -22,6 +22,7 @@ import { AppConstants, ListContants } from '../../app/constants/apiUrl.constant'
 import { ApiService } from './api.service';
 import { LocalStorageService } from './local-storage.service';
 import { LoginService } from './login.service';
+import { TableMaster } from 'src/app/models/user.model';
 declare var $: any;
 
 @Injectable(
@@ -85,6 +86,10 @@ export class SharedService {
   public isDealerFormUploaded = false;
   longTextPopupContent: string = null;
   longTextPopupId: string = null;
+  public tableMaster: TableMaster = null;
+
+  public totalTableArray = new Array();
+  public totalTakeAwayTableArray = new Array();
   checkExpnadCollapseUpdate() {
     return this.checkExpandCollapse.asObservable();
   }
@@ -3201,5 +3206,13 @@ export class SharedService {
 
   hideLoader() {
     this.loading = false;
+  }
+
+  redirectUrl(url) {
+    this.routes.navigate(["/" + url]);
+  }
+
+  openLogoutModal() {
+    $('#logoutModal').modal('show');
   }
 }

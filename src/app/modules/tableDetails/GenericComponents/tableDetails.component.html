@@ -70,12 +70,12 @@
     <div class="bottom-action mt-auto">
       <div class="row gx-1">
         <div class="col">
-          <button type="button" class="w-100 btn btn-danger">
+          <button type="button" (click)="sharedService.openLogoutModal();" class="w-100 btn btn-danger">
             Sign out Admin
           </button>
         </div>
         <div class="col">
-          <button type="button" class="w-100 btn btn-success bg-opacity-75">
+          <button type="button" (click)="sharedService.redirectUrl('dashboard')" class="w-100 btn btn-success bg-opacity-75">
             POS
           </button>
         </div>

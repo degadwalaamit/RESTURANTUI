@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.loginService.userLogin(this.loginModel).subscribe(res => {
       if (res.stateModel.statusCode === 200) {
+        debugger
         if (res.result.isTempPassword) {
           this.routes.navigate(['./login/resetpassword']);
           this.localStorageService.setItem('userName', res.result.userName);
