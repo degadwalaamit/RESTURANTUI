@@ -373,3 +373,9 @@ export class UserType {
   public static readonly WebUser = 'WebUser';
   public static readonly AdminUser = 'AdminUser';
 }
+export class DynamicTypeCode {
+  public static readonly Gravity = 'gravity';
+  public static readonly Naan = 'naan';
+  public static readonly Sizler = 'sizler';
+  public static readonly Soda = 'soda';
+}

@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import { NgBroadcasterService } from 'ngx-broadcaster';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, firstValueFrom } from 'rxjs';
-import { CommonAppConstants } from 'src/app/constants/app.constant';
+import { CommonAppConstants, DynamicTypeCode, UserType } from 'src/app/constants/app.constant';
 import { L2ogConstants } from 'src/app/constants/l2og-constants';
 import { Validation } from 'src/app/constants/Validationvalue.constant';
 import { MessageType } from 'src/app/enums/message-type.enum';
@@ -23,8 +23,12 @@ import { ApiService } from './api.service';
 import { LocalStorageService } from './local-storage.service';
 import { LoginService } from './login.service';
 import { TableMaster } from 'src/app/models/user.model';
-import { MenuCategoryMasterModel } from 'src/app/models/menu.model';
+import { CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
 import { UserService } from './user.service';
+import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modules/common/app-helper-functions';
+import { OrderDetailMasterModel, OrderMasterModel } from 'src/app/models/cart.model';
+import { Guid } from 'guid-typescript';
+import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.model';
 declare var $: any;
 
 @Injectable(
@@ -76,6 +80,14 @@ export class SharedService {
   public showNextService = true;
   public menuCategoryMasterModel: MenuCategoryMasterModel[] = [];
   public menuCategoryMasterWithOutPModel: MenuCategoryMasterModel[] = [];
+  public menuCustomItemMasterModel: MenuItemMasterModel[] = [];
+  public menuGravyItemMasterModel: MenuItemMasterModel[] = [];
+  public menuNaanItemMasterModel: MenuItemMasterModel[] = [];
+  public menuSizlerItemMasterModel: MenuItemMasterModel[] = [];
+  public menuSodaItemMasterModel: MenuItemMasterModel[] = [];
+  public orderMasterModel = new OrderMasterModel();
+  public orderDetailMaster: OrderDetailMasterModel[] = [];
+  public deliveryChargeMasterModel: DeliveryChargeMasterModel[];
   currentFeaturelist = this.sendFeatureListSource.asObservable();
   public sendQuoteOverview = new Subject();
   currentQuoteOverview = this.sendQuoteOverview.asObservable();
@@ -93,6 +105,9 @@ export class SharedService {
 
   public totalTableArray = new Array();
   public totalTakeAwayTableArray = new Array();
+  public currentSelectedObject: MenuItemMasterModel = new MenuItemMasterModel();
+  public sendCartCountSubject = new Subject();
+  sendCartCountObservable = this.sendCartCountSubject.asObservable();
   checkExpnadCollapseUpdate() {
     return this.checkExpandCollapse.asObservable();
   }
@@ -289,6 +304,7 @@ export class SharedService {
     this.datepipe = injector.get<DatePipe>(DatePipe);
     this.userService = injector.get<UserService>(UserService);
     this.today = new Date();
+    this.currentSelectedObject = new MenuItemMasterModel();
   }
 
 
@@ -2714,7 +2730,7 @@ export class SharedService {
   }
 
   setCurrencySymbol() {
-    return '£';
+    return 'DKK';
   }
 
   setPercentageSymbol() {
@@ -3223,47 +3239,54 @@ export class SharedService {
 
   async getMenuMaster(itemSeoName: string = '') {
     this.loading = true;
-    // this.menuCustomItemMasterModel = [];
-    // this.menuGravyItemMasterModel = [];
-    // this.menuNaanItemMasterModel = [];
-    // this.menuSizlerItemMasterModel = [];
-    // this.menuSodaItemMasterModel = [];
+    this.menuCustomItemMasterModel = [];
+    this.menuGravyItemMasterModel = [];
+    this.menuNaanItemMasterModel = [];
+    this.menuSizlerItemMasterModel = [];
+    this.menuSodaItemMasterModel = [];
     await firstValueFrom(this.userService.getMenuList(itemSeoName))
       .then((res: any) => {
         this.loading = false;
         if (res.stateModel.statusCode === 200) {
-          // res.result.forEach(element => {
-          //   element.menuItemMaster.forEach(elementItem => {
-          //     if (elementItem.isItemCustom) {
-          //       this.menuCustomItemMasterModel.push(elementItem);
-          //     }
-          //     if (element.code == 'B.11' && elementItem.isAvailableForTakeaway) { //Naan Bread
-          //       this.menuNaanItemMasterModel.push(elementItem);
-          //     }
-          //     if (element.code == 'C.1' && elementItem.isAvailableForTakeaway) { //Sizlers
-          //       this.menuSizlerItemMasterModel.push(elementItem);
-          //     }
-          //     if (element.code == 'C.2' && elementItem.isAvailableForTakeaway) { //Sizlers
-          //       this.menuSodaItemMasterModel.push(elementItem);
-          //     }
-          //     if (element.categoryName.includes('Main Course') && elementItem.isAvailableForTakeaway) { //Naan Bread
-          //       this.menuGravyItemMasterModel.push(elementItem);
-          //     }
-          //     elementItem.quantity = 0;
-          //     // var obCart = this.orderDetailMaster.filter(x => x.menuItemId == elementItem.menuItemId);
-          //     // if (obCart.length > 0) {
-          //     //   elementItem.quantity = obCart[0].quantity;
-          //     // } else {
-          //     //   elementItem.quantity = 0;
-          //     // }
-          //   });
-          // });
-          this.menuCategoryMasterWithOutPModel = res.result
+          let resultData = res.result;
+          resultData.forEach(element => {
+            element.menuItemMaster.forEach(elementItem => {
+              if (elementItem.isItemCustom) {
+                this.menuCustomItemMasterModel.push(elementItem);
+              }
+              if (element.code == 'B.11' && elementItem.isAvailableForTakeaway) { //Naan Bread
+                this.menuNaanItemMasterModel.push(elementItem);
+              }
+              if (element.code == 'C.1' && elementItem.isAvailableForTakeaway) { //Sizlers
+                this.menuSizlerItemMasterModel.push(elementItem);
+              }
+              if (element.code == 'C.2' && elementItem.isAvailableForTakeaway) { //Sizlers
+                this.menuSodaItemMasterModel.push(elementItem);
+              }
+              if (element.categoryName.includes('Main Course') && elementItem.isAvailableForTakeaway) { //Naan Bread
+                this.menuGravyItemMasterModel.push(elementItem);
+              }
+              elementItem.quantity = 0;
+              // var obCart = this.orderDetailMaster.filter(x => x.menuItemId == elementItem.menuItemId);
+              // if (obCart.length > 0) {
+              //   elementItem.quantity = obCart[0].quantity;
+              // } else {
+              //   elementItem.quantity = 0;
+              // }
+            });
+          });
+
+          this.menuCategoryMasterWithOutPModel = resultData
             .filter(x => (x.code != CommonAppConstants.PackingCode
               && x.code != CommonAppConstants.DeliveryCode
               && x.code != 'C.1'
               && x.code != 'C.2') && !x.isAvailableForChristmas);
-          this.menuCategoryMasterModel = res.result;
+          this.menuCategoryMasterModel = resultData;
+          // if (this.menuCategoryMasterModel.length > 0) {
+          //   if (this.menuCategoryMasterModel[0].menuItemMaster.length > 0) {
+          //     this.currentSelectedObject = this.menuCategoryMasterModel[0].menuItemMaster[0];
+          //   }
+          // }
         }
         else {
           this.showMessage(MessageType.Error, res.stateModel.successMessage);
@@ -3271,4 +3294,263 @@ export class SharedService {
       });
   }
 
+  dialogBoxOpen(item: MenuItemMasterModel) {
+    // if (!this.validateDay(new Date())) {
+    //   this.showMessage(MessageType.Error, this.setLabel('AdditionalText.Invaliddate'));
+    // } else {
+    this.currentSelectedObject = null;
+    item.spicyType = '';
+    item.comment = '';
+    item.customMenuItemId = null
+    item.customItemName = '';
+    // if (item.quantity > 0) {
+    // if (item.isSpiceLevelAvailable) {
+    if (isValidObject(item.customMenuItemId)) {
+      $("#idCustomSelection").val(item.customMenuItemId);
+    } else {
+      $("#idCustomSelection").val('');
+    }
+    if (isValidObjectWithBlank(item.spicyType)) {
+      $("#spiciness").val(item.spicyType);
+      // $("input[name='spiciness'][value='" + item.spicyType + "']").prop('checked', true);
+    } else {
+      $("#spiciness").val('Mild');
+      // $("input[name='spiciness']").prop('checked', false);
+    }
+    $("#txtComment").val(item.comment);
+    if (item.noOfGrayOption != null && item.noOfGrayOption > 0) {
+      for (let i = 0; i < item.noOfGrayOption; i++) {
+        $("#idGravySelection_" + i).val('');
+        var spid = 'spiciness_' + i;
+        $("#" + spid).val('Mild');
+        // $("input[name='" + spid + "']").prop('checked', false);
+        $("#txtComment_" + i).val('');
+      }
+    }
+    if (item.noOfNaanOption != null && item.noOfNaanOption > 0) {
+      for (let i = 0; i < item.noOfNaanOption; i++) {
+        $("#idNaanSelection_" + i).val('');
+      }
+    }
+    if (item.noOfSizlerOption != null && item.noOfSizlerOption > 0) {
+      for (let i = 0; i < item.noOfSizlerOption; i++) {
+        $("#idSizlerSelection_" + i).val('');
+      }
+    }
+    if (item.noOfSodaOption != null && item.noOfSodaOption > 0) {
+      for (let i = 0; i < item.noOfSodaOption; i++) {
+        $("#idSodaSelection_" + i).val('');
+      }
+    }
+    item.customOrderItemDetailMaster = [];
+    this.currentSelectedObject = item;
+    $('#itemModal').modal('show');
+    // } else {
+    // this.addtocart(item, 1, 0)
+    // }
+    // }
+  }
+
+  addSpicy(spycyOption) {
+    spycyOption = '';
+    var x = $("#spiciness");//$("input[name='spiciness']:checked");
+    if (x.length > 0) {
+      spycyOption = $("#spiciness").val()
+      this.currentSelectedObject.spicyType = spycyOption;
+    }
+    this.currentSelectedObject.comment = $("#txtComment").val();
+
+    var selectedCustomObject = $("#idCustomSelection").val();
+    this.currentSelectedObject.customMenuItemId = null
+    this.currentSelectedObject.customItemName = '';
+
+    this.currentSelectedObject.customOrderItemDetailMaster = [];
+
+    if (selectedCustomObject != null && selectedCustomObject != 'null' && selectedCustomObject != '') {
+      var selectedCustomObjectFilter = this.menuCustomItemMasterModel
+        .filter(p => p.menuItemId == selectedCustomObject)[0];
+      this.currentSelectedObject.customMenuItemId = selectedCustomObjectFilter.menuItemId;
+      this.currentSelectedObject.customItemName = selectedCustomObjectFilter.itemName;
+    }
+
+    if (this.currentSelectedObject.noOfGrayOption != null && this.currentSelectedObject.noOfGrayOption > 0) {
+      for (let i = 0; i < this.currentSelectedObject.noOfGrayOption; i++) {
+        var selectedGrayObject = $("#idGravySelection_" + i).val();
+        if (selectedGrayObject != null && selectedGrayObject != 'null') {
+          var selectedGrayObjectFilter = this.menuGravyItemMasterModel
+            .filter(p => p.menuItemId == selectedGrayObject)[0];
+
+          let dynModel = new CustomOrderItemDetailMaster();
+          dynModel.menuItemId = this.currentSelectedObject.menuItemId;
+          dynModel.customMenuItemId = selectedGrayObjectFilter.menuItemId;
+          dynModel.customItemName = selectedGrayObjectFilter.itemName;
+          dynModel.customType = DynamicTypeCode.Gravity;
+          dynModel.customSpicyType = $("#spiciness_" + i).val(); //$("input[name='spiciness_" + i + "']:checked")[0].value;
+          dynModel.customComment = $("#txtComment_" + i).val();
+          this.currentSelectedObject.customOrderItemDetailMaster.push(dynModel);
+        }
+      }
+    }
+
+    if (this.currentSelectedObject.noOfNaanOption != null && this.currentSelectedObject.noOfNaanOption > 0) {
+      for (let i = 0; i < this.currentSelectedObject.noOfNaanOption; i++) {
+        var selectedNaanObject = $("#idNaanSelection_" + i).val();
+        if (selectedNaanObject != null && selectedNaanObject != 'null') {
+          var selectedNaanObjectFilter = this.menuNaanItemMasterModel
+            .filter(p => p.menuItemId == selectedNaanObject)[0];
+
+          let dynModel = new CustomOrderItemDetailMaster();
+          dynModel.menuItemId = this.currentSelectedObject.menuItemId;
+          dynModel.customMenuItemId = selectedNaanObjectFilter.menuItemId;
+          dynModel.customItemName = selectedNaanObjectFilter.itemName;
+          dynModel.customType = DynamicTypeCode.Naan;
+          dynModel.customSpicyType = '';
+          dynModel.customComment = '';
+          this.currentSelectedObject.customOrderItemDetailMaster.push(dynModel);
+        }
+      }
+    }
+
+    if (this.currentSelectedObject.noOfSizlerOption != null && this.currentSelectedObject.noOfSizlerOption > 0) {
+      for (let i = 0; i < this.currentSelectedObject.noOfSizlerOption; i++) {
+        var selectedSizlerObject = $("#idSizlerSelection_" + i).val();
+        if (selectedSizlerObject != null && selectedSizlerObject != 'null') {
+          var selectedSizlerObjectFilter = this.menuSizlerItemMasterModel
+            .filter(p => p.menuItemId == selectedSizlerObject)[0];
+
+          let dynModel = new CustomOrderItemDetailMaster();
+          dynModel.menuItemId = this.currentSelectedObject.menuItemId;
+          dynModel.customMenuItemId = selectedSizlerObjectFilter.menuItemId;
+          dynModel.customItemName = selectedSizlerObjectFilter.itemName;
+          dynModel.customType = DynamicTypeCode.Sizler;
+          dynModel.customSpicyType = '';
+          dynModel.customComment = '';
+          this.currentSelectedObject.customOrderItemDetailMaster.push(dynModel);
+        }
+      }
+    }
+
+    if (this.currentSelectedObject.noOfSodaOption != null && this.currentSelectedObject.noOfSodaOption > 0) {
+      for (let i = 0; i < this.currentSelectedObject.noOfSodaOption; i++) {
+        var selectedSodaObject = $("#idSodaSelection_" + i).val();
+        if (selectedSodaObject != null && selectedSodaObject != 'null') {
+          var selectedSodaObjectFilter = this.menuSodaItemMasterModel
+            .filter(p => p.menuItemId == selectedSodaObject)[0];
+
+          let dynModel = new CustomOrderItemDetailMaster();
+          dynModel.menuItemId = this.currentSelectedObject.menuItemId;
+          dynModel.customMenuItemId = selectedSodaObjectFilter.menuItemId;
+          dynModel.customItemName = selectedSodaObjectFilter.itemName;
+          dynModel.customType = DynamicTypeCode.Soda;
+          dynModel.customSpicyType = '';
+          dynModel.customComment = '';
+          this.currentSelectedObject.customOrderItemDetailMaster.push(dynModel);
+        }
+      }
+    }
+
+    this.addtocart(this.currentSelectedObject, 1, 0);
+    // this.dialogBoxOpen(this.currentSelectedObject);
+    $('#itemModal').modal('hide');
+  }
+
+  returnImageUrl(item: MenuItemMasterModel) {
+    if (item.imageMaster.length > 0 && item.imageMaster.filter(x => x.isPrimary).length > 0) {
+      return item.imageMaster.filter(x => x.isPrimary)[0].imageUrl;
+    }
+    return 'assets/images/item-img.jpg';
+  }
+
+  addtocart(itemdetails: any, isAdd, isRemove) {
+    debugger
+    if (!isRemove) {
+      var categoryObject = this.menuCategoryMasterModel.filter(x => x.menuCategoryId == itemdetails.menuCategoryId);
+      if (categoryObject.length > 0) {
+        var objOrderDetailMasterModel = new OrderDetailMasterModel();
+        objOrderDetailMasterModel.orderDetailId = Guid.create()["value"];
+        objOrderDetailMasterModel.menuCategoryId = itemdetails.menuCategoryId;
+        objOrderDetailMasterModel.categoryName = categoryObject[0].categoryName;
+        objOrderDetailMasterModel.mcode = categoryObject[0].code;
+        objOrderDetailMasterModel.menuItemId = itemdetails.menuItemId;
+        objOrderDetailMasterModel.code = itemdetails.code;
+        objOrderDetailMasterModel.itemName = itemdetails.itemName;
+        objOrderDetailMasterModel.itemDescription = itemdetails.itemDescription;
+        objOrderDetailMasterModel.isAvailableForTakeaway = itemdetails.isAvailableForTakeaway;
+        objOrderDetailMasterModel.price = itemdetails.price;
+        objOrderDetailMasterModel.quantity = itemdetails.quantity;
+        objOrderDetailMasterModel.spicyType = isValidObject(itemdetails.spicyType) ? itemdetails.spicyType : null;
+        objOrderDetailMasterModel.comment = isValidObject(itemdetails.comment) ? itemdetails.comment : null;
+        objOrderDetailMasterModel.customMenuItemId = isValidObject(itemdetails.customMenuItemId) ? itemdetails.customMenuItemId : null;
+        objOrderDetailMasterModel.customItemName = itemdetails.customItemName;
+        objOrderDetailMasterModel.imageUrl = this.returnImageUrl(itemdetails);
+        objOrderDetailMasterModel.cartSequence = 1;
+        if (itemdetails.code == CommonAppConstants.PackingCode) {
+          objOrderDetailMasterModel.cartSequence = 100;
+        }
+        if (itemdetails.code == CommonAppConstants.DeliveryCode) {
+          objOrderDetailMasterModel.cartSequence = 101;
+        }
+        objOrderDetailMasterModel.customOrderItemDetailMaster = itemdetails.customOrderItemDetailMaster;
+        this.orderDetailMaster.push(objOrderDetailMasterModel);
+      }
+    } else {
+      this.orderDetailMaster = this.orderDetailMaster
+        .filter(x => x.orderDetailId != itemdetails.orderDetailId)
+    }
+    this.setQuantityMenuItem();
+    this.sendCartCountSubject.next('');
+  }
+
+  setQuantityMenuItem() {
+    this.menuCategoryMasterModel.forEach(element => {
+      element.menuItemMaster.forEach(elementItem => {
+        elementItem.quantity = 0;
+      });
+    });
+  }
+
+  addPackingCharge() {
+    if (isValidList(this.menuCategoryMasterModel)) {
+      let itemDetails = this.menuCategoryMasterModel
+        .filter(x => x.code == CommonAppConstants.PackingCode)[0].menuItemMaster[0];
+      var existObject = this.orderDetailMaster
+        .filter(x => x.menuItemId == itemDetails.menuItemId);
+      if (existObject.length == 0) {
+        itemDetails.quantity = 1;
+        this.addtocart(itemDetails, true, false);
+      }
+    }
+  }
+
+  refreshPackingPrice() {
+    if (isValidList(this.deliveryChargeMasterModel)) {
+      let deliveryChargeObject = this.deliveryChargeMasterModel.filter(x => x.postalCode == this.orderMasterModel.addressMaster.postalCode);
+      let deliveryCharge = 0;
+      if (isValidList(deliveryChargeObject)) {
+        deliveryCharge = deliveryChargeObject[0].price;
+      }
+      this.orderMasterModel.orderDetailMaster.forEach(element => {
+        if (element.cartSequence == 101) {
+          element.price = deliveryCharge;
+        }
+      });
+    }
+  }
+
+  getOrderCalculation() {
+    this.orderMasterModel.userType = UserType.WebUser;
+    this.orderMasterModel.orderDetailMaster = this.orderDetailMaster;
+    let subAmount = 0;
+    this.refreshPackingPrice();
+    this.orderMasterModel.orderDetailMaster.forEach(element => {
+      subAmount = subAmount + (element.price * element.quantity);
+    });
+    this.orderMasterModel.subAmount = subAmount;
+    this.orderMasterModel.discountAmount = ((subAmount * this.orderMasterModel.discountPercentage) / 100);
+    this.orderMasterModel.totalAmount = this.orderMasterModel.subAmount - this.orderMasterModel.discountAmount;
+    this.orderMasterModel.isPaid = false;
+    this.orderMasterModel.orderStatus = 'Pending';
+    this.orderMasterModel.addressMaster.isActive = true;
+    this.orderMasterModel.addressMaster.isDeleted = false;
+  }
 }

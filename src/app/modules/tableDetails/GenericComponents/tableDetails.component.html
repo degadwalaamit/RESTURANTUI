@@ -1,4 +1,4 @@
-<ng-container *ngIf="dashboard$ | async"></ng-container>
+<!-- <ng-container *ngIf="dashboard$ | async"></ng-container> -->
 <div class="row gx-0" *ngIf="isUserLogin">
   <div class="col-md-7 d-flex flex-column">
     <div class="card border-0 bg-transparent">
@@ -15,7 +15,7 @@
               <ng-container *ngFor="let items of itemMasterCategory.menuItemMaster">
                 <div class="col" *ngIf="i1 == selectedIndex">
                   <div [ngClass]="i1 == selectedIndex ? ' show bg-orange ' : ' d-none '"
-                    class="text-white card food-table" type="button">
+                    class="text-white card food-table" type="button" (click)="sharedService.dialogBoxOpen(items)">
                     {{ items.code }}<br />{{ items.itemName }}</div>
                 </div>
               </ng-container>
@@ -118,7 +118,15 @@
               <th scope="col">Price</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody *ngIf="items$ | async as items">
+            <tr *ngFor="let item of items;let iconIndex=index">
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.code }}<br />{{ item.itemName }}</td>
+              <td>{{ item.price * item.quantity }}
+                {{ sharedService.setCurrencySymbol() }}</td>
+            </tr>
+          </tbody>
+          <!-- <tbody>
             <tr>
               <td>1</td>
               <td>B.8.4 Chicken Jhalfreji</td>
@@ -189,8 +197,62 @@
               <td>B.8.4 Chicken Jhalfreji</td>
               <td>119,00</td>
             </tr>
-          </tbody>
+          </tbody> -->
         </table>
+        <hr *ngIf="this.sharedService.orderMasterModel.isTakeAway" />
+        <div class="sub-total d-flex justify-content-between" *ngIf="this.sharedService.orderMasterModel.isTakeAway">
+          <h6>{{ "LabelChange.SubTotal" | translate }}</h6>
+          <h6 class="price">
+            {{ this.sharedService.orderMasterModel.subAmount }}
+            {{ sharedService.setCurrencySymbol() }}
+          </h6>
+        </div>
+        <ul class="service-charge-list d-none">
+          <li class="d-none">
+            <span class="font-medium color-dark">{{ "LabelChange.DeliveryCharge" | translate }}
+            </span>
+            <span class="price">0.00</span>
+          </li>
+          <li class="d-none">
+            <span class="font-medium color-dark">VAT (incl. 25%) </span>
+            <span class="price">34.75 DKK</span>
+          </li>
+          <li class="d-none">
+            <span class="font-medium color-dark">{{ "LabelChange.Discount" | translate }} ({{
+              this.sharedService.orderMasterModel.discountPercentage
+              }}%)
+            </span>
+            <span class="price">{{ this.sharedService.orderMasterModel.discountAmount }}
+              {{ sharedService.setCurrencySymbol() }}</span>
+          </li>
+        </ul>
+        <hr *ngIf="this.sharedService.orderMasterModel.isTakeAway" />
+        <div class="sc-total" *ngIf="this.sharedService.orderMasterModel.isTakeAway">
+          <h6>{{ "AdditionalText.Couponcode" | translate }}</h6>
+          <h6 class="price d-flex">
+            <input class="form-control" type="text" [(ngModel)]="this.sharedService.orderMasterModel.couponCode"
+              (change)="this.sharedService.verifyCouponCode()"
+              placeholder="{{ 'AdditionalText.Couponcode' | translate }}" #postalCode="ngModel" name="couponCode"
+              id="couponCode" maxlength="50" style="height: 30px;">
+            <button type="button" class="btn-close" title="{{ 'AdditionalText.RemoveCouponcode' | translate }}"
+              (click)="this.sharedService.removediscount();this.sharedService.getOrderCalculation();"></button>
+          </h6>
+        </div>
+        <div class="sc-total" *ngIf="this.sharedService.orderMasterModel.isTakeAway">
+          <h6>{{ "LabelChange.Discount" | translate }}</h6>
+          <h6 class="price">
+            {{ this.sharedService.orderMasterModel.discountAmount }}
+            {{ sharedService.setCurrencySymbol() }}
+          </h6>
+        </div>
+        <hr />
+        <div class="sc-total">
+          <h6>{{ "LabelChange.Total" | translate }}</h6>
+          <h6 class="price">
+            {{ this.sharedService.orderMasterModel.totalAmount }}
+            {{ sharedService.setCurrencySymbol() }}
+          </h6>
+        </div>
       </div>
       <div class="fs18px fw-bold mt-2 row">
         <div class="col">Unpaid: 864,00</div>
@@ -281,4 +343,6 @@
       </div>
     </div>
   </div>
+  <!-- Item Modal -->
+  <app-custommenu></app-custommenu>
 </div>
