@@ -43,6 +43,45 @@
   padding: 0;
 }
 
+.number-increment {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  border: 1px solid #ccc;
+  border-radius: 38px;
+}
+.number-increment button,
+.number-increment input {
+  outline: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+}
+.number-increment input {
+  width: 100px;
+  text-align: center;
+  text-indent: 10px;
+  border-inline: 2px solid #f6f7f9;
+}
+.number-increment button {
+  cursor: pointer;
+}
+.number-increment button:nth-last-child(1) {
+  border-bottom-right-radius: 38px;
+  border-top-right-radius: 38px;
+}
+.number-increment button:nth-child(1) {
+  border-bottom-left-radius: 38px;
+  border-top-left-radius: 38px;
+}
+.number-increment button:nth-last-child(1):active {
+  box-shadow: inset -4px 5px 10px rgba(0, 0, 0, 0.5);
+}
+.number-increment button:nth-child(1):active {
+  box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
 .loginBgImg {
   background: url("/assets/images/login-bg-img.jpg") no-repeat center center fixed;
   position: fixed;
@@ -239,9 +278,9 @@
 }
 
 .calulator-table {
-  max-height: 33vh;
+  max-height: 43vh;
 }
-@media screen and (min-height: 1023px) {
+@media only screen and (min-height: 1023px) {
   .calulator-table {
     max-height: 45vh;
   }

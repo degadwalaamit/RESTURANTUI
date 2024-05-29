@@ -32,8 +32,8 @@
   }
 }
 .calulator-table {
-  max-height: 33vh;
-  @media screen and (min-height: 1023px) {
+  max-height: 43vh;
+  @media only screen and (min-height: 1023px) {
     max-height: 45vh;
   }
 }

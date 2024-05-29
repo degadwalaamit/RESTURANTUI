@@ -29,3 +29,42 @@
     padding: 0;
   }
 }
+
+.number-increment {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  border: 1px solid #ccc;
+  border-radius: 38px;
+  button,
+  input {
+    outline: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+  }
+  input {
+    width: 100px;
+    text-align: center;
+    text-indent: 10px;
+    border-inline: 2px solid #f6f7f9;
+  }
+  button {
+    cursor: pointer;
+    &:nth-last-child(1) {
+      border-bottom-right-radius: 38px;
+      border-top-right-radius: 38px;
+    }
+    &:nth-child(1) {
+      border-bottom-left-radius: 38px;
+      border-top-left-radius: 38px;
+    }
+    &:nth-last-child(1):active {
+      box-shadow: inset -4px 5px 10px rgba(0, 0, 0, 0.5);
+    }
+    &:nth-child(1):active {
+      box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
+    }
+  }
+}
