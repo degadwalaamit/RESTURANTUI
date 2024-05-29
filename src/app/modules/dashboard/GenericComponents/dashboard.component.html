@@ -47,23 +47,20 @@
 
           <ng-container *ngFor="let tb of this.sharedService.totalTableArray; let index = index">
             <div class="col">
-              <a (click)="sharedService.redirectUrl('table-details')" class="card tables-card">
+              <a (click)="sharedService.redirectUrl('table-details', index + 1)" class="card tables-card"
+                [ngClass]="sharedService.isTableOccupied(index + 1) ? 'booked' : ''">
                 <span class="table-number">{{index + 1}}</span>
               </a>
             </div>
           </ng-container>
           <ng-container *ngFor="let tb of this.sharedService.totalTakeAwayTableArray; let index = index">
             <div class="col">
-              <a (click)="sharedService.redirectUrl('table-details')" class="card tables-card">
+              <a (click)="sharedService.redirectUrl('table-details','T' + (index + 1))" class="card tables-card"
+                [ngClass]="sharedService.isTableOccupied('T' + (index + 1)) ? 'booked' : ''">
                 <span class="table-number">T{{index + 1}}</span>
               </a>
             </div>
           </ng-container>
-          <!-- <div class="col">
-            <a href="#" class="card tables-card booked">
-              <span class="table-number">T9</span>
-            </a>
-          </div> -->
         </div>
       </div>
     </div>

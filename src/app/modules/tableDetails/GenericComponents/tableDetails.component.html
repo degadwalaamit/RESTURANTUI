@@ -81,7 +81,7 @@
           }}</span>
       </li>
       <li class="ms-auto">
-        <span class="badge text-bg-primary fs14px">Table 21</span>
+        <span class="badge text-bg-primary fs14px">Table {{this.tableId}}</span>
       </li>
     </ul>
     <div class="row row-cols-3 gx-0">
@@ -130,7 +130,7 @@
             </tr>
           </thead>
           <tbody *ngIf="items$ | async as items">
-            <tr *ngFor="let item of items; let iconIndex = index">
+            <tr *ngFor="let item of this.sharedService.orderDetailMaster; let iconIndex = index">
               <td>{{ item.quantity }}</td>
               <td>{{ item.code }}<br />{{ item.itemName }}</td>
               <td>
@@ -174,7 +174,7 @@
       </div>
       <div class="row row-cols-5 g-1 mt-1">
         <div class="col">
-          <button type="button" class="btn btn-primary">Assign to Table</button>
+          <button type="button" class="btn btn-primary" (click)="sharedService.addTableOrderDetails(this.tableId)" >Assign to Table</button>
         </div>
         <div class="col">
           <button type="button" class="btn btn-warning">Discount %</button>
@@ -224,7 +224,7 @@
           <button type="button" class="btn btn-success">Performa</button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-danger">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="sharedService.redirectUrl('dashboard')">Cancel</button>
         </div>
         <div class="col">
           <button type="button" class="btn initial btn-dark">0</button>
