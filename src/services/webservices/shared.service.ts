@@ -347,6 +347,14 @@ export class SharedService {
     return null;
   }
 
+  getUserName() {
+    let userObject = this.getUserDetails();
+    if (isNotNullOrUndefined(userObject)) {
+      return (userObject.firstName + ' ' + userObject.lastName);
+    }
+    return '';
+  }
+
   isUserLogin() {
     const userDetail = this.localStorageService.getItem('userdetails');
     if (userDetail != null && userDetail !== '' && userDetail !== undefined) {

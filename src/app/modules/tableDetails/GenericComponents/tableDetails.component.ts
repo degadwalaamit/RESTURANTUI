@@ -1,13 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { EMPTY, Observable, Subscription } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { OnDestroy, OnInit } from 'src/app/common-imports/angular-core';
 import { NgBroadcasterService, Router, TranslateService } from 'src/app/common-imports/other-imports';
-import { LocalStorageService, LoginService, SharedService } from 'src/app/common-imports/webservices';
-import * as pbi from 'powerbi-client';
-import { CommonAppConstants } from 'src/app/constants/app.constant';
-declare const powerbi: any;
+import { SharedService } from 'src/app/common-imports/webservices';
+import { OrderDetailMasterModel } from 'src/app/models/cart.model';
+import { MenuItemMasterModel } from 'src/app/models/menu.model';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './tableDetails.component.html'
@@ -24,11 +23,36 @@ export class TableDetails implements OnInit, OnDestroy {
     private titleService: Title,
     private translate: TranslateService,
     private broadcaster: NgBroadcasterService,
-    private loginService: LoginService,
-    private storage: LocalStorageService) {
+    cd: ChangeDetectorRef) {
+    setInterval(function () { cd.detectChanges(); }, 1);
+    this.items$ = new Observable(observer => {
+      setInterval(async () => {
+        this.reCalculation();
+        observer.next(this.sharedService.orderDetailMaster);
+      }, 1000);
+    });
+  }
+
+  get now(): string { return Date(); };
+
+  reCalculation() {
+    if (this.sharedService.orderDetailMaster.filter(x => x.cartSequence == 101).length > 0) {
+      this.sharedService.orderMasterModel.isTakeAway = false;
+      this.sharedService.orderMasterModel.isDelivery = true;
+    } else {
+      this.sharedService.orderMasterModel.isTakeAway = true;
+      this.sharedService.orderMasterModel.isDelivery = false;
+    }
+    // this.sharedService.addPackingCharge();
+    this.sharedService.getOrderCalculation();
+    this.sharedService.orderDetailMaster = this.sharedService.orderDetailMaster.sort((x, y) => x.cartSequence < y.cartSequence ? -1 : 1);
   }
 
   async ngOnInit() {
+    this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(() => {
+      debugger
+      //this.cartDetails();
+    })
     // this.dashboard$ = this.loginService.getDashboard().pipe(
     //   tap(t => console.log(t)),
     //   map(s => s),

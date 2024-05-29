@@ -112,7 +112,7 @@
             d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
           />
         </svg>
-        <span class="ms-1 align-middle">1.5.2024</span>
+        <span class="ms-1 align-middle">{{ now | date : "dd-MM-yyyy" }}</span>
       </li>
       <li>
         <svg
@@ -130,7 +130,7 @@
             d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"
           />
         </svg>
-        <span class="ms-1 align-middle">19.54</span>
+        <span class="ms-1 align-middle">{{ now | date : "h:mm:ss a" }}</span>
       </li>
       <li>
         <svg
@@ -145,7 +145,9 @@
             d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"
           />
         </svg>
-        <span class="ms-1 align-middle">Admin</span>
+        <span class="ms-1 align-middle">{{
+          this.sharedService.getUserName()
+        }}</span>
       </li>
       <li class="ms-auto">
         <span class="badge text-bg-primary fs14px">Table 21</span>
@@ -156,7 +158,10 @@
         <div class="bg-success p-2 text-center">
           <h6 class="text-white">Kontact</h6>
           <div class="badge text-bg-light fs18px rounded-pill fw-light">
-            864,00 kr.
+            {{
+              this.sharedService.orderMasterModel.totalAmount | number : "1.2-2"
+            }}
+            {{ sharedService.setCurrencySymbol() }}
           </div>
         </div>
       </div>
@@ -164,7 +169,10 @@
         <div class="bg-success p-2 text-center bg-opacity-75">
           <h6 class="text-white">MobilePay</h6>
           <div class="badge text-bg-light fs18px rounded-pill fw-light">
-            864,00 kr.
+            {{
+              this.sharedService.orderMasterModel.totalAmount | number : "1.2-2"
+            }}
+            {{ sharedService.setCurrencySymbol() }}
           </div>
         </div>
       </div>
@@ -172,7 +180,10 @@
         <div class="bg-opacity-75 bg-primary p-2 text-center">
           <h6 class="text-white">FlatPay</h6>
           <div class="badge text-bg-light fs18px rounded-pill fw-light">
-            864,00 kr.
+            {{
+              this.sharedService.orderMasterModel.totalAmount | number : "1.2-2"
+            }}
+            {{ sharedService.setCurrencySymbol() }}
           </div>
         </div>
       </div>
@@ -187,83 +198,33 @@
               <th scope="col">Price</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>B.8.4 Chicken Jhalfreji</td>
-              <td>119,00</td>
+          <tbody *ngIf="items$ | async as items">
+            <tr *ngFor="let item of items; let iconIndex = index">
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.code }}<br />{{ item.itemName }}</td>
+              <td>
+                {{ item.price * item.quantity | number : "1.2-2" }}
+                {{ sharedService.setCurrencySymbol() }}
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="fs18px fw-bold mt-2 row">
-        <div class="col">Unpaid: 864,00</div>
-        <div class="col-auto">Total: 864,00</div>
+        <div class="col">
+          Unpaid:
+          {{
+            this.sharedService.orderMasterModel.totalAmount | number : "1.2-2"
+          }}
+          {{ sharedService.setCurrencySymbol() }}
+        </div>
+        <div class="col-auto">
+          Total:
+          {{
+            this.sharedService.orderMasterModel.totalAmount | number : "1.2-2"
+          }}
+          {{ sharedService.setCurrencySymbol() }}
+        </div>
       </div>
     </div>
     <div class="calculator-wrap mt-auto">
