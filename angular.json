@@ -33,6 +33,7 @@
               "node_modules/ngx-toastr/toastr.css",
               "src/styles.css",
               "src/assets/theme/bootstrap.min.css",
+              "src/assets/fonts/fontawesome/css/all.min.css",
               "node_modules/ag-grid-community/dist/styles/ag-grid.css",
               "node_modules/ag-grid-community/dist/styles/ag-theme-balham.css",
               "node_modules/owl.carousel/dist/assets/owl.carousel.css",
