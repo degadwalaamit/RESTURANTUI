@@ -25,11 +25,10 @@ import { LoginService } from './login.service';
 import { TableMaster } from 'src/app/models/user.model';
 import { CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
 import { UserService } from './user.service';
-import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modules/common/app-helper-functions';
-import { OrderDetailMasterModel, OrderMasterModel } from 'src/app/models/cart.model';
 import { Guid } from 'guid-typescript';
+import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modules/common/app-helper-functions';
+import { OrderDetailMasterModel, OrderMasterModel, TableOrderDetails } from 'src/app/models/cart.model';
 import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.model';
-import { TableOrderDetails } from 'src/app/models/cart.model';
 declare var $: any;
 
 @Injectable(
