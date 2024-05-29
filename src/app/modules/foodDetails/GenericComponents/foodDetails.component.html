@@ -1,0 +1,347 @@
+<ng-container *ngIf="dashboard$ | async"></ng-container>
+<div class="row gx-0" *ngIf="isUserLogin">
+  <div class="col-md-7 d-flex flex-column">
+    <div class="card border-0 bg-transparent">
+      <div class="card-body">
+        <div class="number-increment">
+          <button id="decrement" type="button" class="btn-iceblue">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-dash-lg"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"
+              />
+            </svg>
+          </button>
+          <input
+            type="number"
+            id="input"
+            placeholder="0"
+            minlength="0"
+            maxlength="10"
+            class="bg-blue text-white"
+            readonly
+          />
+          <button id="increment" type="button" class="btn-iceblue">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-plus-lg"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+              />
+            </svg>
+          </button>
+        </div>
+        <h3 class="d-inline-flex ms-2">Butter Lam to Cart</h3>
+      </div>
+    </div>
+    <div class="bottom-action mt-auto">
+      <div class="row gx-1">
+        <div class="col">
+          <button type="button" class="w-100 btn btn-danger">
+            Sign out Admin
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="w-100 btn btn-success bg-opacity-75">
+            POS
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="w-100 btn btn-secondary">
+            Dispatches
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="w-100 btn btn-secondary">Admin</button>
+        </div>
+        <div class="col">
+          <button type="button" class="w-100 btn btn-success">
+            Print Previous
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-5 d-flex flex-column border-start min-vh-100">
+    <ul
+      class="d-flex align-items-center bg-secondary text-white list-unstyled p-2 m-0 gap-3"
+    >
+      <li>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-calendar"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
+          />
+        </svg>
+        <span class="ms-1 align-middle">1.5.2024</span>
+      </li>
+      <li>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-clock"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"
+          />
+          <path
+            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"
+          />
+        </svg>
+        <span class="ms-1 align-middle">19.54</span>
+      </li>
+      <li>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-person"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"
+          />
+        </svg>
+        <span class="ms-1 align-middle">Admin</span>
+      </li>
+      <li class="ms-auto">
+        <span class="badge text-bg-primary fs14px">Table 21</span>
+      </li>
+    </ul>
+    <div class="row row-cols-3 gx-0">
+      <div class="col">
+        <div class="bg-success p-2 text-center">
+          <h6 class="text-white">Kontact</h6>
+          <div class="badge text-bg-light fs18px rounded-pill fw-light">
+            864,00 kr.
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="bg-success p-2 text-center bg-opacity-75">
+          <h6 class="text-white">MobilePay</h6>
+          <div class="badge text-bg-light fs18px rounded-pill fw-light">
+            864,00 kr.
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="bg-opacity-75 bg-primary p-2 text-center">
+          <h6 class="text-white">FlatPay</h6>
+          <div class="badge text-bg-light fs18px rounded-pill fw-light">
+            864,00 kr.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-3">
+      <div class="table-responsive calulator-table">
+        <table class="table table-striped table-hover mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Qty</th>
+              <th scope="col">Product</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>B.8.4 Chicken Jhalfreji</td>
+              <td>119,00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fs18px fw-bold mt-2 row">
+        <div class="col">Unpaid: 864,00</div>
+        <div class="col-auto">Total: 864,00</div>
+      </div>
+    </div>
+    <div class="calculator-wrap mt-auto">
+      <div class="row gx-1">
+        <div class="col">
+          <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="000000"
+            readonly
+          />
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-secondary">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-x-lg"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn initial btn-secondary">C</button>
+        </div>
+      </div>
+      <div class="row row-cols-5 g-1 mt-1">
+        <div class="col">
+          <button type="button" class="btn btn-primary">Assign to Table</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-warning">Discount %</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">1</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">2</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">3</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-light pointer-none">
+            &nbsp;
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-warning">Open Drawer</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">4</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">5</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">6</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-primary">Split</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-warning">Refund</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">7</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">8</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">9</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-success">Performa</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger">Cancel</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">0</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn initial btn-dark">,</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-blue">PLU</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

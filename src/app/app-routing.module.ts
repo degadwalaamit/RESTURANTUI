@@ -23,6 +23,11 @@ const routes: Routes = [
     canActivate: [LoginAuthGuard]
   },
   {
+    path: 'food-details',
+    loadChildren: () => import('./modules/foodDetails/foodDetails.module').then(m => m.foodDetails),
+    canActivate: [LoginAuthGuard]
+  },
+  {
     path: 'user',
     loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule),
     canActivate: [LoginAuthGuard]
