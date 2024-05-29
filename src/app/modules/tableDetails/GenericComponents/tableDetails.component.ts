@@ -48,19 +48,6 @@ export class TableDetails implements OnInit, OnDestroy {
     this.sharedService.orderDetailMaster = this.sharedService.orderDetailMaster.sort((x, y) => x.cartSequence < y.cartSequence ? -1 : 1);
   }
 
-  reCalculation() {
-    if (this.sharedService.orderDetailMaster.filter(x => x.cartSequence == 101).length > 0) {
-      this.sharedService.orderMasterModel.isTakeAway = false;
-      this.sharedService.orderMasterModel.isDelivery = true;
-    } else {
-      this.sharedService.orderMasterModel.isTakeAway = true;
-      this.sharedService.orderMasterModel.isDelivery = false;
-    }
-    this.sharedService.addPackingCharge();
-    this.sharedService.getOrderCalculation();
-    this.sharedService.orderDetailMaster = this.sharedService.orderDetailMaster.sort((x, y) => x.cartSequence < y.cartSequence ? -1 : 1);
-  }
-
   async ngOnInit() {
     this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(() => {
       debugger

@@ -29,6 +29,7 @@ import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modu
 import { OrderDetailMasterModel, OrderMasterModel } from 'src/app/models/cart.model';
 import { Guid } from 'guid-typescript';
 import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.model';
+import { TableOrderDetails } from 'src/app/models/cart.model';
 declare var $: any;
 
 @Injectable(
@@ -108,6 +109,7 @@ export class SharedService {
   public currentSelectedObject: MenuItemMasterModel = new MenuItemMasterModel();
   public sendCartCountSubject = new Subject();
   sendCartCountObservable = this.sendCartCountSubject.asObservable();
+  public tableOrderDetailModel: TableOrderDetails[] = [];
   checkExpnadCollapseUpdate() {
     return this.checkExpandCollapse.asObservable();
   }

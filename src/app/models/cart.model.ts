@@ -20,6 +20,19 @@ export class RequestOrderListModel implements ClassName {
     return this.constructor.name;
   }
 }
+
+export class TableOrderDetails implements ClassName {
+  tableId: number;
+  orderMaster: OrderMasterModel = new OrderMasterModel();
+  toClassName(): string {
+    return this.constructor.name;
+  }
+  toComponentName(): string {
+    return this.constructor.name;
+  }
+}
+
+
 export class OrderMasterModel implements ClassName {
   userId: Guid;
   userType = '';
@@ -36,8 +49,8 @@ export class OrderMasterModel implements ClassName {
   orderStatus = '';
 
   orderNo = 0;
-  isTakeAway = true;
-  isDelivery = false;
+  isTakeAway = false;
+  isDelivery = true;
   takeAwayTime = '';
   message = '';
   addressId: Guid | null;
