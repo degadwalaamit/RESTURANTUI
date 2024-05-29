@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Observable, Subscription } from 'rxjs';
+import { EMPTY, Observable, Subscription } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { OnDestroy, OnInit } from 'src/app/common-imports/angular-core';
 import { NgBroadcasterService, Router, TranslateService } from 'src/app/common-imports/other-imports';
-import { SharedService } from 'src/app/common-imports/webservices';
-import { isNullOrUndefined } from 'util';
-declare var $: any;
+import { LocalStorageService, LoginService, SharedService } from 'src/app/common-imports/webservices';
+import * as pbi from 'powerbi-client';
+import { CommonAppConstants } from 'src/app/constants/app.constant';
+declare const powerbi: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html'
@@ -15,16 +17,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isUserLogin = false;
   optionRules: Subscription;
   dashboard$!: Observable<void>;
+
   constructor(
     public sharedService: SharedService,
     private router: Router,
     private titleService: Title,
     private translate: TranslateService,
-    private broadcaster: NgBroadcasterService) {
+    private broadcaster: NgBroadcasterService,
+    private loginService: LoginService,
+    private storage: LocalStorageService) {
   }
 
   async ngOnInit() {
-
+    // this.dashboard$ = this.loginService.getDashboard().pipe(
+    //   tap(t => console.log(t)),
+    //   map(s => s),
+    //   catchError(err => {
+    //     if (err.status === 401) {
+    //       this.broadcaster.emitEvent('sessionexpire', '');
+    //       window.location.href = '/login';
+    //     }
+    //     return EMPTY;
+    //   }));
 
     this.isUserLogin = this.sharedService.isUserLogin();
     if (!this.isUserLogin) {
@@ -37,17 +51,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         dashboardTitle = 'Welcome';
       } else {
         this.titleService.setTitle(this.translate.instant('PageTitles.Dashboard',
-          { userName: userObject.firstName + ' ' + userObject.lastName || '' }));
-      }
-      // table details
-      this.sharedService.tableMaster = null;
-      this.sharedService.totalTableArray = null;
-        this.sharedService.totalTakeAwayTableArray = null;
-      if (!isNullOrUndefined(userObject.tableMaster) && userObject.tableMaster.length > 0) {
-        this.sharedService.tableMaster = userObject.tableMaster[0];
-
-        this.sharedService.totalTableArray = new Array(this.sharedService.tableMaster.tableNo);
-        this.sharedService.totalTakeAwayTableArray = new Array(this.sharedService.tableMaster.takeAwayTableNo);
+          { userName: userObject.firstName + ' '+ userObject.lastName || '' }));
       }
     }
     this.optionRules = this.broadcaster.listen('islogin').subscribe(response => {
@@ -59,5 +63,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.optionRules) {
       this.optionRules.unsubscribe();
     }
-  }  
+  }
 }

@@ -366,16 +366,8 @@ export class CommonAppConstants {
   public static New = "New";
   public static Used = "Used";
   public static AutotraderCappedStatus = "CAPPED";
-  public static PackingCode = 'P.0';
-  public static DeliveryCode = 'D.0';
 }
 export class UserType {
   public static readonly WebUser = 'WebUser';
   public static readonly AdminUser = 'AdminUser';
-}
-export class DynamicTypeCode {
-  public static readonly Gravity = 'gravity';
-  public static readonly Naan = 'naan';
-  public static readonly Sizler = 'sizler';
-  public static readonly Soda = 'soda';
 }

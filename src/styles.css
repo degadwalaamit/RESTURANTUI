@@ -3251,26 +3251,3 @@ body .show>.btn-outline-primary.dropdown-toggle {
 .lh16px {
   line-height: 16px;
 }
-.quantity-input {
-  display: flex;
-  align-items: center;
-}
-.quantity-input .qty-btn {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  padding: 0;
-  width: 35px;
-  height: 35px;
-  border: 1px solid var(--border-color);
-  color: var(--text-dark);
-}
-.quantity-input input {
-  height: 35px;
-  width: 50px;
-  text-align: center;
-  border: 1px solid var(--border-color);
-  border-inline: unset;
-  background-color: transparent;
-}

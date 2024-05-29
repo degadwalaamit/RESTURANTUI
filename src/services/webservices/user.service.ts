@@ -12,14 +12,7 @@ export class UserService {
   constructor(private apiService: ApiService) { }
 
   getUserList(): Observable<any> {
-    return this.apiService.post(UserConstant.GetUserList, "");
-  }
-
-  getMenuList(itemSeoName: string) {
-    // if (!isValidObjectWithBlank(itemSeoName)) {
-    itemSeoName = 'all';
-    // }
-    return this.apiService.get(UserConstant.GetMenuList + "/" + itemSeoName);
+    return this.apiService.post(UserConstant.GetUserList,"");
   }
 
   // addUser(user: UserModel) {

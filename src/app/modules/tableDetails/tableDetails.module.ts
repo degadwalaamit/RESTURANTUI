@@ -5,18 +5,14 @@ import { TableDetails } from './GenericComponents/tableDetails.component';
 import { ExternalSharedModule } from 'src/app/external-shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppCommonModule } from '../common/app-common/app-common.module';
-import { CustomMenuComponent } from './custommenu/custommenu.component';
-import { CustomMenuParentComponent } from './custommenuparent/custommenuparent.component';
-import { FormsModule } from '@angular/forms';
 @NgModule({
-  declarations: [TableDetails, CustomMenuParentComponent, CustomMenuComponent],
+  declarations: [TableDetails],
   imports: [
     CommonModule,
     TableDetailsRoutingModule,
     TranslateModule,
     ExternalSharedModule,
-    AppCommonModule,
-    FormsModule
+    AppCommonModule
   ]
 })
 export class tableDetails { }
