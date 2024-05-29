@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs';
 import { OnDestroy, OnInit } from 'src/app/common-imports/angular-core';
 import { NgBroadcasterService, Router, TranslateService } from 'src/app/common-imports/other-imports';
-import { LocalStorageService, LoginService, SharedService } from 'src/app/common-imports/webservices';
+import { SharedService } from 'src/app/common-imports/webservices';
 import { OrderDetailMasterModel } from 'src/app/models/cart.model';
 import { MenuItemMasterModel } from 'src/app/models/menu.model';
-declare const powerbi: any;
 @Component({
   selector: 'app-tableDetails',
   templateUrl: './tableDetails.component.html'
@@ -24,8 +23,8 @@ export class TableDetails implements OnInit, OnDestroy {
     private titleService: Title,
     private translate: TranslateService,
     private broadcaster: NgBroadcasterService,
-    private loginService: LoginService,
-    private storage: LocalStorageService) {
+    cd: ChangeDetectorRef) {
+    setInterval(function () { cd.detectChanges(); }, 1);
     this.items$ = new Observable(observer => {
       setInterval(async () => {
         this.reCalculation();
@@ -33,6 +32,8 @@ export class TableDetails implements OnInit, OnDestroy {
       }, 1000);
     });
   }
+
+  get now(): string { return Date(); };
 
   reCalculation() {
     if (this.sharedService.orderDetailMaster.filter(x => x.cartSequence == 101).length > 0) {
@@ -42,13 +43,13 @@ export class TableDetails implements OnInit, OnDestroy {
       this.sharedService.orderMasterModel.isTakeAway = true;
       this.sharedService.orderMasterModel.isDelivery = false;
     }
-    this.sharedService.addPackingCharge();
+    // this.sharedService.addPackingCharge();
     this.sharedService.getOrderCalculation();
     this.sharedService.orderDetailMaster = this.sharedService.orderDetailMaster.sort((x, y) => x.cartSequence < y.cartSequence ? -1 : 1);
   }
 
   async ngOnInit() {
-    this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(res => {
+    this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(() => {
       debugger
       //this.cartDetails();
     })
