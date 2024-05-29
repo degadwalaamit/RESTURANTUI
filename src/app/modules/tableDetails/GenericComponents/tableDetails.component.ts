@@ -1,23 +1,23 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { EMPTY, Observable, Subscription } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 import { OnDestroy, OnInit } from 'src/app/common-imports/angular-core';
 import { NgBroadcasterService, Router, TranslateService } from 'src/app/common-imports/other-imports';
 import { LocalStorageService, LoginService, SharedService } from 'src/app/common-imports/webservices';
-import * as pbi from 'powerbi-client';
-import { CommonAppConstants } from 'src/app/constants/app.constant';
+import { OrderDetailMasterModel } from 'src/app/models/cart.model';
+import { MenuItemMasterModel } from 'src/app/models/menu.model';
 declare const powerbi: any;
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-tableDetails',
   templateUrl: './tableDetails.component.html'
 })
 export class TableDetails implements OnInit, OnDestroy {
-
+  selectedIndex = 0;
   isUserLogin = false;
   optionRules: Subscription;
+  anotherSubscription: Subscription;
   dashboard$!: Observable<void>;
-
+  items$: Observable<OrderDetailMasterModel[]>;
   constructor(
     public sharedService: SharedService,
     private router: Router,
@@ -26,9 +26,32 @@ export class TableDetails implements OnInit, OnDestroy {
     private broadcaster: NgBroadcasterService,
     private loginService: LoginService,
     private storage: LocalStorageService) {
+    this.items$ = new Observable(observer => {
+      setInterval(async () => {
+        this.reCalculation();
+        observer.next(this.sharedService.orderDetailMaster);
+      }, 1000);
+    });
+  }
+
+  reCalculation() {
+    if (this.sharedService.orderDetailMaster.filter(x => x.cartSequence == 101).length > 0) {
+      this.sharedService.orderMasterModel.isTakeAway = false;
+      this.sharedService.orderMasterModel.isDelivery = true;
+    } else {
+      this.sharedService.orderMasterModel.isTakeAway = true;
+      this.sharedService.orderMasterModel.isDelivery = false;
+    }
+    this.sharedService.addPackingCharge();
+    this.sharedService.getOrderCalculation();
+    this.sharedService.orderDetailMaster = this.sharedService.orderDetailMaster.sort((x, y) => x.cartSequence < y.cartSequence ? -1 : 1);
   }
 
   async ngOnInit() {
+    this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(res => {
+      debugger
+      //this.cartDetails();
+    })
     // this.dashboard$ = this.loginService.getDashboard().pipe(
     //   tap(t => console.log(t)),
     //   map(s => s),
@@ -39,19 +62,20 @@ export class TableDetails implements OnInit, OnDestroy {
     //     }
     //     return EMPTY;
     //   }));
-
+    this.sharedService.currentSelectedObject = new MenuItemMasterModel();
     this.isUserLogin = this.sharedService.isUserLogin();
     if (!this.isUserLogin) {
       this.broadcaster.emitEvent('hideSideMenu', '');
       this.router.navigate(['/login']);
     } else {
+      await this.sharedService.getMenuMaster();
       let userObject = this.sharedService.getUserDetails();
       let dashboardTitle = this.translate.instant('PageTitles.Dashboard');
       if (dashboardTitle === 'PageTitles.Dashboard') {
         dashboardTitle = 'Welcome';
       } else {
         this.titleService.setTitle(this.translate.instant('PageTitles.Dashboard',
-          { userName: userObject.firstName + ' '+ userObject.lastName || '' }));
+          { userName: userObject.firstName + ' ' + userObject.lastName || '' }));
       }
     }
     this.optionRules = this.broadcaster.listen('islogin').subscribe(response => {
@@ -62,6 +86,9 @@ export class TableDetails implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.optionRules) {
       this.optionRules.unsubscribe();
+    }
+    if (this.anotherSubscription) {
+      this.anotherSubscription.unsubscribe();
     }
   }
 }

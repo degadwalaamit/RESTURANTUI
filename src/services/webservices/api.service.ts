@@ -121,13 +121,13 @@ export class ApiService {
                 catchError((error: Response) => observableThrowError(this.errorHandler(error))));
     }
 
-    public getBlob(url: string, params: RequestParameter[] = []): Observable<Blob> {
-        return this.http.get(url, { headers: this.getBlobAuthHeader('application/vnd.ms-excel'), responseType: 'blob' }).pipe(
-            map(
-                (res) => {
-                    return new Blob([res], { type: 'application/vnd.ms-excel' });
-                }));
-    }
+    // public getBlob(url: string, params: RequestParameter[] = []): Observable<Blob> {
+    //     return this.http.get(url, { headers: this.getBlobAuthHeader('application/vnd.ms-excel'), responseType: 'blob' }).pipe(
+    //         map(
+    //             (res) => {
+    //                 return new Blob([res], { type: 'application/vnd.ms-excel' });
+    //             }));
+    // }
 
     public postfile(url: string, params: any): Observable<any> {
         return this.http

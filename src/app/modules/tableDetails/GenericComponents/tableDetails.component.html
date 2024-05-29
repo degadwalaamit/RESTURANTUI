@@ -1,69 +1,26 @@
-<ng-container *ngIf="dashboard$ | async"></ng-container>
+<!-- <ng-container *ngIf="dashboard$ | async"></ng-container> -->
 <div class="row gx-0" *ngIf="isUserLogin">
   <div class="col-md-7 d-flex flex-column">
     <div class="card border-0 bg-transparent">
       <div class="card-body d-flex flex-column food-table-wrap">
-        <div
-          class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 gy-4"
-        >
-          <div class="col">
-            <div class="bg-secondary-subtle card food-table">
-              B.1-2 Starters
-            </div>
+        <div class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 gy-4"
+          *ngIf="sharedService.menuCategoryMasterWithOutPModel && sharedService.menuCategoryMasterWithOutPModel.length > 0">
+          <div class="col" *ngFor="let item of sharedService.menuCategoryMasterWithOutPModel;let i = index">
+            <div class="text-white card food-table" [ngClass]="i == selectedIndex ? 'bg-secondary-subtle' : 'bg-blue'"
+              (click)="selectedIndex = i" type="button">
+              {{item.code}}<br />{{item.categoryName }}</div>
           </div>
-          <div class="col">
-            <div class="bg-blue text-white card food-table">B.3 Sizzlers</div>
-          </div>
-          <div class="col">
-            <div class="bg-blue text-white card food-table">B.4 Soup</div>
-          </div>
-          <div class="col">
-            <div class="bg-blue text-white card food-table">
-              B.5 Veg main course
-            </div>
-          </div>
-          <div class="col">
-            <div class="bg-success text-white card food-table">
-              B.1-2 Starters
-            </div>
-          </div>
-          <div class="col">
-            <div class="bg-success text-white card food-table">
-              B.1-2 Starters
-            </div>
-          </div>
-          <div class="col">
-            <div class="bg-success text-white card food-table">
-              B.1-2 Starters
-            </div>
-          </div>
-          <div class="col">
-            <div class="bg-blue text-white card food-table">B.3 Sizzlers</div>
-          </div>
-          <div class="col">
-            <div class="bg-blue text-white card food-table">B.4 Soup</div>
-          </div>
-          <div class="col">
-            <div class="bg-blue text-white card food-table">
-              B.5 Veg main course
-            </div>
-          </div>
-          <div class="col">
-            <div class="bg-orange text-white card food-table">
-              B.1-2 Starters
-            </div>
-          </div>
-          <div class="col">
-            <div class="bg-orange text-white card food-table">B.3 Sizzlers</div>
-          </div>
-          <div class="col">
-            <div class="bg-orange text-white card food-table">B.4 Soup</div>
-          </div>
-          <div class="col">
-            <div class="bg-orange text-white card food-table">
-              B.5 Veg main course
-            </div>
-          </div>
+          <ng-container *ngFor="let itemMasterCategory of sharedService.menuCategoryMasterWithOutPModel;let i1 = index">
+            <ng-container *ngIf="itemMasterCategory.menuItemMaster && itemMasterCategory.menuItemMaster.length > 0">
+              <ng-container *ngFor="let items of itemMasterCategory.menuItemMaster">
+                <div class="col" *ngIf="i1 == selectedIndex">
+                  <div [ngClass]="i1 == selectedIndex ? ' show bg-orange ' : ' d-none '"
+                    class="text-white card food-table" type="button" (click)="sharedService.dialogBoxOpen(items)">
+                    {{ items.code }}<br />{{ items.itemName }}</div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -96,54 +53,28 @@
     </div>
   </div>
   <div class="col-md-5 d-flex flex-column border-start min-vh-100">
-    <ul
-      class="d-flex align-items-center bg-secondary text-white list-unstyled p-2 m-0 gap-3"
-    >
+    <ul class="d-flex align-items-center bg-secondary text-white list-unstyled p-2 m-0 gap-3">
       <li>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-calendar"
-          viewBox="0 0 16 16"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar"
+          viewBox="0 0 16 16">
           <path
-            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
-          />
+            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
         </svg>
         <span class="ms-1 align-middle">1.5.2024</span>
       </li>
       <li>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-clock"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"
-          />
-          <path
-            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock"
+          viewBox="0 0 16 16">
+          <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
         </svg>
         <span class="ms-1 align-middle">19.54</span>
       </li>
       <li>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-person"
-          viewBox="0 0 16 16"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person"
+          viewBox="0 0 16 16">
           <path
-            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"
-          />
+            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
         </svg>
         <span class="ms-1 align-middle">Admin</span>
       </li>
@@ -187,7 +118,15 @@
               <th scope="col">Price</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody *ngIf="items$ | async as items">
+            <tr *ngFor="let item of items;let iconIndex=index">
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.code }}<br />{{ item.itemName }}</td>
+              <td>{{ item.price * item.quantity }}
+                {{ sharedService.setCurrencySymbol() }}</td>
+            </tr>
+          </tbody>
+          <!-- <tbody>
             <tr>
               <td>1</td>
               <td>B.8.4 Chicken Jhalfreji</td>
@@ -258,8 +197,62 @@
               <td>B.8.4 Chicken Jhalfreji</td>
               <td>119,00</td>
             </tr>
-          </tbody>
+          </tbody> -->
         </table>
+        <hr *ngIf="this.sharedService.orderMasterModel.isTakeAway" />
+        <div class="sub-total d-flex justify-content-between" *ngIf="this.sharedService.orderMasterModel.isTakeAway">
+          <h6>{{ "LabelChange.SubTotal" | translate }}</h6>
+          <h6 class="price">
+            {{ this.sharedService.orderMasterModel.subAmount }}
+            {{ sharedService.setCurrencySymbol() }}
+          </h6>
+        </div>
+        <ul class="service-charge-list d-none">
+          <li class="d-none">
+            <span class="font-medium color-dark">{{ "LabelChange.DeliveryCharge" | translate }}
+            </span>
+            <span class="price">0.00</span>
+          </li>
+          <li class="d-none">
+            <span class="font-medium color-dark">VAT (incl. 25%) </span>
+            <span class="price">34.75 DKK</span>
+          </li>
+          <li class="d-none">
+            <span class="font-medium color-dark">{{ "LabelChange.Discount" | translate }} ({{
+              this.sharedService.orderMasterModel.discountPercentage
+              }}%)
+            </span>
+            <span class="price">{{ this.sharedService.orderMasterModel.discountAmount }}
+              {{ sharedService.setCurrencySymbol() }}</span>
+          </li>
+        </ul>
+        <hr *ngIf="this.sharedService.orderMasterModel.isTakeAway" />
+        <div class="sc-total" *ngIf="this.sharedService.orderMasterModel.isTakeAway">
+          <h6>{{ "AdditionalText.Couponcode" | translate }}</h6>
+          <h6 class="price d-flex">
+            <input class="form-control" type="text" [(ngModel)]="this.sharedService.orderMasterModel.couponCode"
+              (change)="this.sharedService.verifyCouponCode()"
+              placeholder="{{ 'AdditionalText.Couponcode' | translate }}" #postalCode="ngModel" name="couponCode"
+              id="couponCode" maxlength="50" style="height: 30px;">
+            <button type="button" class="btn-close" title="{{ 'AdditionalText.RemoveCouponcode' | translate }}"
+              (click)="this.sharedService.removediscount();this.sharedService.getOrderCalculation();"></button>
+          </h6>
+        </div>
+        <div class="sc-total" *ngIf="this.sharedService.orderMasterModel.isTakeAway">
+          <h6>{{ "LabelChange.Discount" | translate }}</h6>
+          <h6 class="price">
+            {{ this.sharedService.orderMasterModel.discountAmount }}
+            {{ sharedService.setCurrencySymbol() }}
+          </h6>
+        </div>
+        <hr />
+        <div class="sc-total">
+          <h6>{{ "LabelChange.Total" | translate }}</h6>
+          <h6 class="price">
+            {{ this.sharedService.orderMasterModel.totalAmount }}
+            {{ sharedService.setCurrencySymbol() }}
+          </h6>
+        </div>
       </div>
       <div class="fs18px fw-bold mt-2 row">
         <div class="col">Unpaid: 864,00</div>
@@ -269,27 +262,14 @@
     <div class="calculator-wrap mt-auto">
       <div class="row gx-1">
         <div class="col">
-          <input
-            type="text"
-            class="form-control"
-            value=""
-            placeholder="000000"
-            readonly
-          />
+          <input type="text" class="form-control" value="" placeholder="000000" readonly />
         </div>
         <div class="col-auto">
           <button type="button" class="btn btn-secondary">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="currentColor"
-              class="bi bi-x-lg"
-              viewBox="0 0 16 16"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-lg"
+              viewBox="0 0 16 16">
               <path
-                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
-              />
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
             </svg>
           </button>
         </div>
@@ -363,4 +343,6 @@
       </div>
     </div>
   </div>
+  <!-- Item Modal -->
+  <app-custommenu></app-custommenu>
 </div>

@@ -46,18 +46,7 @@ export class CommonConstants extends AppConstants {
 export class UserConstant extends AppConstants {
   public static LoginUser = AppConstants.BaseApiUrl + 'User/LoginUser';
   public static GetUserList = AppConstants.BaseApiUrl + 'User/GetUserList';
-  // public static AddUser = AppConstants.BaseApiUrl + 'User/AddUser';
-  // public static UpdateUser = AppConstants.BaseApiUrl + 'User/UpdateUser';
-  // public static GetUserDetails = AppConstants.BaseApiUrl + 'User/UserDetail';
-  // public static GetUserDetail = AppConstants.BaseApiUrl + 'User/GetUser';
-  // public static DeleteUserAddress = AppConstants.BaseApiUrl + 'user/DeleteUserAddress';
-  // public static GetUserType = AppConstants.BaseApiUrl + 'user/GetUserType';
-  // public static GetUserRolesByUserType = AppConstants.BaseApiUrl + 'User/GetUserRolesByUserType';
-  // public static UpdateUserStatus = AppConstants.BaseApiUrl + 'User/UpdateUserStatus';
-  // public static GetUserStatus = AppConstants.BaseApiUrl + 'User/GetUserStatus';
-  // public static GetAddressType = AppConstants.BaseApiUrl + 'User/GetAddressType';
-  // public static GetUsersByFeatureRole = AppConstants.BaseApiUrl + 'User/GetUsersByFeatureRole';
-  // public static GetUserByRole = AppConstants.BaseApiUrl + 'User/GetUsersByRoleId';
+  public static GetMenuList =  AppConstants.BaseApiUrl + 'user/GetMenuList';
 }
 
 export class ResturantConstant extends AppConstants {
@@ -70,4 +59,8 @@ export class GridConstant extends AppConstants {
   public static AddGridFavoriteSearch = AppConstants.BaseApiUrl + 'GridFavouriteSearch/AddGridFavoriteSearch';
   public static UpdateGridFavoriteSearch = AppConstants.BaseApiUrl + 'GridFavouriteSearch/UpdateGridFavoriteSearch';
   public static DeleteGridFavoriteSearchById = AppConstants.BaseApiUrl + 'GridFavouriteSearch/DeleteGridFavoriteSearchById';
+}
+
+export class TableConstant extends AppConstants {
+  public static GetTableMasterList = AppConstants.BaseApiUrl + 'TableMaster/GetTableMasterList';
 }

@@ -4,9 +4,7 @@
     <div class="d-flex flex-column flex-fill h-100 p-3">
       <ul class="navbar-nav flex-column mb-4">
         <li class="nav-item">
-          <p
-            class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center"
-          >
+          <p class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center">
             area
           </p>
           <a class="nav-link active" href="#"> Restaurent </a>
@@ -14,9 +12,7 @@
       </ul>
       <ul class="navbar-nav flex-column">
         <li class="nav-item">
-          <p
-            class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center"
-          >
+          <p class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center">
             mode
           </p>
           <a class="nav-link active" href="#"> Open Table </a>
@@ -36,10 +32,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a
-            class="rounded-pill py-4 btn btn-danger w-100 text-center"
-            href="#"
-          >
+          <a class="rounded-pill py-4 btn btn-danger w-100 text-center" (click)="sharedService.openLogoutModal();">
             Sign out admin
           </a>
         </li>
@@ -49,69 +42,28 @@
   <div class="col">
     <div class="card">
       <div class="card-body min-vh-100">
-        <div
-          class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 gy-4"
-        >
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T1</span>
-            </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T2</span>
-            </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T3</span>
-            </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T4</span>
-            </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card booked">
-              <span class="table-number">T5</span>
-            </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T6</span>
-            </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T7</span>
-            </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T8</span>
-            </a>
-          </div>
-          <div class="col">
+        <div class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 gy-4"
+          *ngIf="this.sharedService.tableMaster != null">
+
+          <ng-container *ngFor="let tb of this.sharedService.totalTableArray; let index = index">
+            <div class="col">
+              <a (click)="sharedService.redirectUrl('table-details')" class="card tables-card">
+                <span class="table-number">{{index + 1}}</span>
+              </a>
+            </div>
+          </ng-container>
+          <ng-container *ngFor="let tb of this.sharedService.totalTakeAwayTableArray; let index = index">
+            <div class="col">
+              <a (click)="sharedService.redirectUrl('table-details')" class="card tables-card">
+                <span class="table-number">T{{index + 1}}</span>
+              </a>
+            </div>
+          </ng-container>
+          <!-- <div class="col">
             <a href="#" class="card tables-card booked">
               <span class="table-number">T9</span>
             </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T10</span>
-            </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T11</span>
-            </a>
-          </div>
-          <div class="col">
-            <a href="#" class="card tables-card">
-              <span class="table-number">T12</span>
-            </a>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
