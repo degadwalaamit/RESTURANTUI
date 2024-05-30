@@ -2,10 +2,11 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs';
 import { OnDestroy, OnInit } from 'src/app/common-imports/angular-core';
-import { NgBroadcasterService, Router, TranslateService } from 'src/app/common-imports/other-imports';
+import { ActivatedRoute, NgBroadcasterService, Router, TranslateService } from 'src/app/common-imports/other-imports';
 import { SharedService } from 'src/app/common-imports/webservices';
 import { OrderDetailMasterModel } from 'src/app/models/cart.model';
 import { MenuItemMasterModel } from 'src/app/models/menu.model';
+import { isValidObject } from '../../common/app-helper-functions';
 @Component({
   selector: 'app-tableDetails',
   templateUrl: './tableDetails.component.html'
@@ -17,13 +18,15 @@ export class TableDetails implements OnInit, OnDestroy {
   anotherSubscription: Subscription;
   dashboard$!: Observable<void>;
   items$: Observable<OrderDetailMasterModel[]>;
+  tableId = null;
   constructor(
     public sharedService: SharedService,
     private router: Router,
     private titleService: Title,
     private translate: TranslateService,
     private broadcaster: NgBroadcasterService,
-    cd: ChangeDetectorRef) {
+    cd: ChangeDetectorRef,
+    private activatedRoute: ActivatedRoute) {
     setInterval(function () { cd.detectChanges(); }, 1);
     this.items$ = new Observable(observer => {
       setInterval(async () => {
@@ -49,8 +52,13 @@ export class TableDetails implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    if (!isValidObject(this.activatedRoute.snapshot.params.tId)) {
+      this.router.navigate(["/dashboard"]);
+    } else {
+      this.tableId = this.activatedRoute.snapshot.params.tId;
+    }
+    this.sharedService.orderMasterModel = this.sharedService.getTableDetails(this.tableId);
     this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(() => {
-      debugger
       //this.cartDetails();
     })
     // this.dashboard$ = this.loginService.getDashboard().pipe(

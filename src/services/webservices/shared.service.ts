@@ -23,13 +23,12 @@ import { ApiService } from './api.service';
 import { LocalStorageService } from './local-storage.service';
 import { LoginService } from './login.service';
 import { TableMaster } from 'src/app/models/user.model';
-import { CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
 import { UserService } from './user.service';
-import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modules/common/app-helper-functions';
-import { OrderDetailMasterModel, OrderMasterModel } from 'src/app/models/cart.model';
 import { Guid } from 'guid-typescript';
+import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modules/common/app-helper-functions';
+import { OrderDetailMasterModel, OrderMasterModel, TableOrderDetails } from 'src/app/models/cart.model';
 import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.model';
-import { TableOrderDetails } from 'src/app/models/cart.model';
+import { CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
 declare var $: any;
 
 @Injectable(
@@ -3239,8 +3238,12 @@ export class SharedService {
     this.loading = false;
   }
 
-  redirectUrl(url) {
-    this.routes.navigate(["/" + url]);
+  redirectUrl(url, params = null) {
+    if (isValidObjectWithBlank(params)) {
+      this.routes.navigate(["/" + url + "/" + params]);
+    } else {
+      this.routes.navigate(["/" + url]);
+    }
   }
 
   openLogoutModal() {
@@ -3562,5 +3565,33 @@ export class SharedService {
     this.orderMasterModel.orderStatus = 'Pending';
     this.orderMasterModel.addressMaster.isActive = true;
     this.orderMasterModel.addressMaster.isDeleted = false;
+  }
+
+  addTableOrderDetails(tableId) {
+    let tblObject = this.tableOrderDetailModel.filter(x => x.tableId == tableId);
+    if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
+      tblObject[0].orderMaster = this.orderMasterModel;
+    } else {
+      let tObject = new TableOrderDetails();
+      tObject.tableId = tableId;
+      tObject.orderMaster = this.orderMasterModel;
+      this.tableOrderDetailModel.push(tObject);
+    }
+  }
+
+  getTableDetails(tableId) {
+    let tblObject = this.tableOrderDetailModel.filter(x => x.tableId == tableId);
+    if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
+      this.orderMasterModel = tblObject[0].orderMaster;
+      this.orderDetailMaster = tblObject[0].orderMaster.orderDetailMaster;
+      return tblObject[0].orderMaster;
+    }
+    this.orderMasterModel = new OrderMasterModel();
+    this.orderDetailMaster = [];
+    return new OrderMasterModel();
+  }
+
+  isTableOccupied(tableId) {
+    return this.tableOrderDetailModel.filter(x => x.tableId == tableId).length > 0;
   }
 }
