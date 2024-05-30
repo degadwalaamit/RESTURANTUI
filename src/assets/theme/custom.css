@@ -296,7 +296,7 @@
   place-items: center;
   text-decoration: none !important;
   padding: 0.5rem;
-  font-size: clamp(0.7rem, 1.5vw, 1.25rem);
+  font-size: clamp(0.7rem, 1.25vw, 1rem);
   text-align: center;
   line-height: 1.15;
 }
@@ -323,6 +323,3 @@ body {
 }
 
 /*# sourceMappingURL=custom.css.map */
-.tableAwayTable {
-  margin-top: 5px;
-}

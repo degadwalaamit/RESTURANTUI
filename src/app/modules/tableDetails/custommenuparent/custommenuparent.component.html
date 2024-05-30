@@ -1,118 +1,288 @@
 <ng-container
-  *ngIf="this.sharedService.currentSelectedObject != null && this.sharedService.currentSelectedObject != undefined && this.sharedService.currentSelectedObject.isAvailableForTakeaway">
+  *ngIf="
+    this.sharedService.currentSelectedObject != null &&
+    this.sharedService.currentSelectedObject != undefined &&
+    this.sharedService.currentSelectedObject.isAvailableForTakeaway
+  "
+>
+  <div class="row align-items-center">
+    <div class="col">
+      <h6 class="price">
+        <span
+          >{{ this.sharedService.currentSelectedObject.price }}
+          {{ sharedService.setCurrencySymbol() }}</span
+        >
+      </h6>
+    </div>
+    <div class="col-auto">
+      <div
+        class="d-flex justify-content-between flex-wrap"
+        *ngIf="this.sharedService.currentSelectedObject.isAvailableForTakeaway"
+      >
+        <div class="quantity-input">
+          <div
+            class="qty-btn quantity-down"
+            (click)="minusQty(this.sharedService.currentSelectedObject)"
+            role="button"
+          >
+            <i class="fal fa-minus"></i>
+          </div>
+          <input
+            class="form-control"
+            type="text"
+            [(ngModel)]="this.sharedService.currentSelectedObject.quantity"
+            spellcheck="false"
+            [name]="
+              'quantity' +
+              this.sharedService.currentSelectedObject.menuCategoryId
+            "
+            [attr.id]="
+              'quantity' +
+              this.sharedService.currentSelectedObject.menuCategoryId
+            "
+          />
 
-  <h6 class="price">
-    <span>{{ this.sharedService.currentSelectedObject.price }}
-      {{sharedService.setCurrencySymbol()}}</span>
-  </h6>
-  <div class="d-flex justify-content-between flex-wrap"
-    *ngIf="this.sharedService.currentSelectedObject.isAvailableForTakeaway">
-    <div class="quantity-input">
-      <div class="qty-btn quantity-down" (click)="minusQty(this.sharedService.currentSelectedObject);">
-        <i class="fal fa-minus"></i>
-      </div>
-      <input class="form-control" type="text"  [(ngModel)]="this.sharedService.currentSelectedObject.quantity"
-        spellcheck="false" [name]="'quantity' + this.sharedService.currentSelectedObject.menuCategoryId"
-        [attr.id]="'quantity' + this.sharedService.currentSelectedObject.menuCategoryId">
-
-      <div class="qty-btn quantity-up" (click)="addQty(this.sharedService.currentSelectedObject);">
-        <i class="fal fa-plus"></i>
+          <div
+            class="qty-btn quantity-up"
+            (click)="addQty(this.sharedService.currentSelectedObject)"
+            role="button"
+          >
+            <i class="fal fa-plus"></i>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
+  <hr class="border-grey" />
   <ng-container
-    *ngIf="this.sharedService.currentSelectedObject && this.sharedService.currentSelectedObject.isCustomOption">
-    <label for="customselection">{{ 'AdditionalText.Customselection' | translate}}:</label>
+    *ngIf="
+      this.sharedService.currentSelectedObject &&
+      this.sharedService.currentSelectedObject.isCustomOption
+    "
+  >
+    <label for="customselection" class="form-label"
+      >{{ "AdditionalText.Customselection" | translate }}:</label
+    >
     <select class="form-select" id="idCustomSelection">
-      <option value='' selected>{{ 'AdditionalText.Select' | translate}}</option>
-      <option *ngFor="let item of sharedService.menuCustomItemMasterModel; let i = index" [value]="item.menuItemId">
+      <option value="" selected>
+        {{ "AdditionalText.Select" | translate }}
+      </option>
+      <option
+        *ngFor="
+          let item of sharedService.menuCustomItemMasterModel;
+          let i = index
+        "
+        [value]="item.menuItemId"
+      >
         {{ item.itemName }}
       </option>
     </select>
   </ng-container>
 
   <ng-container
-    *ngIf="this.sharedService.currentSelectedObject && this.sharedService.currentSelectedObject.noOfGrayOption > 0">
+    *ngIf="
+      this.sharedService.currentSelectedObject &&
+      this.sharedService.currentSelectedObject.noOfGrayOption > 0
+    "
+  >
     <ng-container
-      *ngFor="let itemIndex of counter(this.sharedService.currentSelectedObject.noOfGrayOption); let k = index">
-      <label for="customselection">{{ 'AdditionalText.Customgravy' | translate}}-{{k+1}}:</label>
-      <select class="form-select" id="idGravySelection_{{k}}">
-        <option value='' selected>{{ 'AdditionalText.Select' | translate}}</option>
-        <option *ngFor="let item of sharedService.menuGravyItemMasterModel; let i = index" [value]="item.menuItemId">
+      *ngFor="
+        let itemIndex of counter(
+          this.sharedService.currentSelectedObject.noOfGrayOption
+        );
+        let k = index
+      "
+    >
+      <label for="customselection" class="form-label"
+        >{{ "AdditionalText.Customgravy" | translate }}-{{ k + 1 }}:</label
+      >
+      <select class="form-select" id="idGravySelection_{{ k }}">
+        <option value="" selected>
+          {{ "AdditionalText.Select" | translate }}
+        </option>
+        <option
+          *ngFor="
+            let item of sharedService.menuGravyItemMasterModel;
+            let i = index
+          "
+          [value]="item.menuItemId"
+        >
           {{ item.itemName }}
         </option>
       </select>
-      <label class="customselection">{{'LabelChange.ChooseSpicinessLevel' | translate}}:</label>
-      <select class="form-select" id="spiciness_{{k}}" name="spiciness_{{k}}">
-        <option value='Mild' selected>{{'LabelChange.Mild' | translate}}</option>
-        <option value='Medium'>{{'LabelChange.Medium' | translate}}</option>
-        <option value='Spicy'>{{'LabelChange.Spicy' | translate}}</option>
-        <option value='Hot Spicy'>{{'LabelChange.HotSpicy' | translate}}</option>
+      <label class="customselection form-label"
+        >{{ "LabelChange.ChooseSpicinessLevel" | translate }}:</label
+      >
+      <select
+        class="form-select"
+        id="spiciness_{{ k }}"
+        name="spiciness_{{ k }}"
+      >
+        <option value="Mild" selected>
+          {{ "LabelChange.Mild" | translate }}
+        </option>
+        <option value="Medium">{{ "LabelChange.Medium" | translate }}</option>
+        <option value="Spicy">{{ "LabelChange.Spicy" | translate }}</option>
+        <option value="Hot Spicy">
+          {{ "LabelChange.HotSpicy" | translate }}
+        </option>
       </select>
-      <label for="comment">{{ 'AdditionalText.Comment' | translate}}:</label>
-      <input class="form-control" type="text" placeholder="Comment" title="Comment" name="txtComment_{{k}}"
-        id="txtComment_{{k}}" maxlength="50" />
-      <hr>
+      <label for="comment">{{ "AdditionalText.Comment" | translate }}:</label>
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Comment"
+        title="Comment"
+        name="txtComment_{{ k }}"
+        id="txtComment_{{ k }}"
+        maxlength="50"
+      />
+      <hr />
     </ng-container>
   </ng-container>
   <ng-container
-    *ngIf="this.sharedService.currentSelectedObject && this.sharedService.currentSelectedObject.noOfNaanOption > 0">
+    *ngIf="
+      this.sharedService.currentSelectedObject &&
+      this.sharedService.currentSelectedObject.noOfNaanOption > 0
+    "
+  >
     <ng-container
-      *ngFor="let itemIndex of counter(this.sharedService.currentSelectedObject.noOfNaanOption); let k = index">
-      <label for="customselection">{{ 'AdditionalText.Customnaan' | translate}}-{{k+1}}:</label>
-      <select class="form-select" id="idNaanSelection_{{k}}">
-        <option value='' selected>{{ 'AdditionalText.Select' | translate}}</option>
-        <option *ngFor="let item of sharedService.menuNaanItemMasterModel; let i = index" [value]="item.menuItemId">
+      *ngFor="
+        let itemIndex of counter(
+          this.sharedService.currentSelectedObject.noOfNaanOption
+        );
+        let k = index
+      "
+    >
+      <label for="customselection" class="form-label"
+        >{{ "AdditionalText.Customnaan" | translate }}-{{ k + 1 }}:</label
+      >
+      <select class="form-select" id="idNaanSelection_{{ k }}">
+        <option value="" selected>
+          {{ "AdditionalText.Select" | translate }}
+        </option>
+        <option
+          *ngFor="
+            let item of sharedService.menuNaanItemMasterModel;
+            let i = index
+          "
+          [value]="item.menuItemId"
+        >
           {{ item.itemName }}
         </option>
       </select>
     </ng-container>
-    <hr>
+    <hr />
   </ng-container>
 
   <ng-container
-    *ngIf="this.sharedService.currentSelectedObject && this.sharedService.currentSelectedObject.noOfSizlerOption > 0">
+    *ngIf="
+      this.sharedService.currentSelectedObject &&
+      this.sharedService.currentSelectedObject.noOfSizlerOption > 0
+    "
+  >
     <ng-container
-      *ngFor="let itemIndex of counter(this.sharedService.currentSelectedObject.noOfSizlerOption); let k = index">
-      <label for="customselection">{{ 'AdditionalText.Customsizlerr' | translate}}-{{k+1}}:</label>
-      <select class="form-select" id="idSizlerSelection_{{k}}">
-        <option value='' selected>{{ 'AdditionalText.Select' | translate}}</option>
-        <option *ngFor="let item of sharedService.menuSizlerItemMasterModel; let i = index" [value]="item.menuItemId">
+      *ngFor="
+        let itemIndex of counter(
+          this.sharedService.currentSelectedObject.noOfSizlerOption
+        );
+        let k = index
+      "
+    >
+      <label for="customselection" class="form-label"
+        >{{ "AdditionalText.Customsizlerr" | translate }}-{{ k + 1 }}:</label
+      >
+      <select class="form-select" id="idSizlerSelection_{{ k }}">
+        <option value="" selected>
+          {{ "AdditionalText.Select" | translate }}
+        </option>
+        <option
+          *ngFor="
+            let item of sharedService.menuSizlerItemMasterModel;
+            let i = index
+          "
+          [value]="item.menuItemId"
+        >
           {{ item.itemName }}
         </option>
       </select>
     </ng-container>
-    <hr>
+    <hr />
   </ng-container>
 
   <ng-container
-    *ngIf="this.sharedService.currentSelectedObject && this.sharedService.currentSelectedObject.noOfSodaOption > 0">
+    *ngIf="
+      this.sharedService.currentSelectedObject &&
+      this.sharedService.currentSelectedObject.noOfSodaOption > 0
+    "
+  >
     <ng-container
-      *ngFor="let itemIndex of counter(this.sharedService.currentSelectedObject.noOfSodaOption); let k = index">
-      <label for="customselection">{{ 'AdditionalText.Customsoda' | translate}}-{{k+1}}:</label>
-      <select class="form-select" id="idSodaSelection_{{k}}">
-        <option value='' selected>{{ 'AdditionalText.Select' | translate}}</option>
-        <option *ngFor="let item of sharedService.menuSodaItemMasterModel; let i = index" [value]="item.menuItemId">
+      *ngFor="
+        let itemIndex of counter(
+          this.sharedService.currentSelectedObject.noOfSodaOption
+        );
+        let k = index
+      "
+    >
+      <label for="customselection" class="form-label"
+        >{{ "AdditionalText.Customsoda" | translate }}-{{ k + 1 }}:</label
+      >
+      <select class="form-select" id="idSodaSelection_{{ k }}">
+        <option value="" selected>
+          {{ "AdditionalText.Select" | translate }}
+        </option>
+        <option
+          *ngFor="
+            let item of sharedService.menuSodaItemMasterModel;
+            let i = index
+          "
+          [value]="item.menuItemId"
+        >
           {{ item.itemName }}
         </option>
       </select>
     </ng-container>
-    <hr>
+    <hr />
   </ng-container>
 
-  <ng-container *ngIf="this.sharedService.currentSelectedObject && this.sharedService.currentSelectedObject.isSpiceLevelAvailable &&
-          (this.sharedService.currentSelectedObject.isAvailableForChristmas == null || 
-          this.sharedService.currentSelectedObject.isAvailableForChristmas == false)">
-    <label class="form-label">{{'LabelChange.ChooseSpicinessLevel' | translate}}:</label>
-    <select class="form-select" id="spiciness" name="spiciness">
-      <option value='Mild' selected>{{'LabelChange.Mild' | translate}}</option>
-      <option value='Medium'>{{'LabelChange.Medium' | translate}}</option>
-      <option value='Spicy'>{{'LabelChange.Spicy' | translate}}</option>
-      <option value='Hot Spicy'>{{'LabelChange.HotSpicy' | translate}}</option>
-    </select>
-    <label for="comment">{{ 'AdditionalText.Comment' | translate}}:</label>
-    <input class="form-control" type="text" placeholder="Comment" title="Comment" name="txtComment" id="txtComment"
-      maxlength="50" />
+  <ng-container
+    *ngIf="
+      this.sharedService.currentSelectedObject &&
+      this.sharedService.currentSelectedObject.isSpiceLevelAvailable &&
+      (this.sharedService.currentSelectedObject.isAvailableForChristmas ==
+        null ||
+        this.sharedService.currentSelectedObject.isAvailableForChristmas ==
+          false)
+    "
+  >
+    <div class="mb-3">
+      <label class="form-label"
+        >{{ "LabelChange.ChooseSpicinessLevel" | translate }}:</label
+      >
+      <select class="form-select" id="spiciness" name="spiciness">
+        <option value="Mild" selected>
+          {{ "LabelChange.Mild" | translate }}
+        </option>
+        <option value="Medium">{{ "LabelChange.Medium" | translate }}</option>
+        <option value="Spicy">{{ "LabelChange.Spicy" | translate }}</option>
+        <option value="Hot Spicy">
+          {{ "LabelChange.HotSpicy" | translate }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="comment" class="form-label"
+        >{{ "AdditionalText.Comment" | translate }}:</label
+      >
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Comment"
+        title="Comment"
+        name="txtComment"
+        id="txtComment"
+        maxlength="50"
+      />
+    </div>
   </ng-container>
 </ng-container>
