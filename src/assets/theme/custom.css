@@ -219,6 +219,7 @@
 }
 
 .tables-card {
+  cursor: pointer !important;
   min-height: 6rem;
   display: flex;
   align-items: center;

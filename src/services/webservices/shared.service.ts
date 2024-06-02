@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { NgBroadcasterService } from 'ngx-broadcaster';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, firstValueFrom } from 'rxjs';
+import { Subject } from 'rxjs';
 import { CommonAppConstants, DynamicTypeCode, UserType } from 'src/app/constants/app.constant';
 import { L2ogConstants } from 'src/app/constants/l2og-constants';
 import { Validation } from 'src/app/constants/Validationvalue.constant';
@@ -3257,8 +3257,8 @@ export class SharedService {
     this.menuNaanItemMasterModel = [];
     this.menuSizlerItemMasterModel = [];
     this.menuSodaItemMasterModel = [];
-    await firstValueFrom(this.userService.getMenuList(itemSeoName))
-      .then((res: any) => {
+    await (this.userService.getMenuList(itemSeoName))
+      .toPromise().then((res: any) => {
         this.loading = false;
         if (res.stateModel.statusCode === 200) {
           let resultData = res.result;
@@ -3279,7 +3279,7 @@ export class SharedService {
               if (element.categoryName.includes('Main Course') && elementItem.isAvailableForTakeaway) { //Naan Bread
                 this.menuGravyItemMasterModel.push(elementItem);
               }
-              elementItem.quantity = 0;
+              elementItem.quantity = 1;
               // var obCart = this.orderDetailMaster.filter(x => x.menuItemId == elementItem.menuItemId);
               // if (obCart.length > 0) {
               //   elementItem.quantity = obCart[0].quantity;
@@ -3517,7 +3517,7 @@ export class SharedService {
   setQuantityMenuItem() {
     this.menuCategoryMasterModel.forEach(element => {
       element.menuItemMaster.forEach(elementItem => {
-        elementItem.quantity = 0;
+        elementItem.quantity = 1;
       });
     });
   }

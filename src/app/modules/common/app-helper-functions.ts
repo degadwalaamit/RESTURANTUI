@@ -1,15 +1,15 @@
-import { combineLatest, concat, filter, Observable, of } from "rxjs";
+import { combineLatest, concat, Observable, of } from "rxjs";
 // import { CommonAppConstants } from "../constants/app.constant";
 
-export function combineServiceCalls(sources: Observable<any>[]) {
-  const concatRequests: Observable<any>[] = [];
+// export function combineServiceCalls(sources: Observable<any>[]) {
+//   const concatRequests: Observable<any>[] = [];
 
-  sources.forEach(src => {
-    concatRequests.push(concat(of(null), src));
-  });
+//   sources.forEach(src => {
+//     concatRequests.push(concat(of(null), src));
+//   });
 
-  return combineLatest(concatRequests).pipe(filter(val => val.some(v => v != null)));
-}
+//   return combineLatest(concatRequests).pipe(filter(val => val.some(v => v != null)));
+// }
 
 export function isValidObject(obj: any) {
   return obj != null && obj != undefined;

@@ -2309,7 +2309,7 @@ body .cmnformapproach .form-group .upload-container input,
   height: 100%;
   width: 100%;
   position: absolute;
-  background: url('./assets/images/amt_loading3.gif') no-repeat center center;
+  background: url('./assets/images/loader-1.gif') no-repeat center center;
   top: 0;
   z-index: 12;
   bottom: 0;

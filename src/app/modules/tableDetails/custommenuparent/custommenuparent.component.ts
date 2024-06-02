@@ -34,7 +34,7 @@ export class CustomMenuParentComponent implements OnInit, AfterViewInit {
   }
 
   minusQty(item) {
-    if (item.quantity > 0) {
+    if (item.quantity > 1) {
       item.quantity = item.quantity - 1;
     }
   }
