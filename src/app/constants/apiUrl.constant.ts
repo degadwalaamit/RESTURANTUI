@@ -47,6 +47,7 @@ export class UserConstant extends AppConstants {
   public static LoginUser = AppConstants.BaseApiUrl + 'User/LoginUser';
   public static GetUserList = AppConstants.BaseApiUrl + 'User/GetUserList';
   public static GetMenuList =  AppConstants.BaseApiUrl + 'user/GetMenuList';
+  public static AddOrder = 'user/AddOrder';
 }
 
 export class ResturantConstant extends AppConstants {

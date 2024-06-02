@@ -3594,4 +3594,37 @@ export class SharedService {
   isTableOccupied(tableId) {
     return this.tableOrderDetailModel.filter(x => x.tableId == tableId).length > 0;
   }
+
+  async placeOrder(tableId) {
+    debugger
+    this.orderMasterModel = this.getTableDetails(tableId);
+    return;
+    if (this.orderDetailMaster.length > 0) {
+      this.loading = true;
+      await this.userService.addOrder(this.orderMasterModel).toPromise()
+        .then((res: any) => {
+          this.loading = false;
+          if (res.stateModel.statusCode === 200 && res.result != null) {
+            if (isValidObject(res.result.orderId)) {
+              this.orderMasterModel = new OrderMasterModel();
+              this.orderDetailMaster = [];
+              this.sendCartCountSubject.next('');
+              // this.router.navigate(["/ordersummary/" + res.result.orderNo]);
+              this.routes.navigate(['./dashboard']);
+              this.showMessage(MessageType.Success, 'Messages.OrderSuccessfully');
+            } else {
+              this.showMessage(MessageType.Error, res.stateModel.errorMessage);
+            }
+          } else if (res.stateModel.statusCode === 401) {
+            this.showMessage(MessageType.Error, 'Messages.OrderFailed');
+          } else if (res.stateModel.statusCode === 204) {
+            this.showMessage(MessageType.Warning, 'Messages.OrderFailed');
+          } else {
+            this.showMessage(MessageType.Error, res.stateModel.errorMessage);
+          }
+          this.routes.navigate(['./dashboard']);
+        }
+        );
+    }
+  }
 }

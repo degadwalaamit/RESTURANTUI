@@ -22,6 +22,10 @@ export class UserService {
     return this.apiService.get(UserConstant.GetMenuList + "/" + itemSeoName);
   }
 
+  addOrder(postObj: any) {
+    return this.apiService.post(UserConstant.AddOrder, postObj);
+  }
+
   // addUser(user: UserModel) {
   //   return this.apiService.post(UserConstant.AddUser, user);
   // }

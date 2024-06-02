@@ -5718,5 +5718,18 @@
     "AcceptCondition2":"terms & conditions",
     "SendOffer": "Send offers to me",
     "Invaliddate": "Sorry, the selected date is an off day. Please choose another date."
+  },
+  "Messages": {
+    "Nodatafound": "No data found.",
+    "Usernotexists": "User not exists",
+    "Contactdetailsentsuccessfully": "Contact detail sent successfully",
+    "Userprofileupdatedsuccessfully.": "User profile updated successfully",
+    "Useralreadyregistered": "User already registered",
+    "Loginsuccessfully": "Login successfully",
+    "Loginfailed": "Login failed. Plaese check your credentials",
+    "Userregistrationsuccessfully": "User registration successfully. Mail sent to your account.",
+    "Passwordandconfirmpasswordnotmatch": "Password and confirm password not match.",
+    "OrderSuccessfully": "Order successfully",
+    "OrderFailed": "Order failed"
   }
 }
