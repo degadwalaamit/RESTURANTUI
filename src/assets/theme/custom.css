@@ -17,6 +17,9 @@
   border-color: #f58120;
 }
 
+.btn.btn-h-theme {
+  height: 68px;
+}
 .btn.btn-lg {
   height: 50px;
   font-size: inherit;
