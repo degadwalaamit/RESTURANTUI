@@ -1,0 +1,15 @@
+{
+    "name": "Progressive Web Cat",
+    "short_name": "PWCat",
+    "background_color": "#ffffff",
+    "theme_color": "#673ab7",
+    "display": "standalone",
+    "start_url": "./",
+    "scope": "./",
+    "description": "A funny cat image generator",  
+    "icons": [{
+      "src": "/assets/images/autotrader-price-indicator/good+logo-pdf.png",
+        "sizes": "160x64",
+        "type": "image/png"
+      }]
+  }

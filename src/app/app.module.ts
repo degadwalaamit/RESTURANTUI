@@ -26,7 +26,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { FilterPipe } from './pipe/filter.pipe';
 import { HandleDateTimePicker } from './directives/handleDateTimePicker.directive';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
-
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -61,7 +62,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     OwlModule,
     AgGridModule.withComponents([]),
     BrowserAnimationsModule,
-    BackButtonDisableModule.forRoot()
+    BackButtonDisableModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js',{enabled: environment.production})
   ],
   exports: [
     FilterPipe,
