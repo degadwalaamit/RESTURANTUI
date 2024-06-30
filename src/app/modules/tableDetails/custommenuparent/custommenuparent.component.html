@@ -12,10 +12,13 @@
     <div class="col-auto">
       <div class="d-flex justify-content-between flex-wrap">
         <div class="quantity-input">
-          <div class="qty-btn quantity-down" (click)="minusQty(this.sharedService.currentSelectedObject)" role="button">
+          <div class="qty-btn quantity-down"
+            (click)="minusQty(this.sharedService.currentSelectedObject)"
+            role="button">
             <i class="fal fa-minus"></i>
           </div>
-          <input class="form-control" type="text" [(ngModel)]="this.sharedService.currentSelectedObject.quantity"
+          <input class="form-control" type="text"
+            [(ngModel)]="this.sharedService.currentSelectedObject.quantity"
             spellcheck="false" [name]="
               'quantity' +
               this.sharedService.currentSelectedObject.menuCategoryId
@@ -24,21 +27,24 @@
               this.sharedService.currentSelectedObject.menuCategoryId
             " />
 
-          <div class="qty-btn quantity-up" (click)="addQty(this.sharedService.currentSelectedObject)" role="button">
+          <div class="qty-btn quantity-up"
+            (click)="addQty(this.sharedService.currentSelectedObject)"
+            role="button">
             <i class="fal fa-plus"></i>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <hr class="border-grey" />
   <ng-container *ngIf="
       this.sharedService.currentSelectedObject &&
       this.sharedService.currentSelectedObject.isCustomOption
     ">
-    <label for="customselection" class="form-label">{{ "AdditionalText.Customselection" | translate }}:</label>
+    <hr class="border-grey" />
+    <label for="customselection" class="form-label">{{
+      "AdditionalText.Customselection" | translate }}:</label>
     <select class="form-select" id="idCustomSelection">
-      <option value="" selected>
+      <option value selected>
         {{ "AdditionalText.Select" | translate }}
       </option>
       <option *ngFor="
@@ -60,10 +66,11 @@
         );
         let k = index
       ">
-      <label for="customselection" class="form-label">{{ "AdditionalText.Customgravy" | translate }}-{{ k + 1
+      <label for="customselection" class="form-label">{{
+        "AdditionalText.Customgravy" | translate }}-{{ k + 1
         }}:</label>
       <select class="form-select" id="idGravySelection_{{ k }}">
-        <option value="" selected>
+        <option value selected>
           {{ "AdditionalText.Select" | translate }}
         </option>
         <option *ngFor="
@@ -73,8 +80,10 @@
           {{ item.itemName }}
         </option>
       </select>
-      <label class="customselection form-label">{{ "LabelChange.ChooseSpicinessLevel" | translate }}:</label>
-      <select class="form-select" id="spiciness_{{ k }}" name="spiciness_{{ k }}">
+      <label class="customselection form-label">{{
+        "LabelChange.ChooseSpicinessLevel" | translate }}:</label>
+      <select class="form-select" id="spiciness_{{ k }}"
+        name="spiciness_{{ k }}">
         <option value="Mild" selected>
           {{ "LabelChange.Mild" | translate }}
         </option>
@@ -85,7 +94,8 @@
         </option>
       </select>
       <label for="comment">{{ "AdditionalText.Comment" | translate }}:</label>
-      <input class="form-control" type="text" placeholder="Comment" title="Comment" name="txtComment_{{ k }}"
+      <input class="form-control" type="text" placeholder="Comment"
+        title="Comment" name="txtComment_{{ k }}"
         id="txtComment_{{ k }}" maxlength="50" />
       <hr />
     </ng-container>
@@ -100,9 +110,10 @@
         );
         let k = index
       ">
-      <label for="customselection" class="form-label">{{ "AdditionalText.Customnaan" | translate }}-{{ k + 1 }}:</label>
+      <label for="customselection" class="form-label">{{
+        "AdditionalText.Customnaan" | translate }}-{{ k + 1 }}:</label>
       <select class="form-select" id="idNaanSelection_{{ k }}">
-        <option value="" selected>
+        <option value selected>
           {{ "AdditionalText.Select" | translate }}
         </option>
         <option *ngFor="
@@ -126,10 +137,11 @@
         );
         let k = index
       ">
-      <label for="customselection" class="form-label">{{ "AdditionalText.Customsizlerr" | translate }}-{{ k + 1
+      <label for="customselection" class="form-label">{{
+        "AdditionalText.Customsizlerr" | translate }}-{{ k + 1
         }}:</label>
       <select class="form-select" id="idSizlerSelection_{{ k }}">
-        <option value="" selected>
+        <option value selected>
           {{ "AdditionalText.Select" | translate }}
         </option>
         <option *ngFor="
@@ -153,9 +165,10 @@
         );
         let k = index
       ">
-      <label for="customselection" class="form-label">{{ "AdditionalText.Customsoda" | translate }}-{{ k + 1 }}:</label>
+      <label for="customselection" class="form-label">{{
+        "AdditionalText.Customsoda" | translate }}-{{ k + 1 }}:</label>
       <select class="form-select" id="idSodaSelection_{{ k }}">
-        <option value="" selected>
+        <option value selected>
           {{ "AdditionalText.Select" | translate }}
         </option>
         <option *ngFor="
@@ -178,7 +191,8 @@
           false)
     ">
     <div class="mb-3">
-      <label class="form-label">{{ "LabelChange.ChooseSpicinessLevel" | translate }}:</label>
+      <label class="form-label">{{ "LabelChange.ChooseSpicinessLevel" |
+        translate }}:</label>
       <select class="form-select" id="spiciness" name="spiciness">
         <option value="Mild" selected>
           {{ "LabelChange.Mild" | translate }}
@@ -191,8 +205,10 @@
       </select>
     </div>
     <div class="mb-3">
-      <label for="comment" class="form-label">{{ "AdditionalText.Comment" | translate }}:</label>
-      <input class="form-control" type="text" placeholder="Comment" title="Comment" name="txtComment" id="txtComment"
+      <label for="comment" class="form-label">{{ "AdditionalText.Comment" |
+        translate }}:</label>
+      <input class="form-control" type="text" placeholder="Comment"
+        title="Comment" name="txtComment" id="txtComment"
         maxlength="50" />
     </div>
   </ng-container>

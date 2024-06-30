@@ -1,7 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SharedService } from 'src/services/webservices/shared.service';
-declare var $: any;
 @Component({
   selector: 'app-custommenuparent',
   templateUrl: './custommenuparent.component.html',
@@ -10,7 +9,6 @@ declare var $: any;
 export class CustomMenuParentComponent implements OnInit, AfterViewInit {
   addUserSubscription: Subscription;
   spycyOption = '';
-  // @Input() currentSelectedObject: MenuItemMasterModel;
   selectedIndex = 0;
   constructor(public sharedService: SharedService){
   }
