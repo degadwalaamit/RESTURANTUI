@@ -14,6 +14,8 @@ export class MenuCategoryMasterModel extends ColumnModel implements ClassName {
   categoryName_SEO: string;
   isAvailableForTakeaway: boolean | null;
   isAvailableForChristmas: boolean | null;
+  isPOS: boolean | null;
+  isOnline: boolean | null;
   menuItemMaster: MenuItemMasterModel[] | null;
   toClassName(): string {
     return this.constructor.name;
@@ -47,6 +49,8 @@ export class MenuItemMasterModel {
   noOfSizlerOption: number | null;
   noOfSodaOption: number | null;
   isAvailableForChristmas: boolean | null;
+  isPOS: boolean | null;
+  isOnline: boolean | null;
   customMenuItemId: Guid | null;
   customItemName: string;
   customOrderItemDetailMaster: CustomOrderItemDetailMaster[] | null;

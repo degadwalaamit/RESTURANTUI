@@ -3261,9 +3261,10 @@ export class SharedService {
       .toPromise().then((res: any) => {
         this.loading = false;
         if (res.stateModel.statusCode === 200) {
-          let resultData = res.result;
+          let resultData = res.result.filter(x => x.isPOS);
           resultData.forEach(element => {
-            element.menuItemMaster.forEach(elementItem => {
+            element.menuItemMaster = element.menuItemMaster.filter(x => x.isPOS);
+            element.menuItemMaster.filter(x => x.isPOS).forEach(elementItem => {
               if (elementItem.isItemCustom) {
                 this.menuCustomItemMasterModel.push(elementItem);
               }
@@ -3280,12 +3281,6 @@ export class SharedService {
                 this.menuGravyItemMasterModel.push(elementItem);
               }
               elementItem.quantity = 1;
-              // var obCart = this.orderDetailMaster.filter(x => x.menuItemId == elementItem.menuItemId);
-              // if (obCart.length > 0) {
-              //   elementItem.quantity = obCart[0].quantity;
-              // } else {
-              //   elementItem.quantity = 0;
-              // }
             });
           });
 

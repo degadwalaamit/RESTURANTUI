@@ -27,7 +27,11 @@ export class TableDetails implements OnInit, OnDestroy {
     private broadcaster: NgBroadcasterService,
     cd: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute) {
-    setInterval(function () { cd.detectChanges(); }, 1);
+    setInterval(function () {
+      if (this.cd && !this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
+    }, 1);
     this.items$ = new Observable(observer => {
       setInterval(async () => {
         this.reCalculation();
