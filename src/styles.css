@@ -3273,4 +3273,5 @@ body .show>.btn-outline-primary.dropdown-toggle {
   border: 1px solid var(--border-color);
   border-inline: unset;
   background-color: transparent;
+  border-radius: 0;
 }

@@ -3,12 +3,22 @@
   overflow-y: auto;
   .food-table {
     min-height: 6rem;
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
     text-decoration: none !important;
     padding: 0.5rem;
     font-size: clamp(0.7rem, 1.25vw, 1rem);
     text-align: center;
     line-height: 1.15;
+  }
+  .parent-food {
+    max-height: 33.33vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .sub-category-food {
+    margin-top: 0.1rem;
   }
 }
