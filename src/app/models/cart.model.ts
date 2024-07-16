@@ -20,7 +20,6 @@ export class RequestOrderListModel implements ClassName {
     return this.constructor.name;
   }
 }
-
 export class TableOrderDetails implements ClassName {
   tableId: number;
   orderMaster: OrderMasterModel = new OrderMasterModel();
@@ -31,9 +30,7 @@ export class TableOrderDetails implements ClassName {
     return this.constructor.name;
   }
 }
-
-
-export class OrderMasterModel implements ClassName {
+export class CommonOrderMasterModel {
   userId: Guid;
   userType = '';
   firstName = '';
@@ -41,13 +38,11 @@ export class OrderMasterModel implements ClassName {
   email = '';
   mobileNo = '';
   discountPercentage = 0;
-
   subAmount = 0;
   discountAmount = 0;
   totalAmount = 0;
   isPaid = false;
   orderStatus = '';
-
   orderNo = 0;
   isTakeAway = false;
   isDelivery = true;
@@ -55,13 +50,25 @@ export class OrderMasterModel implements ClassName {
   message = '';
   addressId: Guid | null;
   addressMaster: AddressModel = new AddressModel();
-  orderDetailMaster: OrderDetailMasterModel[] | null;
   token = '';
-
   couponId: Guid | null;
   couponCode = '';
   isAgreeMarketing = false;
   isSendOffer = false;
+}
+
+export class OrderMasterModel extends CommonOrderMasterModel implements ClassName {
+  orderDetailMaster: OrderDetailMasterModel[] | null;
+  toClassName(): string {
+    return this.constructor.name;
+  }
+  toComponentName(): string {
+    return this.constructor.name;
+  }
+}
+
+export class PwaOrderMasterModel extends CommonOrderMasterModel implements ClassName {
+  orderDetailMaster: PwaOrderDetailMasterModel[] | null;
   toClassName(): string {
     return this.constructor.name;
   }
@@ -91,6 +98,15 @@ export class OrderDetailMasterModel implements ClassName {
   customMenuItemId: Guid | null;
   customItemName: string;
   customOrderItemDetailMaster: CustomOrderItemDetailMaster[] | null;
+  toClassName(): string {
+    return this.constructor.name;
+  }
+  toComponentName(): string {
+    return this.constructor.name;
+  }
+}
+
+export class PwaOrderDetailMasterModel extends OrderDetailMasterModel implements ClassName {
   toClassName(): string {
     return this.constructor.name;
   }
