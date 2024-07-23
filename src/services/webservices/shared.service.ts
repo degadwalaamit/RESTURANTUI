@@ -26,7 +26,7 @@ import { TableMaster } from 'src/app/models/user.model';
 import { UserService } from './user.service';
 import { Guid } from 'guid-typescript';
 import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modules/common/app-helper-functions';
-import { OrderDetailMasterModel, OrderMasterModel, TableOrderDetails } from 'src/app/models/cart.model';
+import { PwaOrderDetailMasterModel, PwaOrderMasterModel, TableOrderDetails } from 'src/app/models/cart.model';
 import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.model';
 import { CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
 declare var $: any;
@@ -85,8 +85,8 @@ export class SharedService {
   public menuNaanItemMasterModel: MenuItemMasterModel[] = [];
   public menuSizlerItemMasterModel: MenuItemMasterModel[] = [];
   public menuSodaItemMasterModel: MenuItemMasterModel[] = [];
-  public orderMasterModel = new OrderMasterModel();
-  public orderDetailMaster: OrderDetailMasterModel[] = [];
+  public orderMasterModel = new PwaOrderMasterModel();
+  public orderDetailMaster: PwaOrderDetailMasterModel[] = [];
   public deliveryChargeMasterModel: DeliveryChargeMasterModel[];
   currentFeaturelist = this.sendFeatureListSource.asObservable();
   public sendQuoteOverview = new Subject();
@@ -3470,11 +3470,10 @@ export class SharedService {
   }
 
   addtocart(itemdetails: any, isAdd, isRemove) {
-    debugger
     if (!isRemove) {
       var categoryObject = this.menuCategoryMasterModel.filter(x => x.menuCategoryId == itemdetails.menuCategoryId);
       if (categoryObject.length > 0) {
-        var objOrderDetailMasterModel = new OrderDetailMasterModel();
+        var objOrderDetailMasterModel = new PwaOrderDetailMasterModel();
         objOrderDetailMasterModel.orderDetailId = Guid.create()["value"];
         objOrderDetailMasterModel.menuCategoryId = itemdetails.menuCategoryId;
         objOrderDetailMasterModel.categoryName = categoryObject[0].categoryName;
@@ -3547,7 +3546,7 @@ export class SharedService {
 
   getOrderCalculation() {
     this.orderMasterModel.userType = UserType.WebUser;
-    this.orderMasterModel.orderDetailMaster = this.orderDetailMaster;
+    this.orderMasterModel.orderDetailMaster = _.cloneDeep(this.orderDetailMaster);
     let subAmount = 0;
     this.refreshPackingPrice();
     this.orderMasterModel.orderDetailMaster.forEach(element => {
@@ -3562,7 +3561,7 @@ export class SharedService {
     this.orderMasterModel.addressMaster.isDeleted = false;
   }
 
-  addTableOrderDetails(tableId) {
+  async addTableOrderDetails(tableId) {
     let tblObject = this.tableOrderDetailModel.filter(x => x.tableId == tableId);
     if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
       tblObject[0].orderMaster = this.orderMasterModel;
@@ -3572,6 +3571,7 @@ export class SharedService {
       tObject.orderMaster = this.orderMasterModel;
       this.tableOrderDetailModel.push(tObject);
     }
+    await this.placeOrder(tableId)
   }
 
   getTableDetails(tableId) {
@@ -3581,27 +3581,65 @@ export class SharedService {
       this.orderDetailMaster = tblObject[0].orderMaster.orderDetailMaster;
       return tblObject[0].orderMaster;
     }
-    this.orderMasterModel = new OrderMasterModel();
+    this.orderMasterModel = new PwaOrderMasterModel();
     this.orderDetailMaster = [];
-    return new OrderMasterModel();
+    return new PwaOrderMasterModel();
+  }
+
+  updateTableDetails(tableId, objPwaOrderMasterModel: PwaOrderMasterModel) {
+    let tblObject = this.tableOrderDetailModel.filter(x => x.tableId == tableId);
+    if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
+      tblObject[0].orderMaster = objPwaOrderMasterModel;
+      tblObject[0].orderMaster.orderDetailMaster = objPwaOrderMasterModel.orderDetailMaster;
+    }
+  }
+
+  removeOrderDetailsFromOrder(tableId, objOrderDetail) {
+    let tblObject = this.tableOrderDetailModel.filter(x => x.tableId == tableId);
+    if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
+      tblObject[0].orderMaster.orderDetailMaster = objOrderDetail;
+    }
+
+    this.orderMasterModel.orderDetailMaster =
+      _.cloneDeep(this.orderMasterModel.orderDetailMaster.filter(x => x != objOrderDetail));
+
+    //this.setQuantityMenuItem();
+    //this.sendCartCountSubject.next('');
+  }
+
+  updateOrderDetailsFromOrder(tableId, objOrderDetail) {
+
+  }
+
+  async sentTOPOS(typeOfPayment, tableId) {
+    this.orderMasterModel.paymentMode = typeOfPayment;
+    await this.addTableOrderDetails(tableId);
+    this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.tableId != tableId);
+    this.redirectUrl('dashboard');
   }
 
   isTableOccupied(tableId) {
     return this.tableOrderDetailModel.filter(x => x.tableId == tableId).length > 0;
   }
 
+  isAssignToTable() {
+    if (this.orderMasterModel && this.orderMasterModel.orderDetailMaster) {
+      return this.orderMasterModel.orderDetailMaster.length <= 0;
+    }
+    return false;
+  }
+
   async placeOrder(tableId) {
-    debugger
     this.orderMasterModel = this.getTableDetails(tableId);
-    return;
     if (this.orderDetailMaster.length > 0) {
       this.loading = true;
-      await this.userService.addOrder(this.orderMasterModel).toPromise()
+      await this.userService.addPwaOrder(this.orderMasterModel).toPromise()
         .then((res: any) => {
           this.loading = false;
           if (res.stateModel.statusCode === 200 && res.result != null) {
             if (isValidObject(res.result.orderId)) {
-              this.orderMasterModel = new OrderMasterModel();
+              this.updateTableDetails(tableId, res.result);
+              this.orderMasterModel = new PwaOrderMasterModel();
               this.orderDetailMaster = [];
               this.sendCartCountSubject.next('');
               // this.router.navigate(["/ordersummary/" + res.result.orderNo]);

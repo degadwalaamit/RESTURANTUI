@@ -26,6 +26,14 @@ export class UserService {
     return this.apiService.post(UserConstant.AddOrder, postObj);
   }
 
+  addPwaOrder(postObj: any) {
+    return this.apiService.post(UserConstant.AddPwaOrder, postObj);
+  }
+
+  getPwaOrderById(orderid: any) {
+    return this.apiService.get(UserConstant.GetPwaOrderById + "/" + orderid);
+  }
+
   // addUser(user: UserModel) {
   //   return this.apiService.post(UserConstant.AddUser, user);
   // }

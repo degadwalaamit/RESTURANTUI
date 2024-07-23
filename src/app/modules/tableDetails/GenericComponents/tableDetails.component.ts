@@ -4,9 +4,10 @@ import { Observable, Subscription } from 'rxjs';
 import { OnDestroy, OnInit } from 'src/app/common-imports/angular-core';
 import { ActivatedRoute, NgBroadcasterService, Router, TranslateService } from 'src/app/common-imports/other-imports';
 import { SharedService } from 'src/app/common-imports/webservices';
-import { OrderDetailMasterModel } from 'src/app/models/cart.model';
 import { MenuItemMasterModel } from 'src/app/models/menu.model';
 import { isValidObject } from '../../common/app-helper-functions';
+import { PwaOrderDetailMasterModel } from 'src/app/models/cart.model';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-tableDetails',
   templateUrl: './tableDetails.component.html'
@@ -17,7 +18,7 @@ export class TableDetails implements OnInit, OnDestroy {
   optionRules: Subscription;
   anotherSubscription: Subscription;
   dashboard$!: Observable<void>;
-  items$: Observable<OrderDetailMasterModel[]>;
+  items$: Observable<PwaOrderDetailMasterModel[]>;
   tableId = null;
   constructor(
     public sharedService: SharedService,
@@ -52,7 +53,7 @@ export class TableDetails implements OnInit, OnDestroy {
     }
     // this.sharedService.addPackingCharge();
     this.sharedService.getOrderCalculation();
-    this.sharedService.orderDetailMaster = this.sharedService.orderDetailMaster.sort((x, y) => x.cartSequence < y.cartSequence ? -1 : 1);
+    this.sharedService.orderDetailMaster = _.cloneDeep(this.sharedService.orderDetailMaster.sort((x, y) => x.cartSequence < y.cartSequence ? -1 : 1));
   }
 
   async ngOnInit() {

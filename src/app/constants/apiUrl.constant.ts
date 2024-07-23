@@ -1,7 +1,7 @@
 
 export class AppConstants {
-  // public static BaseApiUrl = 'https://localhost:44331/api/';
-  public static BaseApiUrl = 'https://bandhanappapi.azurewebsites.net/api/';
+  public static BaseApiUrl = 'https://localhost:44331/api/';
+  // public static BaseApiUrl = 'https://bandhanappapi.azurewebsites.net/api/';
 
   public static CookieStorageDay = 1; // ex. 1 day
   public static DefaultCountry = 'EN';
@@ -47,7 +47,9 @@ export class UserConstant extends AppConstants {
   public static LoginUser = AppConstants.BaseApiUrl + 'User/LoginUser';
   public static GetUserList = AppConstants.BaseApiUrl + 'User/GetUserList';
   public static GetMenuList =  AppConstants.BaseApiUrl + 'user/GetMenuList';
-  public static AddOrder = 'user/AddOrder';
+  public static AddOrder = AppConstants.BaseApiUrl + 'user/AddOrder';
+  public static AddPwaOrder = AppConstants.BaseApiUrl + 'user/AddPwaOrder';
+  public static GetPwaOrderById = AppConstants.BaseApiUrl + 'user/GetPwaOrderById';
 }
 
 export class ResturantConstant extends AppConstants {

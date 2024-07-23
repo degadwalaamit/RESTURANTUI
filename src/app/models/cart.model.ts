@@ -22,7 +22,7 @@ export class RequestOrderListModel implements ClassName {
 }
 export class TableOrderDetails implements ClassName {
   tableId: number;
-  orderMaster: OrderMasterModel = new OrderMasterModel();
+  orderMaster: PwaOrderMasterModel = new PwaOrderMasterModel();
   toClassName(): string {
     return this.constructor.name;
   }
@@ -31,6 +31,7 @@ export class TableOrderDetails implements ClassName {
   }
 }
 export class CommonOrderMasterModel {
+  orderId: Guid = null;
   userId: Guid;
   userType = '';
   firstName = '';
@@ -55,6 +56,7 @@ export class CommonOrderMasterModel {
   couponCode = '';
   isAgreeMarketing = false;
   isSendOffer = false;
+  paymentMode = '';
 }
 
 export class OrderMasterModel extends CommonOrderMasterModel implements ClassName {

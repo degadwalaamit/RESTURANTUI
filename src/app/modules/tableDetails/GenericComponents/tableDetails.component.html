@@ -73,15 +73,15 @@
     </ul>
     <div class="row row-cols-3 gx-0">
       <div class="col">
-        <div class="bg-success p-2 text-center">
-          <h6 class="text-white">Kontact</h6>
+        <div class="bg-success p-2 text-center" (click)="sharedService.sentTOPOS('Kontant',this.tableId)" >
+          <h6 class="text-white">Kontant</h6>
           <div class="badge text-bg-light fs18px rounded-pill fw-light">
             {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
           </div>
         </div>
       </div>
       <div class="col">
-        <div class="bg-success p-2 text-center bg-opacity-75">
+        <div class="bg-success p-2 text-center bg-opacity-75" (click)="sharedService.sentTOPOS('MobilePay',this.tableId)">
           <h6 class="text-white">MobilePay</h6>
           <div class="badge text-bg-light fs18px rounded-pill fw-light">
             {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
@@ -89,7 +89,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="bg-opacity-75 bg-primary p-2 text-center">
+        <div class="bg-opacity-75 bg-primary p-2 text-center" (click)="sharedService.sentTOPOS('FlatPay',this.tableId)">
           <h6 class="text-white">FlatPay</h6>
           <div class="badge text-bg-light fs18px rounded-pill fw-light">
             {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
@@ -105,6 +105,8 @@
               <th scope="col">Qty</th>
               <th scope="col">Product</th>
               <th scope="col">Price</th>
+              <th class="d-none" scope="col">Update</th>
+              <th class="d-none" scope="col">Delete</th>              
             </tr>
           </thead>
           <tbody *ngIf="items$ | async as items">
@@ -115,6 +117,12 @@
               </td>
               <td>
                 {{ item.price * item.quantity | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
+              </td>
+              <td class="d-none">
+                <button type="button" class="btn initial btn-dark" (click)="sharedService.updateOrderDetailsFromOrder(tableId,item);">Update</button>
+              </td>
+              <td class="d-none">
+                <button type="button" class="btn initial btn-dark" (click)="sharedService.removeOrderDetailsFromOrder(tableId,item);">Delete</button>
               </td>
             </tr>
           </tbody>
