@@ -3,20 +3,30 @@
   <div class="col-md-7 d-flex flex-column">
     <div class="card border-0 bg-transparent">
       <div class="card-body d-flex flex-column food-table-wrap">
-        <div class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 g-2 parent-food" *ngIf="sharedService.menuCategoryMasterWithOutPModel?.length > 0">
-          <div class="col" *ngFor="let item of sharedService.menuCategoryMasterWithOutPModel; let i = index">
-            <div class="card food-table" [ngClass]="i == selectedIndex ? 'bg-secondary-subtle' : 'bg-blue text-white'" (click)="selectedIndex = i" type="button">
+        <div
+          class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 g-2 parent-food"
+          *ngIf="sharedService.menuCategoryMasterWithOutPModel?.length > 0">
+          <div class="col"
+            *ngFor="let item of sharedService.menuCategoryMasterWithOutPModel; let i = index">
+            <div class="card food-table"
+              [ngClass]="i == selectedIndex ? 'bg-secondary-subtle' : 'bg-blue text-white'"
+              (click)="selectedIndex = i" type="button">
               {{ item.code }}<br />{{ item.categoryName }}
             </div>
           </div>
         </div>
 
-        <div class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 g-2 sub-category-food">
-          <ng-container *ngFor="let itemMasterCategory of sharedService.menuCategoryMasterWithOutPModel; let i1 = index">
+        <div
+          class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 g-2 sub-category-food">
+          <ng-container
+            *ngFor="let itemMasterCategory of sharedService.menuCategoryMasterWithOutPModel; let i1 = index">
             <ng-container *ngIf="itemMasterCategory.menuItemMaster?.length > 0">
-              <ng-container *ngFor="let items of itemMasterCategory.menuItemMaster">
+              <ng-container
+                *ngFor="let items of itemMasterCategory.menuItemMaster">
                 <div class="col" *ngIf="i1 == selectedIndex">
-                  <div class="text-white card food-table" [ngClass]="i1 == selectedIndex ? 'show bg-orange' : 'd-none'" type="button" (click)="sharedService.dialogBoxOpen(items)">
+                  <div class="text-white card food-table"
+                    [ngClass]="i1 == selectedIndex ? 'show bg-orange' : 'd-none'"
+                    type="button" (click)="sharedService.dialogBoxOpen(items)">
                     {{ items.code }}<br />{{ items.itemName }}
                   </div>
                 </div>
@@ -29,41 +39,53 @@
     <div class="bottom-action mt-auto">
       <div class="row gx-1">
         <div class="col">
-          <button type="button" class="w-100 btn btn-danger">Sign out Admin</button>
+          <button type="button" class="w-100 btn btn-danger">Sign out
+            Admin</button>
         </div>
         <div class="col">
-          <button type="button" class="w-100 btn btn-success bg-opacity-75">POS</button>
+          <button type="button"
+            class="w-100 btn btn-success bg-opacity-75">POS</button>
         </div>
         <div class="col">
-          <button type="button" class="w-100 btn btn-secondary" (click)="sharedService.placeOrder(tableId)">Dispatches</button>
+          <button type="button" class="w-100 btn btn-secondary"
+            (click)="sharedService.placeOrder(tableId)">Dispatches</button>
         </div>
         <div class="col">
           <button type="button" class="w-100 btn btn-secondary">Admin</button>
         </div>
         <div class="col">
-          <button type="button" class="w-100 btn btn-success">Print Previous</button>
+          <button type="button" class="w-100 btn btn-success">Print
+            Previous</button>
         </div>
       </div>
     </div>
   </div>
   <div class="col-md-5 d-flex flex-column border-start min-vh-100">
-    <ul class="d-flex align-items-center bg-secondary text-white list-unstyled p-2 m-0 gap-3">
+    <ul
+      class="d-flex align-items-center bg-secondary text-white list-unstyled p-2 m-0 gap-3">
       <li>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+          fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+          <path
+            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
         </svg>
         <span class="ms-1 align-middle">{{ now | date : "dd-MM-yyyy" }}</span>
       </li>
       <li>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-          <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
-          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+          fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+          <path
+            d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+          <path
+            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
         </svg>
         <span class="ms-1 align-middle">{{ now | date : "h:mm:ss a" }}</span>
       </li>
       <li>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+          fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+          <path
+            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
         </svg>
         <span class="ms-1 align-middle">{{ sharedService.getUserName() }}</span>
       </li>
@@ -73,26 +95,32 @@
     </ul>
     <div class="row row-cols-3 gx-0">
       <div class="col">
-        <div class="bg-success p-2 text-center" (click)="sharedService.sentTOPOS('Kontant',this.tableId)" >
+        <div class="bg-success p-2 text-center cursor-pointer"
+          (click)="sharedService.sentTOPOS('Kontant',this.tableId)">
           <h6 class="text-white">Kontant</h6>
           <div class="badge text-bg-light fs18px rounded-pill fw-light">
-            {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
+            {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }}
+            {{ sharedService.setCurrencySymbol() }}
           </div>
         </div>
       </div>
       <div class="col">
-        <div class="bg-success p-2 text-center bg-opacity-75" (click)="sharedService.sentTOPOS('MobilePay',this.tableId)">
+        <div class="bg-success p-2 text-center bg-opacity-75 cursor-pointer"
+          (click)="sharedService.sentTOPOS('MobilePay',this.tableId)">
           <h6 class="text-white">MobilePay</h6>
           <div class="badge text-bg-light fs18px rounded-pill fw-light">
-            {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
+            {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }}
+            {{ sharedService.setCurrencySymbol() }}
           </div>
         </div>
       </div>
       <div class="col">
-        <div class="bg-opacity-75 bg-primary p-2 text-center" (click)="sharedService.sentTOPOS('FlatPay',this.tableId)">
+        <div class="bg-opacity-75 bg-primary p-2 text-center cursor-pointer"
+          (click)="sharedService.sentTOPOS('FlatPay',this.tableId)">
           <h6 class="text-white">FlatPay</h6>
           <div class="badge text-bg-light fs18px rounded-pill fw-light">
-            {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
+            {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }}
+            {{ sharedService.setCurrencySymbol() }}
           </div>
         </div>
       </div>
@@ -106,23 +134,28 @@
               <th scope="col">Product</th>
               <th scope="col">Price</th>
               <th class="d-none" scope="col">Update</th>
-              <th class="d-none" scope="col">Delete</th>              
+              <th class="d-none" scope="col">Delete</th>
             </tr>
           </thead>
           <tbody *ngIf="items$ | async as items">
-            <tr *ngFor="let item of sharedService.orderDetailMaster; let iconIndex = index">
+            <tr
+              *ngFor="let item of sharedService.orderDetailMaster; let iconIndex = index">
               <td>{{ item.quantity }}</td>
               <td>
-                <b>{{ item.itemName }}</b> <br />{{ item.spicyType }} <br />{{ item.comment }}
+                <b>{{ item.itemName }}</b> <br />{{ item.spicyType }} <br />{{
+                item.comment }}
               </td>
               <td>
-                {{ item.price * item.quantity | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
+                {{ item.price * item.quantity | number : "1.2-2" }} {{
+                sharedService.setCurrencySymbol() }}
               </td>
               <td class="d-none">
-                <button type="button" class="btn initial btn-dark" (click)="sharedService.updateOrderDetailsFromOrder(tableId,item);">Update</button>
+                <button type="button" class="btn initial btn-dark"
+                  (click)="sharedService.updateOrderDetailsFromOrder(tableId,item);">Update</button>
               </td>
               <td class="d-none">
-                <button type="button" class="btn initial btn-dark" (click)="sharedService.removeOrderDetailsFromOrder(tableId,item);">Delete</button>
+                <button type="button" class="btn initial btn-dark"
+                  (click)="sharedService.removeOrderDetailsFromOrder(tableId,item);">Delete</button>
               </td>
             </tr>
           </tbody>
@@ -130,22 +163,27 @@
       </div>
       <div class="fs18px fw-bold mt-2 row">
         <div class="col">
-          Unpaid: {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
+          Unpaid: {{ sharedService.orderMasterModel.totalAmount | number :
+          "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
         </div>
         <div class="col-auto">
-          Total: {{ sharedService.orderMasterModel.totalAmount | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
+          Total: {{ sharedService.orderMasterModel.totalAmount | number :
+          "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
         </div>
       </div>
     </div>
     <div class="calculator-wrap mt-auto">
       <div class="row gx-1">
         <div class="col">
-          <input type="text" class="form-control" value placeholder="000000" readonly />
+          <input type="text" class="form-control" value placeholder="000000"
+            readonly />
         </div>
         <div class="col-auto">
           <button type="button" class="btn btn-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+              <path
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
             </svg>
           </button>
         </div>
@@ -155,7 +193,9 @@
       </div>
       <div class="row row-cols-5 g-1 mt-1">
         <div class="col">
-          <button type="button" class="btn btn-primary" (click)="sharedService.addTableOrderDetails(tableId)">Assign to Table</button>
+          <button type="button" class="btn btn-primary"
+            (click)="sharedService.addTableOrderDetails(tableId)">Assign to
+            Table</button>
         </div>
         <div class="col">
           <button type="button" class="btn btn-warning">Discount %</button>
@@ -170,7 +210,8 @@
           <button type="button" class="btn initial btn-dark">3</button>
         </div>
         <div class="col">
-          <button type="button" class="btn initial btn-light pointer-none">&nbsp;</button>
+          <button type="button"
+            class="btn initial btn-light pointer-none">&nbsp;</button>
         </div>
         <div class="col">
           <button type="button" class="btn btn-warning">Open Drawer</button>
@@ -203,7 +244,8 @@
           <button type="button" class="btn btn-success">Performa</button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-danger" (click)="sharedService.redirectUrl('dashboard')">Cancel</button>
+          <button type="button" class="btn btn-danger"
+            (click)="sharedService.redirectUrl('dashboard')">Cancel</button>
         </div>
         <div class="col">
           <button type="button" class="btn initial btn-dark">0</button>
@@ -221,3 +263,9 @@
   <app-custommenu></app-custommenu>
 </div>
 <app-loader [loading]="sharedService.loading"></app-loader>
+<app-confirmation-modal [title]="sharedService.title"
+  [popupId]="sharedService.popupId" [message]="sharedService.message"
+  [cancelButtonTitle]="sharedService.cancelButtonTitle"
+  [saveButtonTitle]="sharedService.saveButtonTitle"
+  (emitConfirmationEvent)="sharedService.handleEmitConfirmationEvent($event,sharedService.pageName)">
+</app-confirmation-modal>

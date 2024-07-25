@@ -8,6 +8,7 @@ import { AppCommonModule } from '../common/app-common/app-common.module';
 import { CustomMenuComponent } from './custommenu/custommenu.component';
 import { CustomMenuParentComponent } from './custommenuparent/custommenuparent.component';
 import { FormsModule } from '@angular/forms';
+import { ConfirmationModalModule } from '../common/confirmation-modal/confirmation-modal.module';
 @NgModule({
   declarations: [TableDetails, CustomMenuParentComponent, CustomMenuComponent],
   imports: [
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     TranslateModule,
     ExternalSharedModule,
     AppCommonModule,
-    FormsModule
+    FormsModule,
+    ConfirmationModalModule
   ]
 })
 export class tableDetails { }

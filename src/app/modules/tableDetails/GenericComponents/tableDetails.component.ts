@@ -8,6 +8,7 @@ import { MenuItemMasterModel } from 'src/app/models/menu.model';
 import { isValidObject } from '../../common/app-helper-functions';
 import { PwaOrderDetailMasterModel } from 'src/app/models/cart.model';
 import * as _ from 'lodash';
+import { ConfirmationCode } from 'src/app/constants/app.constant';
 @Component({
   selector: 'app-tableDetails',
   templateUrl: './tableDetails.component.html'
@@ -57,6 +58,9 @@ export class TableDetails implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.sharedService.setConfirmationPopup('Sent to POS', 'cnfSentToPOS', 
+      'Are you sure want to send to POS?'
+      , 'Cancel', 'Send',ConfirmationCode.TablePage);
     if (!isValidObject(this.activatedRoute.snapshot.params.tId)) {
       this.router.navigate(["/dashboard"]);
     } else {
@@ -105,4 +109,5 @@ export class TableDetails implements OnInit, OnDestroy {
       this.anotherSubscription.unsubscribe();
     }
   }
+
 }

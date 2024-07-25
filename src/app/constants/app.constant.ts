@@ -379,3 +379,8 @@ export class DynamicTypeCode {
   public static readonly Sizler = 'sizler';
   public static readonly Soda = 'soda';
 }
+
+export class ConfirmationCode {
+  public static readonly Yes = 'Yes';
+  public static readonly TablePage = 'TablePage';
+}

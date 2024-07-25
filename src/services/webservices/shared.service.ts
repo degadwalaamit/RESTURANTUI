@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import { NgBroadcasterService } from 'ngx-broadcaster';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { CommonAppConstants, DynamicTypeCode, UserType } from 'src/app/constants/app.constant';
+import { CommonAppConstants, ConfirmationCode, DynamicTypeCode, UserType } from 'src/app/constants/app.constant';
 import { L2ogConstants } from 'src/app/constants/l2og-constants';
 import { Validation } from 'src/app/constants/Validationvalue.constant';
 import { MessageType } from 'src/app/enums/message-type.enum';
@@ -37,6 +37,16 @@ declare var $: any;
   }
 )
 export class SharedService {
+
+  public title = 'Delete Confirmation';
+  public popupId = 'confirmationModal';
+  public message = 'Are you sure you want to delete?';
+  public cancelButtonTitle = "Cancel";
+  public saveButtonTitle = "Confirm";
+  public pageName = '';
+  public typeOfPayment = '';
+  public tableId = 0;
+
   public onlyNumberPattern = '[0-9]+';
   public dateFormat = 'DD/MM/YYYY';
   public calendarDateFormat = "dd/MM/yyyy";
@@ -3611,11 +3621,35 @@ export class SharedService {
 
   }
 
+  async handleEmitConfirmationEvent(event, pagename) {
+    switch (pagename) {
+      case ConfirmationCode.TablePage: {
+        if (event == ConfirmationCode.Yes) {
+          this.orderMasterModel.paymentMode = this.typeOfPayment;
+          await this.addTableOrderDetails(this.tableId);
+          this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.tableId != tableId);
+          this.redirectUrl('dashboard');
+        } else {
+          $('#' + this.popupId).modal('hide');
+        }
+        break;
+      }
+    }
+  }
+
+  setConfirmationPopup(title, popupId, message, cancelButtonTitle, saveButtonTitle, pageName) {
+    this.title = title;
+    this.popupId = popupId;
+    this.message = message;
+    this.cancelButtonTitle = cancelButtonTitle;
+    this.saveButtonTitle = saveButtonTitle;
+    this.pageName = pageName;
+  }
+
   async sentTOPOS(typeOfPayment, tableId) {
-    this.orderMasterModel.paymentMode = typeOfPayment;
-    await this.addTableOrderDetails(tableId);
-    this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.tableId != tableId);
-    this.redirectUrl('dashboard');
+    this.typeOfPayment = typeOfPayment;
+    this.tableId = tableId;
+    $('#' + this.popupId).modal('show');
   }
 
   isTableOccupied(tableId) {
