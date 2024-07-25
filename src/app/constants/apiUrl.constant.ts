@@ -1,7 +1,7 @@
 
 export class AppConstants {
-  public static BaseApiUrl = 'https://localhost:44331/api/';
-  // public static BaseApiUrl = 'https://bandhanappapi.azurewebsites.net/api/';
+  // public static BaseApiUrl = 'https://localhost:44331/api/';
+  public static BaseApiUrl = 'https://bandhanappapi.azurewebsites.net/api/';
 
   public static CookieStorageDay = 1; // ex. 1 day
   public static DefaultCountry = 'EN';

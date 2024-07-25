@@ -3627,7 +3627,7 @@ export class SharedService {
         if (event == ConfirmationCode.Yes) {
           this.orderMasterModel.paymentMode = this.typeOfPayment;
           await this.addTableOrderDetails(this.tableId);
-          this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.tableId != tableId);
+          this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.tableId != this.tableId);
           this.redirectUrl('dashboard');
         } else {
           $('#' + this.popupId).modal('hide');
