@@ -133,7 +133,7 @@
               <th scope="col">Qty</th>
               <th scope="col">Product</th>
               <th scope="col">Price</th>
-              <th class="d-none" scope="col">Update</th>
+              <th scope="col">Update</th>
               <th scope="col">Delete</th>
             </tr>
           </thead>
@@ -149,9 +149,9 @@
                 {{ item.price * item.quantity | number : "1.2-2" }} {{
                 sharedService.setCurrencySymbol() }}
               </td>
-              <td class="d-none">
+              <td>
                 <button type="button" class="btn initial btn-dark"
-                  (click)="sharedService.updateOrderDetailsFromOrder(tableId,item);">Update</button>
+                  (click)="sharedService.identifyMenuItem(item);">Update</button>
               </td>
               <td>
                 <button type="button" class="btn initial btn-dark"

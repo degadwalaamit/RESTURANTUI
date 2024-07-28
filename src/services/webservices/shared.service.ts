@@ -26,7 +26,7 @@ import { TableMaster } from 'src/app/models/user.model';
 import { UserService } from './user.service';
 import { Guid } from 'guid-typescript';
 import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modules/common/app-helper-functions';
-import { PwaOrderDetailMasterModel, PwaOrderMasterModel, TableOrderDetails } from 'src/app/models/cart.model';
+import { OrderDetailMasterModel, PwaOrderDetailMasterModel, PwaOrderMasterModel, TableOrderDetails } from 'src/app/models/cart.model';
 import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.model';
 import { CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
 declare var $: any;
@@ -116,6 +116,7 @@ export class SharedService {
   public totalTableArray = new Array();
   public totalTakeAwayTableArray = new Array();
   public currentSelectedObject: MenuItemMasterModel = new MenuItemMasterModel();
+  public currentSelectedOrderDetailObject: PwaOrderDetailMasterModel = new PwaOrderDetailMasterModel();
   public sendCartCountSubject = new Subject();
   sendCartCountObservable = this.sendCartCountSubject.asObservable();
   public tableOrderDetailModel: TableOrderDetails[] = [];
@@ -316,6 +317,7 @@ export class SharedService {
     this.userService = injector.get<UserService>(UserService);
     this.today = new Date();
     this.currentSelectedObject = new MenuItemMasterModel();
+    this.currentSelectedOrderDetailObject = new PwaOrderDetailMasterModel();
   }
 
 
@@ -3312,15 +3314,33 @@ export class SharedService {
       });
   }
 
+  identifyMenuItem(item: OrderDetailMasterModel) {
+    let menuItem = this.menuCategoryMasterWithOutPModel.filter(x => x.menuCategoryId == item.menuCategoryId);
+    let itemDetail = menuItem[0].menuItemMaster.filter(x => x.menuItemId == item.menuItemId);
+    this.currentSelectedOrderDetailObject = item;
+    this.dialogBoxOpen(itemDetail[0]);
+  }
+
   dialogBoxOpen(item: MenuItemMasterModel) {
     // if (!this.validateDay(new Date())) {
     //   this.showMessage(MessageType.Error, this.setLabel('AdditionalText.Invaliddate'));
     // } else {
     this.currentSelectedObject = null;
-    item.spicyType = '';
-    item.comment = '';
-    item.customMenuItemId = null
-    item.customItemName = '';
+    if (isNullOrUndefined(this.currentSelectedOrderDetailObject) ||
+      (!isNullOrUndefined(this.currentSelectedOrderDetailObject) &&
+        isNullOrUndefined(this.currentSelectedOrderDetailObject.quantity))) {
+      item.spicyType = '';
+      item.comment = '';
+      item.customMenuItemId = null
+      item.customItemName = '';
+      //item.quantity = 1;
+    } else {
+      item.spicyType = this.currentSelectedOrderDetailObject.spicyType;
+      item.comment = this.currentSelectedOrderDetailObject.comment;
+      item.customMenuItemId = this.currentSelectedOrderDetailObject.customMenuItemId;
+      item.customItemName = this.currentSelectedOrderDetailObject.customItemName;
+      item.quantity = this.currentSelectedOrderDetailObject.quantity;
+    }
     // if (item.quantity > 0) {
     // if (item.isSpiceLevelAvailable) {
     if (isValidObject(item.customMenuItemId)) {
@@ -3480,6 +3500,10 @@ export class SharedService {
   }
 
   addtocart(itemdetails: any, isAdd, isRemove) {
+    if (!isNullOrUndefined(this.currentSelectedOrderDetailObject)) {
+      this.orderDetailMaster = this.orderDetailMaster
+        .filter(x => x.orderDetailId != this.currentSelectedOrderDetailObject.orderDetailId)
+    }
     if (!isRemove) {
       var categoryObject = this.menuCategoryMasterModel.filter(x => x.menuCategoryId == itemdetails.menuCategoryId);
       if (categoryObject.length > 0) {
@@ -3514,8 +3538,14 @@ export class SharedService {
       this.orderDetailMaster = this.orderDetailMaster
         .filter(x => x.orderDetailId != itemdetails.orderDetailId)
     }
+    this.resetCurrentSelection();
     this.setQuantityMenuItem();
     this.sendCartCountSubject.next('');
+  }
+
+  resetCurrentSelection() {
+    //this.currentSelectedObject = null;
+    this.currentSelectedOrderDetailObject = null;
   }
 
   setQuantityMenuItem() {
@@ -3572,12 +3602,12 @@ export class SharedService {
   }
 
   async addTableOrderDetails(tableId) {
-    let tblObject = this.tableOrderDetailModel.filter(x => x.tableId == tableId);
+    this.orderMasterModel.tableNo = tableId;
+    let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
     if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
       tblObject[0].orderMaster = this.orderMasterModel;
     } else {
       let tObject = new TableOrderDetails();
-      tObject.tableId = tableId;
       tObject.orderMaster = this.orderMasterModel;
       this.tableOrderDetailModel.push(tObject);
     }
@@ -3585,7 +3615,7 @@ export class SharedService {
   }
 
   getTableDetails(tableId) {
-    let tblObject = this.tableOrderDetailModel.filter(x => x.tableId == tableId);
+    let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
     if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
       this.orderMasterModel = tblObject[0].orderMaster;
       this.orderDetailMaster = tblObject[0].orderMaster.orderDetailMaster;
@@ -3597,7 +3627,7 @@ export class SharedService {
   }
 
   updateTableDetails(tableId, objPwaOrderMasterModel: PwaOrderMasterModel) {
-    let tblObject = this.tableOrderDetailModel.filter(x => x.tableId == tableId);
+    let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
     if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
       tblObject[0].orderMaster = objPwaOrderMasterModel;
       tblObject[0].orderMaster.orderDetailMaster = objPwaOrderMasterModel.orderDetailMaster;
@@ -3613,8 +3643,9 @@ export class SharedService {
       case ConfirmationCode.TablePage: {
         if (event == ConfirmationCode.Yes) {
           this.orderMasterModel.paymentMode = this.typeOfPayment;
+          this.orderMasterModel.tableNo = this.tableId.toString();
           await this.addTableOrderDetails(this.tableId);
-          this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.tableId != this.tableId);
+          this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo != this.tableId.toString());
           this.redirectUrl('dashboard');
         } else {
           $('#' + this.popupId).modal('hide');
@@ -3640,7 +3671,7 @@ export class SharedService {
   }
 
   isTableOccupied(tableId) {
-    return this.tableOrderDetailModel.filter(x => x.tableId == tableId).length > 0;
+    return this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId).length > 0;
   }
 
   isAssignToTable() {
@@ -3655,6 +3686,7 @@ export class SharedService {
     this.orderMasterModel = this.getTableDetails(tableId);
     if (this.orderDetailMaster.length > 0) {
       this.loading = true;
+      this.orderMasterModel.isPaid = true;
       await this.userService.addPwaOrder(this.orderMasterModel).toPromise()
         .then((res: any) => {
           this.loading = false;
@@ -3680,6 +3712,60 @@ export class SharedService {
           this.routes.navigate(['./dashboard']);
         }
         );
+    }
+  }
+
+  async GetPwaOrderListByTable() {
+    this.loading = true;
+    var postObj = {
+      dataType: 0,
+      orderType: 0,
+      orderId: null,
+      userId: null,
+      createdDate: null
+    }
+    await this.userService.getPwaOrderListByTable(postObj).toPromise()
+      .then((res: any) => {
+        this.loading = false;
+        if (res.stateModel.statusCode === 200 && res.result != null) {
+          this.tableOrderDetailModel = [];
+          let that = this;
+          res.result.forEach((element: PwaOrderMasterModel) => {
+            let obj = new TableOrderDetails();
+            obj.orderMaster = element;
+            that.tableOrderDetailModel.push(obj);
+          });
+        }
+      });
+  }
+
+  async GetPwaOrderListByOrderId(tableId) {
+    this.loading = true;
+    const postObj = {
+      dataType: 4,
+      orderType: 0,
+      orderId: null,
+      userId: null,
+      createdDate: null,
+      TableNo: tableId
+    };
+
+    try {
+      const res: any = await this.userService.getPwaOrderListByTable(postObj).toPromise();
+      if (res.stateModel.statusCode === 200 && res.result != null) {
+        const orderDetails = res.result.map((element: PwaOrderMasterModel) => {
+          const obj = new TableOrderDetails();
+          obj.orderMaster = element;
+          return obj.orderMaster;
+        });
+        return orderDetails;
+      }
+      return null; // Return null if no results or status code is not 200
+    } catch (error) {
+      console.error('Error fetching order list', error);
+      return null; // Return null in case of error
+    } finally {
+      this.loading = false;
     }
   }
 }

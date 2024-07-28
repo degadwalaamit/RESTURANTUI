@@ -18,7 +18,7 @@
 
       <!-- Modal Footer -->
       <div class="modal-footer">
-        <button (click)="sharedService.setQuantityMenuItem();" type="button" class="btn btn-secondary"
+        <button (click)="sharedService.resetCurrentSelection();sharedService.setQuantityMenuItem();" type="button" class="btn btn-secondary"
           data-bs-dismiss="modal">
           {{'LabelChange.Cancel' | translate}}
         </button>

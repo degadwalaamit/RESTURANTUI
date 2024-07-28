@@ -24,13 +24,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-
-
     this.isUserLogin = this.sharedService.isUserLogin();
     if (!this.isUserLogin) {
       this.broadcaster.emitEvent('hideSideMenu', '');
       this.router.navigate(['/login']);
     } else {
+      await this.sharedService.GetPwaOrderListByTable();
       let userObject = this.sharedService.getUserDetails();
       let dashboardTitle = this.translate.instant('PageTitles.Dashboard');
       if (dashboardTitle === 'PageTitles.Dashboard') {

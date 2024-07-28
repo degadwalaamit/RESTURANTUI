@@ -21,7 +21,7 @@ export class RequestOrderListModel implements ClassName {
   }
 }
 export class TableOrderDetails implements ClassName {
-  tableId: number;
+  // tableId: number;
   orderMaster: PwaOrderMasterModel = new PwaOrderMasterModel();
   toClassName(): string {
     return this.constructor.name;
@@ -57,6 +57,7 @@ export class CommonOrderMasterModel {
   isAgreeMarketing = false;
   isSendOffer = false;
   paymentMode = '';
+  tableNo = '';
 }
 
 export class OrderMasterModel extends CommonOrderMasterModel implements ClassName {

@@ -34,6 +34,10 @@ export class UserService {
     return this.apiService.get(UserConstant.GetPwaOrderById + "/" + orderid);
   }
 
+  getPwaOrderListByTable(postObj: any) {
+    return this.apiService.post(UserConstant.GetPwaOrderListByTable, postObj);
+  }
+
   // addUser(user: UserModel) {
   //   return this.apiService.post(UserConstant.AddUser, user);
   // }
