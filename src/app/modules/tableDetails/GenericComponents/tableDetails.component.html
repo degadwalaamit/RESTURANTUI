@@ -134,7 +134,7 @@
               <th scope="col">Product</th>
               <th scope="col">Price</th>
               <th class="d-none" scope="col">Update</th>
-              <th class="d-none" scope="col">Delete</th>
+              <th scope="col">Delete</th>
             </tr>
           </thead>
           <tbody *ngIf="items$ | async as items">
@@ -153,9 +153,9 @@
                 <button type="button" class="btn initial btn-dark"
                   (click)="sharedService.updateOrderDetailsFromOrder(tableId,item);">Update</button>
               </td>
-              <td class="d-none">
+              <td>
                 <button type="button" class="btn initial btn-dark"
-                  (click)="sharedService.removeOrderDetailsFromOrder(tableId,item);">Delete</button>
+                  (click)="sharedService.addtocart(item,0,1);">Delete</button>
               </td>
             </tr>
           </tbody>
@@ -193,7 +193,7 @@
       </div>
       <div class="row row-cols-5 g-1 mt-1">
         <div class="col">
-          <button type="button" class="btn btn-primary"
+          <button type="button" [disabled]="this.sharedService.orderMasterModel.orderDetailMaster.length == 0" class="btn btn-primary"
             (click)="sharedService.addTableOrderDetails(tableId)">Assign to
             Table</button>
         </div>

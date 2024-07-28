@@ -3604,19 +3604,6 @@ export class SharedService {
     }
   }
 
-  removeOrderDetailsFromOrder(tableId, objOrderDetail) {
-    let tblObject = this.tableOrderDetailModel.filter(x => x.tableId == tableId);
-    if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
-      tblObject[0].orderMaster.orderDetailMaster = objOrderDetail;
-    }
-
-    this.orderMasterModel.orderDetailMaster =
-      _.cloneDeep(this.orderMasterModel.orderDetailMaster.filter(x => x != objOrderDetail));
-
-    //this.setQuantityMenuItem();
-    //this.sendCartCountSubject.next('');
-  }
-
   updateOrderDetailsFromOrder(tableId, objOrderDetail) {
 
   }
