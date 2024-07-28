@@ -137,7 +137,7 @@
               <th scope="col">Delete</th>
             </tr>
           </thead>
-          <tbody *ngIf="items$ | async as items">
+          <tbody>
             <tr
               *ngFor="let item of sharedService.orderDetailMaster; let iconIndex = index">
               <td>{{ item.quantity }}</td>
@@ -193,7 +193,7 @@
       </div>
       <div class="row row-cols-5 g-1 mt-1">
         <div class="col">
-          <button type="button" [disabled]="this.sharedService.orderMasterModel.orderDetailMaster.length == 0" class="btn btn-primary"
+          <button type="button" [disabled]="sharedService.isAssignToTable()" class="btn btn-primary"
             (click)="sharedService.addTableOrderDetails(tableId)">Assign to
             Table</button>
         </div>

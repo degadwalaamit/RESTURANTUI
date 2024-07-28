@@ -29,17 +29,17 @@ export class TableDetails implements OnInit, OnDestroy {
     private broadcaster: NgBroadcasterService,
     cd: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute) {
-    setInterval(function () {
-      if (this.cd && !this.cd['destroyed']) {
-        this.cd.detectChanges();
-      }
-    }, 1);
-    this.items$ = new Observable(observer => {
-      setInterval(async () => {
-        this.reCalculation();
-        observer.next(this.sharedService.orderDetailMaster);
-      }, 1000);
-    });
+    // setInterval(function () {
+    //   if (this.cd && !this.cd['destroyed']) {
+    //     this.cd.detectChanges();
+    //   }
+    // }, 1);
+    // this.items$ = new Observable(observer => {
+    //   setInterval(async () => {
+    //     this.reCalculation();
+    //     observer.next(this.sharedService.orderDetailMaster);
+    //   }, 1000);
+    // });
   }
 
   get now(): string { return Date(); };
@@ -68,7 +68,7 @@ export class TableDetails implements OnInit, OnDestroy {
     }
     this.sharedService.orderMasterModel = this.sharedService.getTableDetails(this.tableId);
     this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(() => {
-      //this.cartDetails();
+      this.reCalculation();
     })
     // this.dashboard$ = this.loginService.getDashboard().pipe(
     //   tap(t => console.log(t)),

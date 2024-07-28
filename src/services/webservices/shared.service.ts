@@ -3644,10 +3644,11 @@ export class SharedService {
   }
 
   isAssignToTable() {
-    if (this.orderMasterModel && this.orderMasterModel.orderDetailMaster) {
-      return this.orderMasterModel.orderDetailMaster.length <= 0;
+    let isDisable = true;
+    if (this.orderMasterModel && this.orderMasterModel.orderDetailMaster && this.orderMasterModel.orderDetailMaster.length > 0) {
+      isDisable = false;
     }
-    return false;
+    return isDisable;
   }
 
   async placeOrder(tableId) {
