@@ -3500,6 +3500,9 @@ export class SharedService {
   }
 
   addtocart(itemdetails: any, isAdd, isRemove) {
+    if (isNullOrUndefined(this.orderDetailMaster)) {
+      this.orderDetailMaster = [];
+    }
     if (!isNullOrUndefined(this.currentSelectedOrderDetailObject)) {
       this.orderDetailMaster = this.orderDetailMaster
         .filter(x => x.orderDetailId != this.currentSelectedOrderDetailObject.orderDetailId)
