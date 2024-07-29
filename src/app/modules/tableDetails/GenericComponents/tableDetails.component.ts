@@ -68,9 +68,10 @@ export class TableDetails implements OnInit, OnDestroy {
       this.tableId = this.activatedRoute.snapshot.params.tId;
     }
     this.sharedService.orderMasterModel = this.sharedService.getTableDetails(this.tableId);
-    // if (isNullOrUndefined(this.sharedService.orderMasterModel.orderId)) {
-    //   this.sharedService.orderMasterModel = await this.sharedService.GetPwaOrderListByOrderId(this.tableId);
-    // }
+    if (isNullOrUndefined(this.sharedService.orderMasterModel.orderId)) {
+      this.sharedService.orderMasterModel = await this.sharedService.GetPwaOrderListByOrderId(this.tableId);
+      this.sharedService.orderDetailMaster = this.sharedService.orderMasterModel.orderDetailMaster;
+    }
     this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(() => {
       this.reCalculation();
     })

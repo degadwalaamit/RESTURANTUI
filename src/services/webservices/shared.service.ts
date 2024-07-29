@@ -3758,9 +3758,9 @@ export class SharedService {
           obj.orderMaster = element;
           return obj.orderMaster;
         });
-        return orderDetails;
+        return orderDetails[0];
       }
-      return null; // Return null if no results or status code is not 200
+      return new PwaOrderMasterModel(); // Return null if no results or status code is not 200
     } catch (error) {
       console.error('Error fetching order list', error);
       return null; // Return null in case of error
