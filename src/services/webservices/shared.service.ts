@@ -3668,6 +3668,16 @@ export class SharedService {
   }
 
   async sentTOPOS(typeOfPayment, tableId) {
+    if (typeOfPayment == 'Kontant' || typeOfPayment == 'MobilePay') {
+      this.setConfirmationPopup('Sent to POS', 'cnfSentToPOS',
+        'Are you sure want to pay?'
+        , 'No', 'Yes', ConfirmationCode.TablePage);
+
+    } else {
+      this.setConfirmationPopup('Sent to POS', 'cnfSentToPOS',
+        'Are you sure want to send to POS?'
+        , 'Cancel', 'Send', ConfirmationCode.TablePage);
+    }
     this.typeOfPayment = typeOfPayment;
     this.tableId = tableId;
     $('#' + this.popupId).modal('show');
@@ -3689,9 +3699,14 @@ export class SharedService {
     this.orderMasterModel = this.getTableDetails(tableId);
     if (this.orderDetailMaster.length > 0) {
       this.loading = true;
-      this.orderMasterModel.isPaid = true;
+      if (isNotNullOrUndefined(this.typeOfPayment) && this.typeOfPayment != '') {
+        this.orderMasterModel.isPaid = true;
+      } else {
+        this.orderMasterModel.isPaid = false;
+      }
       await this.userService.addPwaOrder(this.orderMasterModel).toPromise()
         .then((res: any) => {
+          this.typeOfPayment = '';
           this.loading = false;
           if (res.stateModel.statusCode === 200 && res.result != null) {
             if (isValidObject(res.result.orderId)) {
