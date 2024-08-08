@@ -383,4 +383,5 @@ export class DynamicTypeCode {
 export class ConfirmationCode {
   public static readonly Yes = 'Yes';
   public static readonly TablePage = 'TablePage';
+  public static readonly CancelPage = 'CancelPage';
 }

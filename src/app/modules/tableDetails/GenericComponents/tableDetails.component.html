@@ -43,7 +43,7 @@
             Admin</button>
         </div>
         <div class="col">
-          <button type="button"
+          <button type="button" (click)="sharedService.redirectUrl('dashboard')"
             class="w-100 btn btn-success bg-opacity-75">POS</button>
         </div>
         <div class="col">
@@ -191,14 +191,27 @@
           <button type="button" class="btn initial btn-secondary">C</button>
         </div>
       </div>
-      <div class="row row-cols-5 g-1 mt-1">
+      <div class="row row-cols-3 g-1 mt-1">
         <div class="col">
-          <button type="button" [disabled]="sharedService.isAssignToTable()" class="btn btn-primary"
+          <button type="button" [disabled]="sharedService.isAssignToTable()"
+            class="btn btn-primary"
             (click)="sharedService.addTableOrderDetails(tableId)">Assign to
             Table</button>
         </div>
         <div class="col">
           <button type="button" class="btn btn-warning">Discount %</button>
+        </div>
+        <div class="col display-none">
+          <button type="button" class="btn btn-warning">Open Drawer</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-primary">Split</button>
+        </div>
+        <div class="col display-none">
+          <button type="button" class="btn btn-warning">Refund</button>
+        </div>
+        <div class="col display-none">
+          <button type="button" class="btn btn-success">Performa</button>
         </div>
         <div class="col">
           <button type="button" class="btn initial btn-dark">1</button>
@@ -209,13 +222,10 @@
         <div class="col">
           <button type="button" class="btn initial btn-dark">3</button>
         </div>
-        <div class="col">
+        <!-- <div class="col">
           <button type="button"
             class="btn initial btn-light pointer-none">&nbsp;</button>
-        </div>
-        <div class="col display-none">
-          <button type="button" class="btn btn-warning">Open Drawer</button>
-        </div>
+        </div> -->
         <div class="col">
           <button type="button" class="btn initial btn-dark">4</button>
         </div>
@@ -226,12 +236,6 @@
           <button type="button" class="btn initial btn-dark">6</button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-primary">Split</button>
-        </div>
-        <div class="col display-none">
-          <button type="button" class="btn btn-warning">Refund</button>
-        </div>
-        <div class="col">
           <button type="button" class="btn initial btn-dark">7</button>
         </div>
         <div class="col">
@@ -239,13 +243,6 @@
         </div>
         <div class="col">
           <button type="button" class="btn initial btn-dark">9</button>
-        </div>
-        <div class="col display-none">
-          <button type="button" class="btn btn-success">Performa</button>
-        </div>
-        <div class="col">
-          <button type="button" class="btn btn-danger"
-            (click)="sharedService.redirectUrl('dashboard')">Cancel</button>
         </div>
         <div class="col">
           <button type="button" class="btn initial btn-dark">0</button>
@@ -255,6 +252,11 @@
         </div>
         <div class="col display-none">
           <button type="button" class="btn btn-blue">PLU</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger"
+            [disabled]="sharedService.isAssignToTable()"
+            (click)="sharedService.cancelOrderPopup(tableId)">Cancel</button>
         </div>
       </div>
     </div>

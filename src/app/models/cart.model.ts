@@ -58,6 +58,7 @@ export class CommonOrderMasterModel {
   isSendOffer = false;
   paymentMode = '';
   tableNo = '';
+  isDelete = false;
 }
 
 export class OrderMasterModel extends CommonOrderMasterModel implements ClassName {

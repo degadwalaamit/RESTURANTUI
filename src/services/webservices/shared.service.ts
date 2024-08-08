@@ -3629,11 +3629,15 @@ export class SharedService {
     return new PwaOrderMasterModel();
   }
 
-  updateTableDetails(tableId, objPwaOrderMasterModel: PwaOrderMasterModel) {
-    let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
-    if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
-      tblObject[0].orderMaster = objPwaOrderMasterModel;
-      tblObject[0].orderMaster.orderDetailMaster = objPwaOrderMasterModel.orderDetailMaster;
+  updateTableDetails(tableId, objPwaOrderMasterModel: PwaOrderMasterModel, isFinalPayment = false) {
+    if (isFinalPayment || objPwaOrderMasterModel.isDelete) {
+      this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo != tableId.toString());
+    } else {
+      let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
+      if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
+        tblObject[0].orderMaster = objPwaOrderMasterModel;
+        tblObject[0].orderMaster.orderDetailMaster = objPwaOrderMasterModel.orderDetailMaster;
+      }
     }
   }
 
@@ -3654,6 +3658,17 @@ export class SharedService {
           $('#' + this.popupId).modal('hide');
         }
         break;
+      }
+      case ConfirmationCode.CancelPage: {
+        if (event == ConfirmationCode.Yes) {
+          this.orderMasterModel.isDelete = true;
+          this.orderMasterModel.tableNo = this.tableId.toString();
+          await this.cancelOrder(this.tableId);
+          this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo != this.tableId.toString());
+          this.redirectUrl('dashboard');
+        } else {
+          $('#' + this.popupId).modal('hide');
+        }
       }
     }
   }
@@ -3696,12 +3711,15 @@ export class SharedService {
   }
 
   async placeOrder(tableId) {
+    let isFinalPayment = false;
     this.orderMasterModel = this.getTableDetails(tableId);
     if (this.orderDetailMaster.length > 0) {
       this.loading = true;
       if (isNotNullOrUndefined(this.typeOfPayment) && this.typeOfPayment != '') {
+        isFinalPayment = true;
         this.orderMasterModel.isPaid = true;
       } else {
+        isFinalPayment = false;
         this.orderMasterModel.isPaid = false;
       }
       await this.userService.addPwaOrder(this.orderMasterModel).toPromise()
@@ -3710,7 +3728,7 @@ export class SharedService {
           this.loading = false;
           if (res.stateModel.statusCode === 200 && res.result != null) {
             if (isValidObject(res.result.orderId)) {
-              this.updateTableDetails(tableId, res.result);
+              this.updateTableDetails(tableId, res.result, isFinalPayment);
               this.orderMasterModel = new PwaOrderMasterModel();
               this.orderDetailMaster = [];
               this.sendCartCountSubject.next('');
@@ -3785,5 +3803,40 @@ export class SharedService {
     } finally {
       this.loading = false;
     }
+  }
+
+  cancelOrderPopup(tableId) {
+    this.tableId = tableId;
+    this.setConfirmationPopup('Cancel Order', 'cnfSentToPOS', 'Are you sure want to cancel order?', 'No', 'Yes', ConfirmationCode.CancelPage);
+    $('#' + this.popupId).modal('show');
+  }
+
+  async cancelOrder(tableId) {
+    this.orderMasterModel.tableNo = tableId;
+    let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
+    if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
+      this.orderMasterModel.isDelete = true;
+      tblObject[0].orderMaster = this.orderMasterModel;
+      await this.placeOrder(tableId)
+    }
+  }
+
+  moveToTable(sourceTable, destinationTable) {
+    let tblObjectList = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == sourceTable.toString());
+    if (!isNullOrUndefined(tblObjectList) && tblObjectList.length > 0
+      && !isNullOrUndefined(tblObjectList[0].orderMaster)) {
+      let tObject = new TableOrderDetails();
+      tObject.orderMaster = tblObjectList[0].orderMaster;
+      tObject.orderMaster.tableNo = destinationTable.toString();
+      this.tableOrderDetailModel.push(tObject[0]);
+      this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo != sourceTable.toString());
+    }
+  }
+
+  moveToTablePopup() {
+    $('#modelMoveTable').modal('show');
+  }
+  onCancelButtonClick() {
+    $('#modelMoveTable').modal('hide');
   }
 }

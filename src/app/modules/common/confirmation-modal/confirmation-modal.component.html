@@ -1,17 +1,21 @@
-<div class="modal fade confirmation-modal-up" data-backdrop="true" [id]="popupId" role="dialog" tabindex="-1" aria-modal="true">
+<div class="modal fade" [id]="popupId" tabindex="-1" aria-labelledby="cnfModal"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="text-center">{{title}}</h4>
-                <button aria-hidden="true" class="close" (click)="onCancelButtonClick()"  type="button">×</button>
+                <h5 class="modal-title">{{title}}</h5>
+                <button aria-hidden="true" class="btn-close"
+                    (click)="onCancelButtonClick()" type="button"></button>
             </div>
             <div class="modal-body">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="text-left">
-                                <div class="panel-body">
-                                    <p class="popup-text">{{message}} </p>
+                <div class="mb-3">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="text-left">
+                                    <div class="panel-body">
+                                        <p class="popup-text">{{message}} </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -19,11 +23,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <div class="col-md-12"><button (click)="onCancelButtonClick()" aria-hidden="true" class="btn btn-outline-secondary">
-                   {{cancelButtonTitle}}</button>
-                    <button aria-hidden="true" (click)="onConfirmButtonClick()" class="btn btn-secondary float-right">
-                        {{saveButtonTitle}}</button>
-                </div>
+                <button (click)="onCancelButtonClick()"
+                    aria-hidden="true" class="btn btn-secondary">
+                    {{cancelButtonTitle}}</button>
+                <button aria-hidden="true" (click)="onConfirmButtonClick()"
+                    class="btn btn-primary">
+                    {{saveButtonTitle}}</button>
             </div>
         </div>
     </div>

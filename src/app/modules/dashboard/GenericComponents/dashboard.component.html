@@ -4,7 +4,8 @@
     <div class="d-flex flex-column flex-fill h-100 p-3">
       <ul class="navbar-nav flex-column mb-4">
         <li class="nav-item">
-          <p class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center">
+          <p
+            class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center">
             area
           </p>
           <a class="nav-link active" href="#"> Restaurent </a>
@@ -12,13 +13,14 @@
       </ul>
       <ul class="navbar-nav flex-column">
         <li class="nav-item">
-          <p class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center">
+          <p
+            class="navbar-vertical-label mb-0 text-uppercase opacity-50 text-center">
             mode
           </p>
           <a class="nav-link active" href="#"> Open Table </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"> Move to Table</a>
+          <a class="nav-link" (click)="sharedService.moveToTablePopup();"> Move to Table</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"> Replacement Production</a>
@@ -32,7 +34,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="rounded-pill py-4 btn btn-danger w-100 text-center" (click)="sharedService.openLogoutModal();">
+          <a class="rounded-pill py-4 btn btn-danger w-100 text-center"
+            (click)="sharedService.openLogoutModal();">
             Sign out admin
           </a>
         </li>
@@ -42,26 +45,79 @@
   <div class="col">
     <div class="card">
       <div class="card-body min-vh-100">
-        <div class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 gy-4"
+        <div
+          class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 gy-4"
           *ngIf="this.sharedService.tableMaster != null">
 
-          <ng-container *ngFor="let tb of this.sharedService.totalTableArray; let index = index">
+          <ng-container
+            *ngFor="let tb of this.sharedService.totalTableArray; let index = index">
             <div class="col">
-              <a (click)="sharedService.redirectUrl('table-details', index + 1)" class="card tables-card"
+              <a (click)="sharedService.redirectUrl('table-details', index + 1)"
+                class="card tables-card"
                 [ngClass]="sharedService.isTableOccupied(index + 1) ? 'booked' : ''">
                 <span class="table-number">{{index + 1}}</span>
               </a>
             </div>
           </ng-container>
-          <ng-container *ngFor="let tb of this.sharedService.totalTakeAwayTableArray; let index = index">
+          <ng-container
+            *ngFor="let tb of this.sharedService.totalTakeAwayTableArray; let index = index">
             <div class="col">
-              <a (click)="sharedService.redirectUrl('table-details','T' + (index + 1))" class="card tables-card"
+              <a
+                (click)="sharedService.redirectUrl('table-details','T' + (index + 1))"
+                class="card tables-card"
                 [ngClass]="sharedService.isTableOccupied('T' + (index + 1)) ? 'booked' : ''">
                 <span class="table-number">T{{index + 1}}</span>
               </a>
             </div>
           </ng-container>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modelMoveTable" tabindex="-1"
+  aria-labelledby="modelMoveTable"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Move Table</h5>
+        <button aria-hidden="true" class="btn-close"
+          (click)="sharedService.onCancelButtonClick()" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <div class="col-md-12">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="text-left">
+                  <div class="panel-body">
+                    Move to table content....
+                    <!-- <ng-container
+                      *ngFor="let tb of this.sharedService.totalTableArray; let index = index">
+                      <div class="col">
+                        <a
+                          (click)="sharedService.redirectUrl('table-details', index + 1)"
+                          class="card tables-card"
+                          [ngClass]="sharedService.isTableOccupied(index + 1) ? 'booked' : ''">
+                          <span class="table-number">{{index + 1}}</span>
+                        </a>
+                      </div>
+                    </ng-container> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="sharedService.onCancelButtonClick()"
+          aria-hidden="true" class="btn btn-secondary">
+          Cancel</button>
+        <button aria-hidden="true" (click)="sharedService.moveToTable(1,2)"
+          class="btn btn-primary">
+          Move</button>
       </div>
     </div>
   </div>
