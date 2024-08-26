@@ -20,7 +20,8 @@
           <a class="nav-link active" href="#"> Open Table </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="sharedService.moveToTablePopup();"> Move to Table</a>
+          <a class="nav-link" (click)="sharedService.moveToTablePopup();"> Move
+            to Table</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"> Replacement Production</a>
@@ -78,7 +79,7 @@
 <div class="modal fade" id="modelMoveTable" tabindex="-1"
   aria-labelledby="modelMoveTable"
   aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Move Table</h5>
@@ -92,18 +93,23 @@
               <div class="panel-body">
                 <div class="text-left">
                   <div class="panel-body">
-                    Move to table content....
-                    <!-- <ng-container
-                      *ngFor="let tb of this.sharedService.totalTableArray; let index = index">
-                      <div class="col">
-                        <a
-                          (click)="sharedService.redirectUrl('table-details', index + 1)"
-                          class="card tables-card"
-                          [ngClass]="sharedService.isTableOccupied(index + 1) ? 'booked' : ''">
-                          <span class="table-number">{{index + 1}}</span>
-                        </a>
-                      </div>
-                    </ng-container> -->
+                    <!-- Move to table content.... -->
+                    <label class="customselection form-label">To:</label>
+                    <select class="form-control mr-1 select20"
+                      name="fromTableArray" id="fromTableArray">
+                      <option
+                        *ngFor="let tb of this.sharedService.fromTableArray; let index = index">
+                        {{tb}}
+                      </option>
+                    </select>
+                    <label class="customselection form-label">From:</label>
+                    <select class="form-control mr-1 select20"
+                      name="toTableArray" id="toTableArray">
+                      <option
+                        *ngFor="let tb of this.sharedService.toTableArray; let index = index">
+                        {{tb}}
+                      </option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -115,7 +121,7 @@
         <button (click)="sharedService.onCancelButtonClick()"
           aria-hidden="true" class="btn btn-secondary">
           Cancel</button>
-        <button aria-hidden="true" (click)="sharedService.moveToTable(1,2)"
+        <button aria-hidden="true" (click)="sharedService.moveToTable()"
           class="btn btn-primary">
           Move</button>
       </div>

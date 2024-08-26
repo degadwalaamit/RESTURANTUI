@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { UserConstant } from '../../app/constants/apiUrl.constant';
 import { ApiService } from './api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserModel } from '../../app/models/user.model';
 
 @Injectable({
   providedIn: 'root'

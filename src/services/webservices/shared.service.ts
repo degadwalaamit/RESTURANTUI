@@ -120,6 +120,9 @@ export class SharedService {
   public sendCartCountSubject = new Subject();
   sendCartCountObservable = this.sendCartCountSubject.asObservable();
   public tableOrderDetailModel: TableOrderDetails[] = [];
+
+  public fromTableArray = [];
+  public toTableArray = [];
   checkExpnadCollapseUpdate() {
     return this.checkExpandCollapse.asObservable();
   }
@@ -3606,7 +3609,7 @@ export class SharedService {
 
   async addTableOrderDetails(tableId) {
     this.orderMasterModel.tableNo = tableId;
-    let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
+    let tblObject = this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
     if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
       tblObject[0].orderMaster = this.orderMasterModel;
     } else {
@@ -3618,7 +3621,7 @@ export class SharedService {
   }
 
   getTableDetails(tableId) {
-    let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
+    let tblObject = this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
     if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
       this.orderMasterModel = tblObject[0].orderMaster;
       this.orderDetailMaster = tblObject[0].orderMaster.orderDetailMaster;
@@ -3633,7 +3636,7 @@ export class SharedService {
     if (isFinalPayment || objPwaOrderMasterModel.isDelete) {
       this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo != tableId.toString());
     } else {
-      let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
+      let tblObject = this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
       if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
         tblObject[0].orderMaster = objPwaOrderMasterModel;
         tblObject[0].orderMaster.orderDetailMaster = objPwaOrderMasterModel.orderDetailMaster;
@@ -3699,7 +3702,7 @@ export class SharedService {
   }
 
   isTableOccupied(tableId) {
-    return this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId).length > 0;
+    return this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString()).length > 0;
   }
 
   isAssignToTable() {
@@ -3813,7 +3816,7 @@ export class SharedService {
 
   async cancelOrder(tableId) {
     this.orderMasterModel.tableNo = tableId;
-    let tblObject = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == tableId);
+    let tblObject = this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
     if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
       this.orderMasterModel.isDelete = true;
       tblObject[0].orderMaster = this.orderMasterModel;
@@ -3821,15 +3824,23 @@ export class SharedService {
     }
   }
 
-  moveToTable(sourceTable, destinationTable) {
+  async moveToTable() {
+    let sourceTable = $("#fromTableArray").val();
+    let destinationTable = $("#toTableArray").val();
     let tblObjectList = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == sourceTable.toString());
     if (!isNullOrUndefined(tblObjectList) && tblObjectList.length > 0
       && !isNullOrUndefined(tblObjectList[0].orderMaster)) {
       let tObject = new TableOrderDetails();
       tObject.orderMaster = tblObjectList[0].orderMaster;
       tObject.orderMaster.tableNo = destinationTable.toString();
-      this.tableOrderDetailModel.push(tObject[0]);
-      this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo != sourceTable.toString());
+      this.loading = true;
+      await this.userService.addPwaOrder(tObject.orderMaster).toPromise()
+        .then((res: any) => {
+          this.moveTableArray();
+          this.tableOrderDetailModel.push(tObject[0]);
+          $('#modelMoveTable').modal('hide');
+          this.loading = false;
+        });
     }
   }
 
@@ -3838,5 +3849,17 @@ export class SharedService {
   }
   onCancelButtonClick() {
     $('#modelMoveTable').modal('hide');
+  }
+
+  moveTableArray() {
+    this.fromTableArray = [];
+    this.toTableArray = [];
+    for (let index = 1; index <= this.tableMaster.tableNo; index++) {
+      if (this.isTableOccupied(index) == true) {
+        this.fromTableArray.push(index);
+      } else {
+        this.toTableArray.push(index);
+      }
+    }
   }
 }

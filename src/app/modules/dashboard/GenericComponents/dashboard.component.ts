@@ -52,6 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.optionRules = this.broadcaster.listen('islogin').subscribe(response => {
       this.isUserLogin = response;
     });
+    this.sharedService.moveTableArray();
   }
 
   ngOnDestroy() {
