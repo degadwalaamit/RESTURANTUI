@@ -54,6 +54,9 @@ export class MenuItemMasterModel {
   customMenuItemId: Guid | null;
   customItemName: string;
   customOrderItemDetailMaster: CustomOrderItemDetailMaster[] | null;
+
+  orderDetailId: Guid | null;
+  orderId: Guid | null;
 }
 export class ImageMasterModel {
   imageId: Guid | null;

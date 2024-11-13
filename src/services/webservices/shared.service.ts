@@ -3343,6 +3343,9 @@ export class SharedService {
       item.customMenuItemId = this.currentSelectedOrderDetailObject.customMenuItemId;
       item.customItemName = this.currentSelectedOrderDetailObject.customItemName;
       item.quantity = this.currentSelectedOrderDetailObject.quantity;
+
+      item.orderDetailId = this.currentSelectedOrderDetailObject.orderDetailId;
+      item.orderId = this.currentSelectedOrderDetailObject.orderId;
     }
     // if (item.quantity > 0) {
     // if (item.isSpiceLevelAvailable) {
@@ -3506,6 +3509,7 @@ export class SharedService {
     if (isNullOrUndefined(this.orderDetailMaster)) {
       this.orderDetailMaster = [];
     }
+    debugger;
     if (!isNullOrUndefined(this.currentSelectedOrderDetailObject)) {
       this.orderDetailMaster = this.orderDetailMaster
         .filter(x => x.orderDetailId != this.currentSelectedOrderDetailObject.orderDetailId)
@@ -3514,7 +3518,12 @@ export class SharedService {
       var categoryObject = this.menuCategoryMasterModel.filter(x => x.menuCategoryId == itemdetails.menuCategoryId);
       if (categoryObject.length > 0) {
         var objOrderDetailMasterModel = new PwaOrderDetailMasterModel();
-        objOrderDetailMasterModel.orderDetailId = Guid.create()["value"];
+        if (isNullOrUndefined(itemdetails.orderDetailId)) {
+          objOrderDetailMasterModel.orderDetailId = Guid.create()["value"];
+        } else {
+          objOrderDetailMasterModel.orderDetailId = itemdetails.orderDetailId;
+          objOrderDetailMasterModel.orderId = itemdetails.orderId;
+        }
         objOrderDetailMasterModel.menuCategoryId = itemdetails.menuCategoryId;
         objOrderDetailMasterModel.categoryName = categoryObject[0].categoryName;
         objOrderDetailMasterModel.mcode = categoryObject[0].code;
@@ -3541,8 +3550,12 @@ export class SharedService {
         this.orderDetailMaster.push(objOrderDetailMasterModel);
       }
     } else {
-      this.orderDetailMaster = this.orderDetailMaster
-        .filter(x => x.orderDetailId != itemdetails.orderDetailId)
+      let isDeleteObject = this.orderDetailMaster.filter(x => x.orderDetailId == itemdetails.orderDetailId);
+      if (!isNullOrUndefined(isDeleteObject)) {
+        isDeleteObject[0].isDeleted = true;
+      }
+      // this.orderDetailMaster = this.orderDetailMaster
+      //   .filter(x => x.orderDetailId != itemdetails.orderDetailId)
     }
     this.resetCurrentSelection();
     this.setQuantityMenuItem();
@@ -3609,6 +3622,7 @@ export class SharedService {
 
   async addTableOrderDetails(tableId) {
     this.orderMasterModel.tableNo = tableId;
+    this.orderMasterModel.orderDetailMaster = this.orderDetailMaster;
     let tblObject = this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
     if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
       tblObject[0].orderMaster = this.orderMasterModel;
@@ -3767,8 +3781,8 @@ export class SharedService {
       .then((res: any) => {
         this.loading = false;
         if (res.stateModel.statusCode === 200 && res.result != null) {
-          this.tableOrderDetailModel = [];
           let that = this;
+          that.tableOrderDetailModel = [];
           res.result.forEach((element: PwaOrderMasterModel) => {
             let obj = new TableOrderDetails();
             obj.orderMaster = element;

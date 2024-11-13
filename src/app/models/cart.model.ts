@@ -102,6 +102,7 @@ export class OrderDetailMasterModel implements ClassName {
   customMenuItemId: Guid | null;
   customItemName: string;
   customOrderItemDetailMaster: CustomOrderItemDetailMaster[] | null;
+  isDeleted: boolean | null;
   toClassName(): string {
     return this.constructor.name;
   }

@@ -140,23 +140,25 @@
           <tbody>
             <tr
               *ngFor="let item of sharedService.orderDetailMaster; let iconIndex = index">
-              <td>{{ item.quantity }}</td>
-              <td>
-                <b>{{ item.itemName }}</b> <br />{{ item.spicyType }} <br />{{
-                item.comment }}
-              </td>
-              <td>
-                {{ item.price * item.quantity | number : "1.2-2" }} {{
-                sharedService.setCurrencySymbol() }}
-              </td>
-              <td>
-                <button type="button" class="btn initial btn-dark"
-                  (click)="sharedService.identifyMenuItem(item);">Update</button>
-              </td>
-              <td>
-                <button type="button" class="btn initial btn-dark"
-                  (click)="sharedService.addtocart(item,0,1);">Delete</button>
-              </td>
+              <ng-container *ngIf="item.isDeleted != true">
+                <td>{{ item.quantity }}</td>
+                <td>
+                  <b>{{ item.itemName }}</b> <br />{{ item.spicyType }} <br />{{
+                  item.comment }}
+                </td>
+                <td>
+                  {{ item.price * item.quantity | number : "1.2-2" }} {{
+                  sharedService.setCurrencySymbol() }}
+                </td>
+                <td>
+                  <button type="button" class="btn initial btn-dark"
+                    (click)="sharedService.identifyMenuItem(item);">Update</button>
+                </td>
+                <td>
+                  <button type="button" class="btn initial btn-dark"
+                    (click)="sharedService.addtocart(item,0,1);">Delete</button>
+                </td>
+              </ng-container>
             </tr>
           </tbody>
         </table>
