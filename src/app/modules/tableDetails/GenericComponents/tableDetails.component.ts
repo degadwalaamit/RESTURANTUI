@@ -71,6 +71,8 @@ export class TableDetails implements OnInit, OnDestroy {
     if (isNullOrUndefined(this.sharedService.orderMasterModel.orderId)) {
       this.sharedService.orderMasterModel = await this.sharedService.GetPwaOrderListByOrderId(this.tableId);
       this.sharedService.orderDetailMaster = this.sharedService.orderMasterModel.orderDetailMaster;
+    } else {      
+      this.sharedService.orderMasterModel.orderStatus = 'Updated';
     }
     this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(() => {
       this.reCalculation();

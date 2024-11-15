@@ -3509,7 +3509,6 @@ export class SharedService {
     if (isNullOrUndefined(this.orderDetailMaster)) {
       this.orderDetailMaster = [];
     }
-    debugger;
     if (!isNullOrUndefined(this.currentSelectedOrderDetailObject)) {
       this.orderDetailMaster = this.orderDetailMaster
         .filter(x => x.orderDetailId != this.currentSelectedOrderDetailObject.orderDetailId)
@@ -3615,7 +3614,9 @@ export class SharedService {
     this.orderMasterModel.discountAmount = ((subAmount * this.orderMasterModel.discountPercentage) / 100);
     this.orderMasterModel.totalAmount = this.orderMasterModel.subAmount - this.orderMasterModel.discountAmount;
     this.orderMasterModel.isPaid = false;
-    this.orderMasterModel.orderStatus = 'Pending';
+    if (isNullOrUndefined(this.orderMasterModel.orderId)) {
+      this.orderMasterModel.orderStatus = 'Pending';
+    }    
     this.orderMasterModel.addressMaster.isActive = true;
     this.orderMasterModel.addressMaster.isDeleted = false;
   }
@@ -3735,6 +3736,7 @@ export class SharedService {
       if (isNotNullOrUndefined(this.typeOfPayment) && this.typeOfPayment != '') {
         isFinalPayment = true;
         this.orderMasterModel.isPaid = true;
+        this.orderMasterModel.orderStatus = 'Paid';
       } else {
         isFinalPayment = false;
         this.orderMasterModel.isPaid = false;
