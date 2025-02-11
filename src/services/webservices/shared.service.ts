@@ -26,9 +26,9 @@ import { TableMaster } from 'src/app/models/user.model';
 import { UserService } from './user.service';
 import { Guid } from 'guid-typescript';
 import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modules/common/app-helper-functions';
-import { OrderDetailMasterModel, PwaOrderDetailMasterModel, PwaOrderMasterModel, TableOrderDetails } from 'src/app/models/cart.model';
+import { OrderCustomItemGroupMaster, OrderDetailMasterModel, PwaOrderCustomItemGroupMaster, PwaOrderDetailMasterModel, PwaOrderMasterModel, TableOrderDetails } from 'src/app/models/cart.model';
 import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.model';
-import { CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
+import { CustomGroupMasterModel, CustomItemGroupMasterModel, CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
 declare var $: any;
 
 @Injectable(
@@ -3396,14 +3396,49 @@ export class SharedService {
   }
 
   addSpicy(spycyOption) {
-    spycyOption = '';
-    var x = $("#spiciness");//$("input[name='spiciness']:checked");
-    if (x.length > 0) {
-      spycyOption = $("#spiciness").val()
-      this.currentSelectedObject.spicyType = spycyOption;
-    }
-    this.currentSelectedObject.comment = $("#txtComment").val();
+    // spycyOption = '';
+    // var x = $("#spiciness");//$("input[name='spiciness']:checked");
+    // if (x.length > 0) {
+    //   spycyOption = $("#spiciness").val()
+    //   this.currentSelectedObject.spicyType = spycyOption;
+    // }
+    // this.currentSelectedObject.comment = $("#txtComment").val();
+    this.currentSelectedObject.selectedCustomItemGroupMaster = [];
+    if (this.currentSelectedObject.customItemGroupMaster.length > 0) {
+      let i = 0;
+      this.currentSelectedObject.customItemGroupMaster.forEach(element => {
+        let objCustomItemGroupMasterModel = new CustomItemGroupMasterModel();
+        objCustomItemGroupMasterModel.customGroupMaster = new CustomGroupMasterModel();
+        objCustomItemGroupMasterModel.customGroupMaster.customGroupDetailMaster = [];
 
+        objCustomItemGroupMasterModel.customItemGroupId = element.customItemGroupId;
+        objCustomItemGroupMasterModel.customGroupId = element.customGroupId;
+        objCustomItemGroupMasterModel.menuItemId = element.menuItemId;
+        if (isValidObject(element.customGroupMaster)) {
+
+          objCustomItemGroupMasterModel.customGroupMaster.customGroupName = element.customGroupMaster.customGroupName;
+          objCustomItemGroupMasterModel.customGroupMaster.customGroupName_DK = element.customGroupMaster.customGroupName_DK;
+          objCustomItemGroupMasterModel.customGroupMaster.restaurantId = element.customGroupMaster.restaurantId;
+          objCustomItemGroupMasterModel.customGroupMaster.isCommentNeeded = element.customGroupMaster.isCommentNeeded;
+          objCustomItemGroupMasterModel.customGroupMaster.sequenceNo = element.customGroupMaster.sequenceNo;
+
+          var selectedSpyObject = $("#spiciness_" + i).val();
+          var txtCommentObject = "";
+          if (element.customGroupMaster.isCommentNeeded) {
+            txtCommentObject = $("#txtComment_" + i).val();
+          }
+
+          element.customGroupMaster.customGroupDetailMaster.forEach(elementDetails => {
+            if (elementDetails.customGroupDetailId == selectedSpyObject) {
+              elementDetails.comment = txtCommentObject;
+              objCustomItemGroupMasterModel.customGroupMaster.customGroupDetailMaster.push(elementDetails);
+            }
+          });
+        }
+        i++;
+        this.currentSelectedObject.selectedCustomItemGroupMaster.push(objCustomItemGroupMasterModel);
+      });
+    }
     var selectedCustomObject = $("#idCustomSelection").val();
     this.currentSelectedObject.customMenuItemId = null
     this.currentSelectedObject.customItemName = '';
@@ -3532,6 +3567,7 @@ export class SharedService {
         objOrderDetailMasterModel.itemDescription = itemdetails.itemDescription;
         objOrderDetailMasterModel.isAvailableForTakeaway = itemdetails.isAvailableForTakeaway;
         objOrderDetailMasterModel.price = itemdetails.price;
+        objOrderDetailMasterModel.totalPrice = itemdetails.price;
         objOrderDetailMasterModel.quantity = itemdetails.quantity;
         objOrderDetailMasterModel.spicyType = isValidObject(itemdetails.spicyType) ? itemdetails.spicyType : null;
         objOrderDetailMasterModel.comment = isValidObject(itemdetails.comment) ? itemdetails.comment : null;
@@ -3546,6 +3582,37 @@ export class SharedService {
           objOrderDetailMasterModel.cartSequence = 101;
         }
         objOrderDetailMasterModel.customOrderItemDetailMaster = itemdetails.customOrderItemDetailMaster;
+        objOrderDetailMasterModel.orderCustomItemGroupMaster = [];
+        if (isValidObject(itemdetails.selectedCustomItemGroupMaster)) {
+          itemdetails.selectedCustomItemGroupMaster.forEach(element => {
+            let objOrderCustomItemGroupMaster = new PwaOrderCustomItemGroupMaster();
+            objOrderCustomItemGroupMaster.orderCustomItemGroupId = Guid.create()["value"];
+            objOrderCustomItemGroupMaster.customItemGroupId = element.customItemGroupId;
+            objOrderCustomItemGroupMaster.customGroupId = element.customGroupId;
+            objOrderCustomItemGroupMaster.menuItemId = element.menuItemId;
+
+            if (element.customGroupMaster) {
+              objOrderCustomItemGroupMaster.customGroupName = element.customGroupMaster.customGroupName;
+              objOrderCustomItemGroupMaster.customGroupName_DK = element.customGroupMaster.customGroupName_DK;
+              objOrderCustomItemGroupMaster.restaurantId = element.customGroupMaster.restaurantId;
+              objOrderCustomItemGroupMaster.sequenceNo = element.customGroupMaster.sequenceNo;
+              objOrderCustomItemGroupMaster.isCommentNeeded = element.customGroupMaster.isCommentNeeded;
+
+              if (element.customGroupMaster.customGroupDetailMaster.length > 0) {
+                let gdMObj = element.customGroupMaster.customGroupDetailMaster[0];
+                objOrderCustomItemGroupMaster.customGroupDetailId = gdMObj.customGroupDetailId;
+                objOrderCustomItemGroupMaster.detailName = gdMObj.detailName;
+                objOrderCustomItemGroupMaster.detailName_DK = gdMObj.detailName_DK;
+                objOrderCustomItemGroupMaster.isChargable = gdMObj.isChargable;
+                objOrderCustomItemGroupMaster.price = gdMObj.price;
+                objOrderCustomItemGroupMaster.comment = gdMObj.comment;
+              }
+            }
+            objOrderDetailMasterModel.extraPrice += objOrderCustomItemGroupMaster.price !== undefined ? objOrderCustomItemGroupMaster.price : 0;
+            objOrderDetailMasterModel.orderCustomItemGroupMaster.push(objOrderCustomItemGroupMaster);
+          });
+        }
+        objOrderDetailMasterModel.totalPrice += (objOrderDetailMasterModel.extraPrice !== undefined ? objOrderDetailMasterModel.extraPrice : 0);
         this.orderDetailMaster.push(objOrderDetailMasterModel);
       }
     } else {
@@ -3608,7 +3675,7 @@ export class SharedService {
     let subAmount = 0;
     this.refreshPackingPrice();
     this.orderMasterModel.orderDetailMaster.forEach(element => {
-      subAmount = subAmount + (element.price * element.quantity);
+      subAmount = subAmount + (element.totalPrice * element.quantity);
     });
     this.orderMasterModel.subAmount = subAmount;
     this.orderMasterModel.discountAmount = ((subAmount * this.orderMasterModel.discountPercentage) / 100);
@@ -3616,7 +3683,7 @@ export class SharedService {
     this.orderMasterModel.isPaid = false;
     if (isNullOrUndefined(this.orderMasterModel.orderId)) {
       this.orderMasterModel.orderStatus = 'Pending';
-    }    
+    }
     this.orderMasterModel.addressMaster.isActive = true;
     this.orderMasterModel.addressMaster.isDeleted = false;
   }
@@ -3741,6 +3808,7 @@ export class SharedService {
         isFinalPayment = false;
         this.orderMasterModel.isPaid = false;
       }
+      this.orderMasterModel.resturantId = Guid.parse(AppConstants.ResturantId).toString();
       await this.userService.addPwaOrder(this.orderMasterModel).toPromise()
         .then((res: any) => {
           this.typeOfPayment = '';

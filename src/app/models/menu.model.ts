@@ -42,6 +42,7 @@ export class MenuItemMasterModel {
   longDescription: string | null;
   longDescription_dk: string | null;
   imageMaster: ImageMasterModel[] | null;
+  customItemGroupMaster: CustomItemGroupMasterModel[] | null;
   isCustomOption: boolean | null;
   isItemCustom: boolean | null;
   noOfGrayOption: number | null;
@@ -54,10 +55,38 @@ export class MenuItemMasterModel {
   customMenuItemId: Guid | null;
   customItemName: string;
   customOrderItemDetailMaster: CustomOrderItemDetailMaster[] | null;
-
+  selectedCustomItemGroupMaster: CustomItemGroupMasterModel[] | null;
   orderDetailId: Guid | null;
   orderId: Guid | null;
 }
+
+export class CustomGroupMasterModel {
+  customGroupId: Guid;
+  customGroupName: string | null;
+  customGroupName_DK: string | null;
+  restaurantId: Guid | null;
+  sequenceNo: number | null;
+  isCommentNeeded: boolean | null;
+  customGroupDetailMaster: CustomGroupDetailMasterModel[] | null;
+}
+
+export class CustomGroupDetailMasterModel {
+  customGroupDetailId: Guid;
+  customGroupId: Guid;
+  detailName: string | null;
+  detailName_DK: string | null;
+  isChargable: boolean | null;
+  price: number | null;
+  comment: string | null;
+}
+
+export class CustomItemGroupMasterModel {
+  customItemGroupId: Guid;
+  customGroupId: Guid | null;
+  menuItemId: Guid | null;
+  customGroupMaster: CustomGroupMasterModel | null;
+}
+
 export class ImageMasterModel {
   imageId: Guid | null;
   menuItemId: Guid | null;

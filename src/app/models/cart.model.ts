@@ -59,6 +59,7 @@ export class CommonOrderMasterModel {
   paymentMode = '';
   tableNo = '';
   isDelete = false;
+  resturantId: string | null;
 }
 
 export class OrderMasterModel extends CommonOrderMasterModel implements ClassName {
@@ -81,7 +82,7 @@ export class PwaOrderMasterModel extends CommonOrderMasterModel implements Class
   }
 }
 
-export class OrderDetailMasterModel implements ClassName {
+export class CommonOrderDetailMasterModel implements ClassName {
   orderDetailId: Guid | null;
   orderId: Guid | null;
   menuCategoryId: Guid | null;
@@ -93,6 +94,8 @@ export class OrderDetailMasterModel implements ClassName {
   itemDescription: string;
   isAvailableForTakeaway: boolean | null;
   price: number | null;
+  extraPrice: number = 0;
+  totalPrice: number = 0;
   quantity: number | null;
   spicyType: string | null;
   comment: string | null;
@@ -110,8 +113,49 @@ export class OrderDetailMasterModel implements ClassName {
     return this.constructor.name;
   }
 }
+export class OrderDetailMasterModel extends CommonOrderDetailMasterModel {
+  orderCustomItemGroupMaster: OrderCustomItemGroupMaster[] | null;
+  toClassName(): string {
+    return this.constructor.name;
+  }
+  toComponentName(): string {
+    return this.constructor.name;
+  }
+}
+export class OrderCustomItemGroupMaster implements ClassName {
+  orderCustomItemGroupId: Guid | null;
+  customItemGroupId: Guid | null;
+  customGroupId: Guid | null;
+  menuItemId: Guid | null;
+  customGroupName: string | null;
+  customGroupName_DK: string | null;
+  restaurantId: Guid | null;
+  sequenceNo = 0
+  isCommentNeeded = false;
+  customGroupDetailId: Guid | null;
+  detailName: string | null;
+  detailName_DK: string | null;
+  isChargable = false;
+  price = 0;
+  comment = '';
+  toClassName(): string {
+    return this.constructor.name;
+  }
+  toComponentName(): string {
+    return this.constructor.name;
+  }
+}
+export class PwaOrderCustomItemGroupMaster extends OrderCustomItemGroupMaster {
+  toClassName(): string {
+    return this.constructor.name;
+  }
+  toComponentName(): string {
+    return this.constructor.name;
+  }
+}
 
-export class PwaOrderDetailMasterModel extends OrderDetailMasterModel implements ClassName {
+export class PwaOrderDetailMasterModel extends CommonOrderDetailMasterModel implements ClassName {
+  orderCustomItemGroupMaster: PwaOrderCustomItemGroupMaster[] | null;
   toClassName(): string {
     return this.constructor.name;
   }

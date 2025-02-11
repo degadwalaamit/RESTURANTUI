@@ -1,6 +1,6 @@
 
 export class AppConstants {
-  // public static BaseApiUrl = 'https://localhost:44331/api/';
+  //public static BaseApiUrl = 'https://localhost:44331/api/';
   public static BaseApiUrl = 'https://bandhanappapi.azurewebsites.net/api/';
 
   public static CookieStorageDay = 1; // ex. 1 day
@@ -12,6 +12,7 @@ export class AppConstants {
   public static BaseAddressUrl = 'https://api.ideal-postcodes.co.uk/v1/postcodes/';
   // public static AddressApiKey = 'ak_kgata418gW3areYBTMYgQKliy3xzM';
   public static AddressApiKey = 'ak_k2bqe7y2NCcuWZaYHM9VSeDP7yHoV';
+  public static ResturantId = '77906512-2E2B-470A-4684-08DC676C2898';
 }
 
 export class AuthConfig {

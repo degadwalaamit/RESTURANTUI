@@ -142,10 +142,31 @@
               *ngFor="let item of sharedService.orderDetailMaster; let iconIndex = index">
               <ng-container *ngIf="item.isDeleted != true">
                 <td>{{ item.quantity }}</td>
-                <td>
+                <!-- <td>
                   <b>{{ item.itemName }}</b> <br />{{ item.spicyType }} <br />{{
                   item.comment }}
+                </td> -->
+
+                <td>
+                  <b>{{ item.itemName }}</b> <br />
+                  <ng-container
+                    *ngFor="let itemCDynamic of item.orderCustomItemGroupMaster;">
+                    <h6>
+                      <div class="product-title">
+                        <b> {{ itemCDynamic.customGroupName }}:</b>
+                        {{itemCDynamic.detailName}}
+                        <ng-container
+                          *ngIf="itemCDynamic.price != 0">
+                          [{{itemCDynamic.price}} {{
+                          sharedService.setCurrencySymbol()}}]
+                        </ng-container>
+                        <br />
+                        {{itemCDynamic.comment}}
+                      </div>
+                    </h6>
+                  </ng-container>
                 </td>
+
                 <td>
                   {{ item.price * item.quantity | number : "1.2-2" }} {{
                   sharedService.setCurrencySymbol() }}

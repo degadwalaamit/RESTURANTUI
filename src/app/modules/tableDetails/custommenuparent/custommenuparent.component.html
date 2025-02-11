@@ -189,7 +189,33 @@
       (this.sharedService.currentSelectedObject.isAvailableForChristmas == null ||
         this.sharedService.currentSelectedObject.isAvailableForChristmas == false)
     ">
-    <div class="mb-3">
+    <ng-container
+    *ngFor="let itemCustom of this.sharedService.currentSelectedObject.customItemGroupMaster; let k = index">
+    <ng-container *ngIf="itemCustom.customGroupMaster != null">
+      <label
+        class="form-label">{{itemCustom.customGroupMaster.customGroupName}}:</label>
+      <select class="form-select" id="spiciness_{{k}}" name="spiciness_{{k}}">
+        <option
+          *ngFor="let itemCustomMasterDetail of itemCustom.customGroupMaster.customGroupDetailMaster;let i = index"
+          [value]="itemCustomMasterDetail.customGroupDetailId"
+          [selected]="itemCustomMasterDetail == this.sharedService.orderMasterModel.takeAwayTime ? true : ''">
+          {{ itemCustomMasterDetail.detailName}}
+          <ng-container *ngIf="itemCustomMasterDetail.price != 0">
+            [{{itemCustomMasterDetail.price}} {{
+            sharedService.setCurrencySymbol()}}]
+          </ng-container>
+        </option>
+      </select>
+      <ng-container *ngIf="itemCustom.customGroupMaster.isCommentNeeded">
+        <label for="comment_{{k}}">{{ 'AdditionalText.Comment' |
+          translate}}:</label>
+        <input class="form-control" type="text" placeholder="Comment"
+          title="Comment" name="txtComment_{{k}}" id="txtComment_{{k}}"
+          maxlength="50" />
+      </ng-container>
+    </ng-container>
+  </ng-container>
+    <!-- <div class="mb-3">
       <label class="form-label">{{ "LabelChange.ChooseSpicinessLevel" |
         translate }}:</label>
       <select class="form-select" id="spiciness" name="spiciness">
@@ -202,13 +228,13 @@
           {{ "LabelChange.HotSpicy" | translate }}
         </option>
       </select>
-    </div>
-    <div class="mb-3">
+    </div> -->
+    <!-- <div class="mb-3">
       <label for="comment" class="form-label">{{ "AdditionalText.Comment" |
         translate }}:</label>
       <input class="form-control" type="text" placeholder="Comment"
         title="Comment" name="txtComment" id="txtComment"
         maxlength="50" />
-    </div>
+    </div> -->
   </ng-container>
 </ng-container>
