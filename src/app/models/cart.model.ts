@@ -44,7 +44,7 @@ export class CommonOrderMasterModel {
   totalAmount = 0;
   isPaid = false;
   orderStatus = '';
-  orderNo = 0;
+  orderNo = '';
   isTakeAway = false;
   isDelivery = true;
   takeAwayTime = '';
