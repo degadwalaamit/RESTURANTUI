@@ -29,6 +29,7 @@ import { isValidList, isValidObject, isValidObjectWithBlank } from 'src/app/modu
 import { OrderCustomItemGroupMaster, OrderDetailMasterModel, PwaOrderCustomItemGroupMaster, PwaOrderDetailMasterModel, PwaOrderMasterModel, TableOrderDetails } from 'src/app/models/cart.model';
 import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.model';
 import { CustomGroupMasterModel, CustomItemGroupMasterModel, CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
+import { AddressModel } from 'src/app/models/address.model';
 declare var $: any;
 
 @Injectable(
@@ -3675,7 +3676,9 @@ export class SharedService {
     let subAmount = 0;
     this.refreshPackingPrice();
     this.orderMasterModel.orderDetailMaster.forEach(element => {
-      subAmount = subAmount + (element.totalPrice * element.quantity);
+      if(!element.isDeleted) {
+        subAmount = subAmount + (element.price * element.quantity);
+      }
     });
     this.orderMasterModel.subAmount = subAmount;
     this.orderMasterModel.discountAmount = ((subAmount * this.orderMasterModel.discountPercentage) / 100);
@@ -3683,6 +3686,9 @@ export class SharedService {
     this.orderMasterModel.isPaid = false;
     if (isNullOrUndefined(this.orderMasterModel.orderId)) {
       this.orderMasterModel.orderStatus = 'Pending';
+    }
+    if (this.orderMasterModel.addressMaster == null) {
+      this.orderMasterModel.addressMaster = new AddressModel();
     }
     this.orderMasterModel.addressMaster.isActive = true;
     this.orderMasterModel.addressMaster.isDeleted = false;
