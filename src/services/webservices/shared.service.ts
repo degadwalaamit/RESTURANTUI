@@ -3535,7 +3535,7 @@ export class SharedService {
   }
 
   returnImageUrl(item: MenuItemMasterModel) {
-    if (item.imageMaster.length > 0 && item.imageMaster.filter(x => x.isPrimary).length > 0) {
+    if (item.imageMaster != null && item.imageMaster.length > 0 && item.imageMaster.filter(x => x.isPrimary).length > 0) {
       return item.imageMaster.filter(x => x.isPrimary)[0].imageUrl;
     }
     return 'assets/images/item-img.jpg';
@@ -3676,8 +3676,8 @@ export class SharedService {
     let subAmount = 0;
     this.refreshPackingPrice();
     this.orderMasterModel.orderDetailMaster.forEach(element => {
-      if(!element.isDeleted) {
-        subAmount = subAmount + (element.price * element.quantity);
+      if (!element.isDeleted) {
+        subAmount = subAmount + (element.totalPrice * element.quantity);
       }
     });
     this.orderMasterModel.subAmount = subAmount;
@@ -3713,11 +3713,51 @@ export class SharedService {
     if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
       this.orderMasterModel = tblObject[0].orderMaster;
       this.orderDetailMaster = tblObject[0].orderMaster.orderDetailMaster;
+      this.orderDetailMaster.forEach(element => {
+        var categoryObject = this.menuCategoryMasterModel.filter(x => x.menuCategoryId == element.menuCategoryId);
+        if (categoryObject.length > 0) {
+          //var objOrderDetailMasterModel = new PwaOrderDetailMasterModel();
+          element.totalPrice = element.price;
+          if (isValidObject(element.orderCustomItemGroupMaster)) {
+            // element.orderCustomItemGroupMaster = [];
+            element.orderCustomItemGroupMaster.forEach(elementGM => {
+              //let elementGM = new PwaOrderCustomItemGroupMaster();
+              if (isValidObject(elementGM.orderCustomItemGroupId)) {
+                elementGM.orderCustomItemGroupId = elementGM.orderCustomItemGroupId;
+              } else {
+                elementGM.orderCustomItemGroupId = Guid.create()["value"];
+              }
+              elementGM.customItemGroupId = elementGM.customItemGroupId;
+              elementGM.customGroupId = elementGM.customGroupId;
+              elementGM.menuItemId = element.menuItemId;
+
+              elementGM.customGroupName = elementGM.customGroupName;
+              elementGM.customGroupName_DK = elementGM.customGroupName_DK;
+              elementGM.restaurantId = elementGM.restaurantId;
+              elementGM.sequenceNo = elementGM.sequenceNo;
+              elementGM.isCommentNeeded = elementGM.isCommentNeeded;
+
+              elementGM.customGroupDetailId = elementGM.customGroupDetailId;
+              elementGM.detailName = elementGM.detailName;
+              elementGM.detailName_DK = elementGM.detailName_DK;
+              elementGM.isChargable = elementGM.isChargable;
+              elementGM.price = elementGM.price;
+              elementGM.comment = elementGM.comment;
+
+              element.extraPrice += elementGM.price !== undefined ? elementGM.price : 0;
+              //element.orderCustomItemGroupMaster.push(elementGM);
+            });
+          }
+          element.totalPrice += (element.extraPrice !== undefined ? element.extraPrice : 0);
+          //element.push(objOrderDetailMasterModel);
+        }
+      });
       return tblObject[0].orderMaster;
+    } else {
+      this.orderMasterModel = new PwaOrderMasterModel();
+      this.orderDetailMaster = [];
+      return new PwaOrderMasterModel();
     }
-    this.orderMasterModel = new PwaOrderMasterModel();
-    this.orderDetailMaster = [];
-    return new PwaOrderMasterModel();
   }
 
   updateTableDetails(tableId, objPwaOrderMasterModel: PwaOrderMasterModel, isFinalPayment = false) {

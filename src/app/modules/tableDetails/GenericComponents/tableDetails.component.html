@@ -140,7 +140,7 @@
                                 </td>
 
                                 <td>
-                                    {{ item.price * item.quantity | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
+                                    {{ item.totalPrice * item.quantity | number : "1.2-2" }} {{ sharedService.setCurrencySymbol() }}
                                 </td>
                                 <td>
                                     <button type="button" class="btn initial btn-dark" (click)="sharedService.identifyMenuItem(item);">Update</button>
