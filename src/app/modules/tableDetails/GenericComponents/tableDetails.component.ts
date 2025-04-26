@@ -67,26 +67,19 @@ export class TableDetails implements OnInit, OnDestroy {
     } else {
       this.tableId = this.activatedRoute.snapshot.params.tId;
     }
-    this.sharedService.orderMasterModel = this.sharedService.getTableDetails(this.tableId);
+    this.sharedService.orderMasterModel = await this.sharedService.getTableDetails(this.tableId);
     if (isNullOrUndefined(this.sharedService.orderMasterModel.orderId)) {
       this.sharedService.orderMasterModel = await this.sharedService.GetPwaOrderListByOrderId(this.tableId);
-      this.sharedService.orderDetailMaster = this.sharedService.orderMasterModel.orderDetailMaster;
-    } else {      
+      if (this.sharedService.menuCategoryMasterModel.length == 0) {
+        await this.sharedService.getMenuMaster("");
+      }
+      this.sharedService.orderDetailMaster = await this.sharedService.setOrderDetailObject(this.sharedService.orderMasterModel.orderDetailMaster);
+    } else {
       this.sharedService.orderMasterModel.orderStatus = 'Updated';
     }
     this.anotherSubscription = this.sharedService.sendCartCountObservable.subscribe(() => {
       this.reCalculation();
     })
-    // this.dashboard$ = this.loginService.getDashboard().pipe(
-    //   tap(t => console.log(t)),
-    //   map(s => s),
-    //   catchError(err => {
-    //     if (err.status === 401) {
-    //       this.broadcaster.emitEvent('sessionexpire', '');
-    //       window.location.href = '/login';
-    //     }
-    //     return EMPTY;
-    //   }));
     this.sharedService.currentSelectedObject = new MenuItemMasterModel();
     this.isUserLogin = this.sharedService.isUserLogin();
     if (!this.isUserLogin) {
