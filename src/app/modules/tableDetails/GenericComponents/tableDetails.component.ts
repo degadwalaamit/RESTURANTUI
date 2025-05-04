@@ -99,6 +99,7 @@ export class TableDetails implements OnInit, OnDestroy {
     this.optionRules = this.broadcaster.listen('islogin').subscribe(response => {
       this.isUserLogin = response;
     });
+    this.sharedService.getOrderCalculation();
   }
 
   ngOnDestroy() {
