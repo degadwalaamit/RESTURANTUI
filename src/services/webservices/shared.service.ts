@@ -3709,6 +3709,9 @@ export class SharedService {
   }
 
   async setOrderDetailObject(orderDetailMaster: PwaOrderDetailMasterModel[]) {
+    if(isNullOrUndefined(orderDetailMaster)){
+      orderDetailMaster = [];
+    }
     orderDetailMaster.forEach(element => {
       var categoryObject = this.menuCategoryMasterModel.filter(x => x.menuCategoryId == element.menuCategoryId);
       if (categoryObject.length > 0) {
