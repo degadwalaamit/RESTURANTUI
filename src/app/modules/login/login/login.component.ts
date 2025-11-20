@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { OnInit,OnDestroy,ViewChild } from 'src/app/common-imports/angular-core';
-import { NgBroadcasterService,MessageType, Router,ViewMessageComponent, TranslateService } from 'src/app/common-imports/other-imports';
+import { OnInit, OnDestroy, ViewChild } from 'src/app/common-imports/angular-core';
+import { NgBroadcasterService, MessageType, Router, ViewMessageComponent, TranslateService } from 'src/app/common-imports/other-imports';
 import { Login } from 'src/app/common-imports/model-imports';
 import { Validation } from 'src/app/common-imports/constant-imports';
-import { SharedService,LocalStorageService,LoginService } from 'src/app/common-imports/webservices';
+import { SharedService, LocalStorageService, LoginService } from 'src/app/common-imports/webservices';
 import { Title } from '@angular/platform-browser';
 declare var $: any;
 
@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.loginService.userLogin(this.loginModel).subscribe(res => {
       if (res.stateModel.statusCode === 200) {
+        this.localStorageService.setItem('resturantId', res.result.resturantId);
         if (res.result.isTempPassword) {
           this.routes.navigate(['./login/resetpassword']);
           this.localStorageService.setItem('userName', res.result.userName);
@@ -111,7 +112,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.sharedService.showMessage(MessageType.Error, res.stateModel.errorMessage);
       }
     }, () => {
-      this.loading=false;
+      this.loading = false;
       this.sharedService.showMessage(MessageType.Error, 'ResetPassword.SomethingWrongApi');
     });
   }

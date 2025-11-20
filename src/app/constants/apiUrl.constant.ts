@@ -12,7 +12,6 @@ export class AppConstants {
   public static BaseAddressUrl = 'https://api.ideal-postcodes.co.uk/v1/postcodes/';
   // public static AddressApiKey = 'ak_kgata418gW3areYBTMYgQKliy3xzM';
   public static AddressApiKey = 'ak_k2bqe7y2NCcuWZaYHM9VSeDP7yHoV';
-  public static ResturantId = '77906512-2E2B-470A-4684-08DC676C2898';
 }
 
 export class AuthConfig {
@@ -47,7 +46,7 @@ export class CommonConstants extends AppConstants {
 export class UserConstant extends AppConstants {
   public static LoginUser = AppConstants.BaseApiUrl + 'User/LoginUser';
   public static GetUserList = AppConstants.BaseApiUrl + 'User/GetUserList';
-  public static GetMenuList =  AppConstants.BaseApiUrl + 'user/GetMenuList';
+  public static GetMenuList = AppConstants.BaseApiUrl + 'user/GetMenuList';
   public static AddOrder = AppConstants.BaseApiUrl + 'user/AddOrder';
   public static AddPwaOrder = AppConstants.BaseApiUrl + 'user/AddPwaOrder';
   public static GetPwaOrderById = AppConstants.BaseApiUrl + 'user/GetPwaOrderById';

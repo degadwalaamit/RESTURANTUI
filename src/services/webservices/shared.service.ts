@@ -360,6 +360,7 @@ export class SharedService {
     this.localStorageService.removeItem('isloginuser');
     this.localStorageService.removeItem('userdetails');
     this.localStorageService.removeItem('AccessToken');
+    this.localStorageService.removeItem('resturantId');
     this.localStorageService.removeItem('userName');
     this.localStorageService.removeItem('AccessToken');
     this.localStorageService.removeItem('tenantId');
@@ -3709,7 +3710,7 @@ export class SharedService {
   }
 
   async setOrderDetailObject(orderDetailMaster: PwaOrderDetailMasterModel[]) {
-    if(isNullOrUndefined(orderDetailMaster)){
+    if (isNullOrUndefined(orderDetailMaster)) {
       orderDetailMaster = [];
     }
     orderDetailMaster.forEach(element => {
@@ -3859,7 +3860,7 @@ export class SharedService {
         isFinalPayment = false;
         this.orderMasterModel.isPaid = false;
       }
-      this.orderMasterModel.resturantId = Guid.parse(AppConstants.ResturantId).toString();
+      this.orderMasterModel.resturantId = Guid.parse(this.GetRestaurantId()).toString();
       await this.userService.addPwaOrder(this.orderMasterModel).toPromise()
         .then((res: any) => {
           this.typeOfPayment = '';
@@ -3889,6 +3890,10 @@ export class SharedService {
     }
   }
 
+  GetRestaurantId() {
+    return this.localStorageService.getItem('resturantId');
+  }
+
   async GetPwaOrderListByTable() {
     this.loading = true;
     var postObj = {
@@ -3896,7 +3901,8 @@ export class SharedService {
       orderType: 0,
       orderId: null,
       userId: null,
-      createdDate: null
+      createdDate: null,
+      resturantId: this.GetRestaurantId()
     }
     await this.userService.getPwaOrderListByTable(postObj).toPromise()
       .then((res: any) => {

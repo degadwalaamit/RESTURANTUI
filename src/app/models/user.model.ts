@@ -17,6 +17,7 @@ export class UserModel extends ColumnModel implements ClassName {
   passwordSalt = '';
   mobileNo = '';
   addressId = '';
+  resturantId = '';
   addressMaster: AddressModel[] = [];
   tableMaster: TableMaster[] = [];
   toClassName(): string {
@@ -27,9 +28,9 @@ export class UserModel extends ColumnModel implements ClassName {
   }
 }
 export class TableMaster {
-    tableId: Guid;
-    tableNo: number | null;
-    takeAwayTableNo: number | null;
-    resturantId: string;
-    resturantMaster: ResturantMasterModel | null;
+  tableId: Guid;
+  tableNo: number | null;
+  takeAwayTableNo: number | null;
+  resturantId: string;
+  resturantMaster: ResturantMasterModel | null;
 }
