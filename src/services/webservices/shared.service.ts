@@ -3274,13 +3274,17 @@ export class SharedService {
     this.menuNaanItemMasterModel = [];
     this.menuSizlerItemMasterModel = [];
     this.menuSodaItemMasterModel = [];
-    await (this.userService.getMenuList(itemSeoName))
+    var request = {
+      ResturantId: this.GetRestaurantId(),
+      ItemSeoName: itemSeoName
+    }
+    await (this.userService.getMenuList(request))
       .toPromise().then((res: any) => {
         this.loading = false;
         if (res.stateModel.statusCode === 200) {
           let resultData = res.result.filter(x => x.isPOS);
           resultData.forEach(element => {
-            element.menuItemMaster = element.menuItemMaster.filter(x => x.isPOS);
+            element.menuItemMaster = element.menuItemMaster.filter(x => x.isPOS && x.isPOSRef);
             element.menuItemMaster.filter(x => x.isPOS).forEach(elementItem => {
               if (elementItem.isItemCustom) {
                 this.menuCustomItemMasterModel.push(elementItem);

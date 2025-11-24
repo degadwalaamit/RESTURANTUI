@@ -14,11 +14,9 @@ export class UserService {
     return this.apiService.post(UserConstant.GetUserList, "");
   }
 
-  getMenuList(itemSeoName: string) {
-    // if (!isValidObjectWithBlank(itemSeoName)) {
-    itemSeoName = 'all';
-    // }
-    return this.apiService.get(UserConstant.GetMenuList + "/" + itemSeoName);
+  getMenuList(postObj: any) {
+    postObj.ItemSeoName = 'all';
+    return this.apiService.post(UserConstant.GetMenuList, postObj);
   }
 
   addOrder(postObj: any) {
