@@ -16,6 +16,7 @@ export class UserService {
 
   getMenuList(postObj: any) {
     postObj.ItemSeoName = 'all';
+    postObj.IsPosCall = true;
     return this.apiService.post(UserConstant.GetMenuList, postObj);
   }
 
