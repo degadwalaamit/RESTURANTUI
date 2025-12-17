@@ -3843,12 +3843,15 @@ export class SharedService {
     return this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString()).length > 0;
   }
 
-  isAssignToTable() {
-    let isDisable = true;
-    if (this.orderMasterModel && this.orderMasterModel.orderDetailMaster && this.orderMasterModel.orderDetailMaster.length > 0) {
-      isDisable = false;
+  isAssignToTable(): boolean {
+    if (
+      this.orderMasterModel &&
+      this.orderMasterModel.orderDetailMaster &&
+      this.orderMasterModel.orderDetailMaster.some(x => x.isDeleted !== true)
+    ) {
+      return false;
     }
-    return isDisable;
+    return true;
   }
 
   async placeOrder(tableId) {
