@@ -51,7 +51,7 @@
           *ngIf="this.sharedService.tableMaster != null">
 
           <ng-container
-            *ngFor="let tb of this.sharedService.totalTableArray; let index = index">
+            *ngFor="let tb of this.sharedService.totalTableArray; let index = index; trackBy: trackByTableIndex">
             <div class="col">
               <a (click)="sharedService.redirectUrl('table-details', index + 1)"
                 class="card tables-card"
@@ -61,7 +61,7 @@
             </div>
           </ng-container>
           <ng-container
-            *ngFor="let tb of this.sharedService.totalTakeAwayTableArray; let index = index">
+            *ngFor="let tb of this.sharedService.totalTakeAwayTableArray; let index = index; trackBy: trackByTableIndex">
             <div class="col">
               <a
                 (click)="sharedService.redirectUrl('table-details','T' + (index + 1))"
@@ -77,8 +77,7 @@
   </div>
 </div>
 <div class="modal fade" id="modelMoveTable" tabindex="-1"
-  aria-labelledby="modelMoveTable"
-  aria-hidden="true">
+  aria-labelledby="modelMoveTable" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -118,8 +117,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button (click)="sharedService.onCancelButtonClick()"
-          aria-hidden="true" class="btn btn-secondary">
+        <button (click)="sharedService.onCancelButtonClick()" aria-hidden="true"
+          class="btn btn-secondary">
           Cancel</button>
         <button aria-hidden="true" (click)="sharedService.moveToTable()"
           class="btn btn-primary">
