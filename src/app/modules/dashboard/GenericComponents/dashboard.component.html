@@ -46,13 +46,12 @@
   <div class="col">
     <div class="card">
       <div class="card-body min-vh-100">
-        {{this.sharedService.tableMaster.length}}
         <div
           class="row row-cols-sm-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 gy-4"
           *ngIf="this.sharedService.tableMaster != null">
 
           <ng-container
-            *ngFor="let tb of this.sharedService.totalTableArray; let index = index; trackBy: trackByTableIndex">
+            *ngFor="let tb of this.sharedService.totalTableArray; let index = index">
             <div class="col">
               <a (click)="sharedService.redirectUrl('table-details', index + 1)"
                 class="card tables-card"
@@ -62,7 +61,7 @@
             </div>
           </ng-container>
           <ng-container
-            *ngFor="let tb of this.sharedService.totalTakeAwayTableArray; let index = index; trackBy: trackByTableIndex">
+            *ngFor="let tb of this.sharedService.totalTakeAwayTableArray; let index = index">
             <div class="col">
               <a
                 (click)="sharedService.redirectUrl('table-details','T' + (index + 1))"
