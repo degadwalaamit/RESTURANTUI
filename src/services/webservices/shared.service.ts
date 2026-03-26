@@ -31,7 +31,7 @@ import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.m
 import { CustomGroupMasterModel, CustomItemGroupMasterModel, CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
 import { AddressModel } from 'src/app/models/address.model';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-
+import { SignalRService } from '../signalrservice';
 declare var $: any;
 
 @Injectable(
@@ -118,8 +118,6 @@ export class SharedService {
 
   public totalTableArray = new Array();
   public totalTakeAwayTableArray = new Array();
-  private occupiedTablesCache = new Map(); // Cache for fast table occupancy lookups
-  private categoryMapCache: Map<any, any> = null; // Cache for menu categories
   public currentSelectedObject: MenuItemMasterModel = new MenuItemMasterModel();
   public currentSelectedOrderDetailObject: PwaOrderDetailMasterModel = new PwaOrderDetailMasterModel();
   public sendCartCountSubject = new Subject();
@@ -317,6 +315,7 @@ export class SharedService {
   private toastr: ToastrService;
   public datepipe: DatePipe;
   public userService: UserService;
+  public signalRService: SignalRService;
 
   constructor(injector: Injector) {
     this.apiService = injector.get<ApiService>(ApiService);
@@ -328,6 +327,7 @@ export class SharedService {
     this.toastr = injector.get<ToastrService>(ToastrService);
     this.datepipe = injector.get<DatePipe>(DatePipe);
     this.userService = injector.get<UserService>(UserService);
+    this.signalRService = injector.get<SignalRService>(SignalRService);
     this.today = new Date();
     this.currentSelectedObject = new MenuItemMasterModel();
     this.currentSelectedOrderDetailObject = new PwaOrderDetailMasterModel();
@@ -393,9 +393,21 @@ export class SharedService {
   }
 
   getUserDetails() {
+    // table details
+    this.tableMaster = null;
+    this.totalTableArray = null;
+    this.totalTakeAwayTableArray = null;
+
     const userDetail = this.localStorageService.getItem('userdetails');
     if (isNotNullOrUndefined(userDetail) && userDetail !== '') {
-      return JSON.parse(userDetail);
+      var userObject = JSON.parse(userDetail);
+      if (!isNullOrUndefined(userObject.tableMaster) && userObject.tableMaster.length > 0) {
+        this.tableMaster = userObject.tableMaster[0];
+
+        this.totalTableArray = new Array(this.tableMaster.tableNo);
+        this.totalTakeAwayTableArray = new Array(this.tableMaster.takeAwayTableNo);
+      }
+      return userObject;
     }
     return null;
   }
@@ -3320,8 +3332,6 @@ export class SharedService {
               && x.code != 'C.1'
               && x.code != 'C.2') && !x.isAvailableForChristmas);
           this.menuCategoryMasterModel = resultData;
-          // Invalidate category cache since menu data has changed
-          this.invalidateCaches();
           // if (this.menuCategoryMasterModel.length > 0) {
           //   if (this.menuCategoryMasterModel[0].menuItemMaster.length > 0) {
           //     this.currentSelectedObject = this.menuCategoryMasterModel[0].menuItemMaster[0];
@@ -3713,44 +3723,30 @@ export class SharedService {
   async addTableOrderDetails(tableId) {
     this.orderMasterModel.tableNo = tableId;
     this.orderMasterModel.orderDetailMaster = this.orderDetailMaster;
-
-    // Use find() instead of filter() for O(1) lookup
-    const tblObject = this.tableOrderDetailModel.find(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
-    if (!isNullOrUndefined(tblObject)) {
-      tblObject.orderMaster = this.orderMasterModel;
+    let tblObject = this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
+    if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
+      tblObject[0].orderMaster = this.orderMasterModel;
     } else {
-      const newTableOrder = new TableOrderDetails();
-      newTableOrder.orderMaster = this.orderMasterModel;
-      this.tableOrderDetailModel.push(newTableOrder);
+      let tObject = new TableOrderDetails();
+      tObject.orderMaster = this.orderMasterModel;
+      this.tableOrderDetailModel.push(tObject);
     }
     await this.placeOrder(tableId)
-  }
-
-  private buildCategoryMapCache(): Map<any, any> {
-    // Build category map cache only if not already cached
-    if (this.categoryMapCache === null) {
-      this.categoryMapCache = new Map();
-      this.menuCategoryMasterModel.forEach(cat => {
-        this.categoryMapCache.set(cat.menuCategoryId, cat);
-      });
-    }
-    return this.categoryMapCache;
   }
 
   async setOrderDetailObject(orderDetailMaster: PwaOrderDetailMasterModel[]) {
     if (isNullOrUndefined(orderDetailMaster)) {
       orderDetailMaster = [];
     }
-
-    // Use cached category map for O(1) lookups
-    const categoryMap = this.buildCategoryMapCache();
-
     orderDetailMaster.forEach(element => {
-      // Use Map lookup instead of filter - O(1) instead of O(n)
-      if (categoryMap.has(element.menuCategoryId)) {
+      var categoryObject = this.menuCategoryMasterModel.filter(x => x.menuCategoryId == element.menuCategoryId);
+      if (categoryObject.length > 0) {
+        //var objOrderDetailMasterModel = new PwaOrderDetailMasterModel();
         element.totalPrice = element.price;
         if (isValidObject(element.orderCustomItemGroupMaster)) {
+          // element.orderCustomItemGroupMaster = [];
           element.orderCustomItemGroupMaster.forEach(elementGM => {
+            //let elementGM = new PwaOrderCustomItemGroupMaster();
             if (isValidObject(elementGM.orderCustomItemGroupId)) {
               elementGM.orderCustomItemGroupId = elementGM.orderCustomItemGroupId;
             } else {
@@ -3759,11 +3755,13 @@ export class SharedService {
             elementGM.customItemGroupId = elementGM.customItemGroupId;
             elementGM.customGroupId = elementGM.customGroupId;
             elementGM.menuItemId = element.menuItemId;
+
             elementGM.customGroupName = elementGM.customGroupName;
             elementGM.customGroupName_DK = elementGM.customGroupName_DK;
             elementGM.restaurantId = elementGM.restaurantId;
             elementGM.sequenceNo = elementGM.sequenceNo;
             elementGM.isCommentNeeded = elementGM.isCommentNeeded;
+
             elementGM.customGroupDetailId = elementGM.customGroupDetailId;
             elementGM.detailName = elementGM.detailName;
             elementGM.detailName_DK = elementGM.detailName_DK;
@@ -3781,12 +3779,11 @@ export class SharedService {
   }
 
   async getTableDetails(tableId) {
-    // Use find() instead of filter() - returns single match faster
-    const tblObject = this.tableOrderDetailModel.find(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
-    if (!isNullOrUndefined(tblObject)) {
-      this.orderMasterModel = tblObject.orderMaster;
-      this.orderDetailMaster = await this.setOrderDetailObject(tblObject.orderMaster.orderDetailMaster);
-      return tblObject.orderMaster;
+    let tblObject = this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
+    if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
+      this.orderMasterModel = tblObject[0].orderMaster;
+      this.orderDetailMaster = await this.setOrderDetailObject(tblObject[0].orderMaster.orderDetailMaster);
+      return tblObject[0].orderMaster;
     } else {
       this.orderMasterModel = new PwaOrderMasterModel();
       this.orderDetailMaster = [];
@@ -3796,14 +3793,12 @@ export class SharedService {
 
   updateTableDetails(tableId, objPwaOrderMasterModel: PwaOrderMasterModel, isFinalPayment = false) {
     if (isFinalPayment || objPwaOrderMasterModel.isDelete) {
-      // Remove completed/deleted orders
       this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo != tableId.toString());
     } else {
-      // Use find() instead of filter() for single item lookup
-      const tblObject = this.tableOrderDetailModel.find(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
-      if (!isNullOrUndefined(tblObject)) {
-        tblObject.orderMaster = objPwaOrderMasterModel;
-        tblObject.orderMaster.orderDetailMaster = objPwaOrderMasterModel.orderDetailMaster;
+      let tblObject = this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString());
+      if (!isNullOrUndefined(tblObject) && tblObject.length > 0) {
+        tblObject[0].orderMaster = objPwaOrderMasterModel;
+        tblObject[0].orderMaster.orderDetailMaster = objPwaOrderMasterModel.orderDetailMaster;
       }
     }
   }
@@ -3866,23 +3861,10 @@ export class SharedService {
   }
 
   isTableOccupied(tableId) {
-    // Use cache for O(1) lookup instead of O(n) filter scan
-    return this.occupiedTablesCache.has(tableId.toString());
-  }
-
-  private updateOccupiedTablesCache() {
-    // Rebuild the occupancy cache for fast lookups
-    this.occupiedTablesCache.clear();
-    this.tableOrderDetailModel.forEach(item => {
-      if (item && item.orderMaster && item.orderMaster.tableNo) {
-        this.occupiedTablesCache.set(item.orderMaster.tableNo, true);
-      }
-    });
-  }
-
-  private invalidateCaches() {
-    // Invalidate category map cache when menu data changes
-    this.categoryMapCache = null;
+    if (this.tableOrderDetailModel.length == 0) {
+      return false;
+    }
+    return this.tableOrderDetailModel.filter(x => x && x.orderMaster && x.orderMaster.tableNo == tableId.toString()).length > 0;
   }
 
   isAssignToTable(): boolean {
@@ -3910,35 +3892,32 @@ export class SharedService {
         this.orderMasterModel.isPaid = false;
       }
       this.orderMasterModel.resturantId = Guid.parse(this.GetRestaurantId()).toString();
-
-      try {
-        const res: any = await this.userService.addPwaOrder(this.orderMasterModel).toPromise();
-        if (res.stateModel.statusCode === 200 && res.result != null) {
-          if (isValidObject(res.result.orderId)) {
-            this.updateTableDetails(tableId, res.result, isFinalPayment);
-            this.updateOccupiedTablesCache(); // Update cache after order placement
-            this.orderMasterModel = new PwaOrderMasterModel();
-            this.orderDetailMaster = [];
-            this.sendCartCountSubject.next('');
-            this.showMessage(MessageType.Success, 'Messages.OrderSuccessfully');
-            // Navigate after success message shows
-            setTimeout(() => this.routes.navigate(['./dashboard']), 1000);
+      await this.userService.addPwaOrder(this.orderMasterModel).toPromise()
+        .then((res: any) => {
+          this.typeOfPayment = '';
+          this.loading = false;
+          if (res.stateModel.statusCode === 200 && res.result != null) {
+            if (isValidObject(res.result.orderId)) {
+              this.updateTableDetails(tableId, res.result, isFinalPayment);
+              this.orderMasterModel = new PwaOrderMasterModel();
+              this.orderDetailMaster = [];
+              this.sendCartCountSubject.next('');
+              // this.router.navigate(["/ordersummary/" + res.result.orderNo]);
+              this.routes.navigate(['./dashboard']);
+              this.showMessage(MessageType.Success, 'Messages.OrderSuccessfully');
+            } else {
+              this.showMessage(MessageType.Error, res.stateModel.errorMessage);
+            }
+          } else if (res.stateModel.statusCode === 401) {
+            this.showMessage(MessageType.Error, 'Messages.OrderFailed');
+          } else if (res.stateModel.statusCode === 204) {
+            this.showMessage(MessageType.Warning, 'Messages.OrderFailed');
           } else {
             this.showMessage(MessageType.Error, res.stateModel.errorMessage);
           }
-        } else if (res.stateModel.statusCode === 401) {
-          this.showMessage(MessageType.Error, 'Messages.OrderFailed');
-        } else if (res.stateModel.statusCode === 204) {
-          this.showMessage(MessageType.Warning, 'Messages.OrderFailed');
-        } else {
-          this.showMessage(MessageType.Error, res.stateModel.errorMessage);
+          this.routes.navigate(['./dashboard']);
         }
-      } catch (error) {
-        this.showMessage(MessageType.Error, 'Messages.OrderFailed');
-      } finally {
-        this.typeOfPayment = '';
-        this.loading = false;
-      }
+        );
     }
   }
 
@@ -3948,7 +3927,7 @@ export class SharedService {
 
   async GetPwaOrderListByTable() {
     this.loading = true;
-    const postObj = {
+    var postObj = {
       dataType: 0,
       orderType: 0,
       orderId: null,
@@ -3960,14 +3939,13 @@ export class SharedService {
       .then((res: any) => {
         this.loading = false;
         if (res.stateModel.statusCode === 200 && res.result != null) {
-          this.tableOrderDetailModel = [];
+          let that = this;
+          that.tableOrderDetailModel = [];
           res.result.forEach((element: PwaOrderMasterModel) => {
-            const obj = new TableOrderDetails();
+            let obj = new TableOrderDetails();
             obj.orderMaster = element;
-            this.tableOrderDetailModel.push(obj);
+            that.tableOrderDetailModel.push(obj);
           });
-          // Update occupancy cache after loading table data
-          this.updateOccupiedTablesCache();
         }
       });
   }
@@ -4020,31 +3998,22 @@ export class SharedService {
   }
 
   async moveToTable() {
-    const sourceTable = $("#fromTableArray").val();
-    const destinationTable = $("#toTableArray").val();
-    // Use find() instead of filter() for O(1) lookup
-    const tblObject = this.tableOrderDetailModel.find(x => x && x.orderMaster && x.orderMaster.tableNo == sourceTable.toString());
-
-    if (!isNullOrUndefined(tblObject) && !isNullOrUndefined(tblObject.orderMaster)) {
-      const updatedOrder = new TableOrderDetails();
-      updatedOrder.orderMaster = tblObject.orderMaster;
-      updatedOrder.orderMaster.tableNo = destinationTable.toString();
-
+    let sourceTable = $("#fromTableArray").val();
+    let destinationTable = $("#toTableArray").val();
+    let tblObjectList = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo == sourceTable.toString());
+    if (!isNullOrUndefined(tblObjectList) && tblObjectList.length > 0
+      && !isNullOrUndefined(tblObjectList[0].orderMaster)) {
+      let tObject = new TableOrderDetails();
+      tObject.orderMaster = tblObjectList[0].orderMaster;
+      tObject.orderMaster.tableNo = destinationTable.toString();
       this.loading = true;
-      try {
-        const res: any = await this.userService.addPwaOrder(updatedOrder.orderMaster).toPromise();
-        if (res.stateModel.statusCode === 200) {
-          // Remove old table and add updated order
-          this.tableOrderDetailModel = this.tableOrderDetailModel.filter(x => x.orderMaster.tableNo !== sourceTable.toString());
-          this.tableOrderDetailModel.push(updatedOrder);
-          this.updateOccupiedTablesCache();
+      await this.userService.addPwaOrder(tObject.orderMaster).toPromise()
+        .then((res: any) => {
+          this.moveTableArray();
+          this.tableOrderDetailModel.push(tObject[0]);
           $('#modelMoveTable').modal('hide');
-        }
-      } catch (error) {
-        this.showMessage(MessageType.Error, 'Messages.MoveTableFailed');
-      } finally {
-        this.loading = false;
-      }
+          this.loading = false;
+        });
     }
   }
 

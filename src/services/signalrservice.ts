@@ -28,10 +28,10 @@ export class SignalRService {
     }
 
     onPwaOrderCreated(callback: (data: any) => void) {
-        if (this.hubConnection && this.isConnected) {
+        if (this.hubConnection) {
             this.hubConnection.on('PwaOrderCreated', callback);
         } else {
-            console.warn('SignalR onPwaOrderCreated ignored: SignalR is not connected.');
+            console.warn('SignalR onPwaOrderCreated skipped: hub connection is not initialized yet.');
         }
     }
 }
