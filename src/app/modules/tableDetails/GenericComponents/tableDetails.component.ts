@@ -6,7 +6,7 @@ import { ActivatedRoute, NgBroadcasterService, Router, TranslateService } from '
 import { SharedService } from 'src/app/common-imports/webservices';
 import { MenuItemMasterModel } from 'src/app/models/menu.model';
 import { isValidObject } from '../../common/app-helper-functions';
-import { PwaOrderDetailMasterModel } from 'src/app/models/cart.model';
+import { PwaOrderDetailMasterModel, PwaOrderMasterModel } from 'src/app/models/cart.model';
 import * as _ from 'lodash';
 import { ConfirmationCode } from 'src/app/constants/app.constant';
 import { isNullOrUndefined } from 'util';
@@ -72,6 +72,9 @@ export class TableDetails implements OnInit, OnDestroy {
       this.sharedService.orderMasterModel = await this.sharedService.GetPwaOrderListByOrderId(this.tableId);
       if (this.sharedService.menuCategoryMasterModel.length == 0) {
         await this.sharedService.getMenuMaster("");
+      }
+      if (this.sharedService.orderMasterModel == undefined || this.sharedService.orderMasterModel == null) {
+        this.sharedService.orderMasterModel = new PwaOrderMasterModel();
       }
       this.sharedService.orderDetailMaster = await this.sharedService.setOrderDetailObject(this.sharedService.orderMasterModel.orderDetailMaster);
     } else {
