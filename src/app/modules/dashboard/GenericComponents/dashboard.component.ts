@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.sharedService.appInsights.trackTrace({ message: 'Dashboard Component Initialized' });
     this.isUserLogin = this.sharedService.isUserLogin();
     if (!this.isUserLogin) {
       this.broadcaster.emitEvent('hideSideMenu', '');

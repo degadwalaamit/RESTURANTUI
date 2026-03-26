@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterOutlet,Router } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 import { LocalStorageService } from 'src/services/webservices/local-storage.service';
 import { NgBroadcasterService } from 'ngx-broadcaster';
 import { SharedService } from 'src/services/webservices/shared.service';
@@ -29,12 +29,16 @@ export class AppComponent implements OnInit, OnDestroy {
     public sharedService: SharedService,
     private bnIdle: BnNgIdleService,
     private routes: Router) {
-      this.bnIdle.startWatching(3600).subscribe((isTimedOut: boolean) => { // 20 * 60 = 1200 second (20 min) ideal then user will logout
-        if (isTimedOut) {
-          this.broadcaster.emitEvent('sessionexpire', '');
-          this.sharedService.removeLocalStorageValue();
-        }
-      });
+    sharedService.appInsights.loadAppInsights();
+    sharedService.appInsights.trackPageView();
+
+    sharedService.appInsights.trackTrace({ message: 'Application Started' });
+    this.bnIdle.startWatching(3600).subscribe((isTimedOut: boolean) => { // 20 * 60 = 1200 second (20 min) ideal then user will logout
+      if (isTimedOut) {
+        this.broadcaster.emitEvent('sessionexpire', '');
+        this.sharedService.removeLocalStorageValue();
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -50,8 +54,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.broadcaster.listen("hideSideMenu").subscribe(res=>{
-      this.isLoginUser=false;
+    this.broadcaster.listen("hideSideMenu").subscribe(res => {
+      this.isLoginUser = false;
     })
     let isLogin = this.localStorageService.getItem('isloginuser');
     if (isLogin != null && isLogin != undefined) {
@@ -75,11 +79,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   //  key  press on body
-  onKeyPress(event)
-  {
+  onKeyPress(event) {
     // if loader is enable then preventDefault
-    if(this.loading)
-    {
+    if (this.loading) {
       event.preventDefault();
     }
   }
@@ -98,7 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
       } else {
         // no Pointer Events...
         if (window.matchMedia && window.matchMedia("(any-pointer:coarse)").matches
-            || window.TouchEvent || ('ontouchstart' in window)) {
+          || window.TouchEvent || ('ontouchstart' in window)) {
           // check for any-pointer:coarse which mostly means touchscreen
           result = true;
         }
@@ -107,11 +109,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     // This code is for sidebar menu close on page change
-     this.routes.events.subscribe(() => {
-      if($(".page-sidebar.active").length==0) {
-      $(".page-sidebar").addClass("active");
+    this.routes.events.subscribe(() => {
+      if ($(".page-sidebar.active").length == 0) {
+        $(".page-sidebar").addClass("active");
       }
-      });
+    });
 
     $('.menu-toggler').click(function () {
       $(".page-logo").toggleClass("active");

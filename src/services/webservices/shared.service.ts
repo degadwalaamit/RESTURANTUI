@@ -30,6 +30,8 @@ import { OrderCustomItemGroupMaster, OrderDetailMasterModel, PwaOrderCustomItemG
 import { DeliveryChargeMasterModel } from 'src/app/models/deliverychargemaster.model';
 import { CustomGroupMasterModel, CustomItemGroupMasterModel, CustomOrderItemDetailMaster, MenuCategoryMasterModel, MenuItemMasterModel } from 'src/app/models/menu.model';
 import { AddressModel } from 'src/app/models/address.model';
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+
 declare var $: any;
 
 @Injectable(
@@ -126,6 +128,11 @@ export class SharedService {
 
   public fromTableArray = [];
   public toTableArray = [];
+  public appInsights = new ApplicationInsights({
+    config: {
+      connectionString: AppConstants.ApplicationInsightsConnnectionString
+    }
+  });
   checkExpnadCollapseUpdate() {
     return this.checkExpandCollapse.asObservable();
   }
@@ -3973,7 +3980,8 @@ export class SharedService {
       orderId: null,
       userId: null,
       createdDate: null,
-      TableNo: tableId
+      TableNo: tableId,
+      ResturantId: this.GetRestaurantId()
     };
 
     try {

@@ -12,6 +12,7 @@ export class AppConstants {
   public static BaseAddressUrl = 'https://api.ideal-postcodes.co.uk/v1/postcodes/';
   // public static AddressApiKey = 'ak_kgata418gW3areYBTMYgQKliy3xzM';
   public static AddressApiKey = 'ak_k2bqe7y2NCcuWZaYHM9VSeDP7yHoV';
+  public static ApplicationInsightsConnnectionString = 'InstrumentationKey=56b0b266-bca4-484d-9d83-4c6ccf0f434e;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=7d19108d-5348-437b-9511-3a92825f201a';
 }
 
 export class AuthConfig {
@@ -67,4 +68,8 @@ export class GridConstant extends AppConstants {
 
 export class TableConstant extends AppConstants {
   public static GetTableMasterList = AppConstants.BaseApiUrl + 'TableMaster/GetTableMasterList';
+}
+
+export class SignalRConstant extends AppConstants {
+  public static OrderHub = AppConstants.BaseApiUrl.replace(/\/api\/$/, '') + '/OrderHub';
 }
